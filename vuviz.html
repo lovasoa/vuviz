@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+    <title>nomApplication</title>
+  </head>
+  <body class="container-fluid">
+
+    <nav class="navbar navbar-dark bg-inverse">
+      <a class="navbar-brand" href="#">nomApplication</a>
+    </nav>
+
+    <main class="container m-y">
+      <!-- Butons de choix de la durée des prévisions -->
+      <div class="row">
+        <div class="col-sm-6">
+              <label class="btn btn-primary btn-lg btn-block"><input type="radio" name="typePrev" value="an">Prévision annuelle</label>
+        </div>
+        <div class="col-sm-6">
+              <label class="btn btn-primary btn-lg btn-block"><input type="radio" name="typePrev" value="tri">Prévision trimestrielle</label>
+        </div>
+      </div>
+
+      <!-- Choix des indices à visualiser-->
+      <div class="row m-y">
+        <form>
+          <fieldset class="col-md-12 col-lg-4">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="usa">États-Unis</label>
+              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="eu">Europe</label>
+              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="asia">Asie</label>
+            </div>
+          </fieldset>
+
+          <fieldset class="col-md-12 col-lg-4">
+            <div class="radio">
+              <label>
+                <input type="radio" name="typeIndice" value="globaux">
+                Indices globaux
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="typeIndice" value="sectoriels">
+                Indices sectoriels
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="col-md-12 col-lg-4">
+            <div class="checkbox-inline">
+              <label>
+                <input type="checkbox" name="indice1" value="indice1">
+                Indice 1
+              </label>
+            </div>
+            <div class="checkbox-inline">
+              <label>
+                <input type="checkbox" name="indice1" value="indice2">
+                Indice 2
+              </label>
+            </div>
+          </fieldset>
+
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-lg-6">
+          <div class="card">
+          <h4 class="card-header">Graphique interactif présentant les indices</h4>
+            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="card">
+          <h4 class="card-header">Évolution des indices</h4>
+            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="card">
+          <h4 class="card-header">Cours actuel</h4>
+            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6">
+          <div class="card">
+          <h4 class="card-header">Tableau</h4>
+            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- jQuery first, then Bootstrap JS. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js"></script>
+  </body>
+</html>
