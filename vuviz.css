@@ -1,3 +1,7 @@
 .liste-virgules:not(:last-of-type)::after {
   content: ", ";
 }
+
+.btn-group .btn {
+  transition: .2s;
+}
