@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" ng-app="vuvizApp">
   <head>
     <!-- Required meta tags always come first -->
     <meta charset="utf-8">
@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="assets/bootstrap.css">
     <title>nomApplication</title>
   </head>
-  <body class="container-fluid">
+  <body class="container-fluid" ng-controller="VuvizController as control">
 
     <nav class="navbar navbar-dark bg-inverse">
-      <a class="navbar-brand" href="#">nomApplication</a>
+      <a class="navbar-brand" href="#">{{control.nomApplication}}</a>
     </nav>
 
     <main class="container m-y">
@@ -54,16 +54,10 @@
           </fieldset>
 
           <fieldset class="col-md-12 col-lg-4">
-            <div class="checkbox-inline">
+            <div class="checkbox-inline" ng-repeat="indice in control.indices">
               <label>
                 <input type="checkbox" name="indice1" value="indice1">
-                Indice 1
-              </label>
-            </div>
-            <div class="checkbox-inline">
-              <label>
-                <input type="checkbox" name="indice1" value="indice2">
-                Indice 2
+                {{indice.nom}}
               </label>
             </div>
           </fieldset>
@@ -101,5 +95,7 @@
     <!-- jQuery first, then Bootstrap JS. -->
     <script src="assets/jquery.min.js"></script>
     <script src="assets/bootstrap.js"></script>
+    <script src="assets/angular.min.js"></script>
+    <script src="vuviz.js"></script>
   </body>
 </html>
