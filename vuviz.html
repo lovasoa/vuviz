@@ -8,6 +8,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/bootstrap.css">
+    <link rel="stylesheet" href="vuviz.css">
+
     <title>Prephib</title>
   </head>
   <body class="container-fluid" ng-controller="VuvizController as control">
@@ -31,32 +33,33 @@
       <div class="row m-y">
         <form>
           <fieldset class="col-md-12 col-lg-4">
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="usa">États-Unis</label>
-              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="eu">Europe</label>
-              <label class="btn btn-primary btn-lg"><input type="radio" name="lieu" value="asia">Asie</label>
+            <div class="btn-group">
+              <label class="btn btn-primary btn-lg" ng-repeat="continent in control.continents()" ng-class="{active:continent===control.aff_continent}">
+                <input type="radio" hidden name="choixContinent" ng-model="control.aff_continent" value="{{continent}}">
+                {{continent}}
+              </label>
             </div>
           </fieldset>
 
           <fieldset class="col-md-12 col-lg-4">
             <div class="radio">
               <label>
-                <input type="radio" name="typeIndice" value="globaux">
+                <input type="radio" name="typeIndice" value="false" ng-value="false" ng-model="control.aff_sectoriel">
                 Indices globaux
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="typeIndice" value="sectoriels">
+                <input type="radio" name="typeIndice" value="true" ng-value="true" ng-model="control.aff_sectoriel">
                 Indices sectoriels
               </label>
             </div>
           </fieldset>
 
           <fieldset class="col-md-12 col-lg-4">
-            <div class="checkbox-inline" ng-repeat="indice in control.indices">
+            <div class="checkbox-inline" ng-repeat="indice in control.aff_indices()">
               <label>
-                <input type="checkbox" name="indice1" value="indice1">
+                <input type="checkbox" name="indice.nom" value="{{indice.nom}}" ng-model="indice.selected">
                 {{indice.nom}}
               </label>
             </div>
@@ -74,7 +77,10 @@
         </div>
         <div class="col-md-12 col-lg-6">
           <div class="card">
-          <h4 class="card-header">Évolution des indices</h4>
+          <h4 class="card-header">
+            Évolution des indices
+            <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+          </h4>
             <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
           </div>
         </div>
@@ -91,7 +97,7 @@
           </div>
         </div>
       </div>
-	  
+
 	   <div class="row">
         <div class="col-md-12 col-lg-6">
           <div class="card">
