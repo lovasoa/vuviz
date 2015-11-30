@@ -5,3 +5,12 @@
 .btn-group .btn {
   transition: .2s;
 }
+
+.comment{
+	width:100%;
+	
+}
+
+h4{
+	font-size: large;
+}

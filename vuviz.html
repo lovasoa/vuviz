@@ -71,7 +71,10 @@
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <div class="card">
-          <h4 class="card-header">Graphique décrivant l'évolution des indices</h4>
+          <h4 class="card-header">
+			Graphique décrivant l'évolution des indices
+		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		  </h4>
             <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
           </div>
         </div>
@@ -86,28 +89,35 @@
         </div>
         <div class="col-md-12 col-lg-6">
           <div class="card">
-          <h4 class="card-header">Cours actuel des indices</h4>
+          <h4 class="card-header">Cours actuel des indices
+		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		  </h4>
             <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
           <div class="card">
-          <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens</h4>
-            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+          <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
+		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		  </h4>
+            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Tableau">
           </div>
         </div>
       </div>
 
 	   <div class="row">
-	        <h4 class="card-header">Commentaire sur l'historique et l'évolution prévisionnelle du </h4>
+	        <h4 class="card-header">
+			Commentaire sur l'historique et l'évolution prévisionnelle du 
+			 <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+			</h4>
 			<div class="col-md-12 col-lg-6">
 			  <div class="">
-				<textarea name="Commentaire_1"></textarea>
+				<textarea class="comment" name="Commentaire_1"></textarea>
 			  </div>
 			</div>
 			<div class="col-md-12 col-lg-6">
 			  <div class="">
-				<textarea name="Commentaire_2"></textarea>
+				<textarea class="comment" name="Commentaire_2"></textarea>
 			  </div>
 			</div>
 		</div>
