@@ -1,7 +1,7 @@
 angular.module('vuvizApp', [])
   .controller('VuvizController', function() {
     var control = this;
-    control.nomApplication = "Prephib";
+    control.nomApplication = "Prefib";
     control.indices = [
 		//Etat Unis
       {nom:'DOW JONES', continent:'État-Unis', sectoriel:false, selected: false},
