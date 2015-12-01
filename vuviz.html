@@ -106,40 +106,41 @@
         </div>
       </div>
 
-	   <div class="row">
-	        <h4 class="card-header">
-			Commentaire sur l'historique et l'évolution prévisionnelle du
-			 <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
-			</h4>
-			<div class="col-md-12 col-lg-6">
-			  <div class="">
-				<textarea name="Commentaire_1"></textarea>
-			  </div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 col-lg-6">
-					<div class="col-md-1 col-lg-3">
-						<ul class="list-group">
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						</ul>
-					  </div>
-					  <div class="col-md-6 col-lg-9">
-						<ul class="list-group">
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						  <li class="list-group-item"></li>
-						</ul>
-					  </div>
-				</div>
-			</div>
-		</div>
+<div class="row">
 
-        <div class="col-md-12 col-lg-6">
+  <div class="card">
+  <h4 class="card-header">
+       Commentaire sur l'historique et l'évolution prévisionnelle:
+      <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+  </h4>
+
+    <div class="card-block">
+      <div class="row">
+        <div class="col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item">
+               <span class="label label-danger label-pill">↘</span>
+              La Russie déclare la guerre à la Turquie</li>
+            <li class="list-group-item">
+              <span class="label label-danger label-pill">↘</span>
+              Grand moratoire sur la vente de carottes râpées</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="label label-warning label-pill">→</span>
+              AirFrance rachètera Bonduelle</li>
+            <li class="list-group-item">
+              <span class="label label-success label-pill">↗</span>
+              Total achètera une petite éolienne en Picardie</li>
+          </ul>
+        </div>
       </div>
+    </div>
+  </div>
+</div>
+
     </main>
     <!-- jQuery first, then Bootstrap JS. -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
