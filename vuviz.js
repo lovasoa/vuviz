@@ -1,4 +1,4 @@
-angular.module('vuvizApp', [])
+angular.module('vuvizApp', ["nvd3"])
   .controller('VuvizController', function() {
     var control = this;
     control.nomApplication = "Prefib";
@@ -21,6 +21,24 @@ angular.module('vuvizApp', [])
 
     control.aff_sectoriel = false;
     control.aff_continent = "Europe";
+
+    control.graph1 = {
+      "options" : {
+        chart: {
+           type: 'lineChart',
+           height: 450,
+        }
+      },
+      "donnees" : function() {
+        return control.indices_selec().map(function(i) {
+            return {
+              values : [{x:0,y:i.nom.charCodeAt(0)}, {x:1,y:i.nom.charCodeAt(1)}, {x:2,y:80}],
+              key: i.nom,
+              color: "#ee6666"
+            };
+        });
+      }
+    };
 
     control.continents = function() {
       // Retourne la liste des continents

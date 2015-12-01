@@ -69,14 +69,14 @@
         </form>
       </div>
 
-      <div class="row">
+      <div class="row minifenetres">
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">
 			Graphique décrivant l'évolution des indices
 		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
-            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+            <nvd3 class="card-block" options="control.graph1.options" data="control.graph1.donnees()"></nvd3>
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
@@ -85,7 +85,7 @@
             Évolution des indices
             <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
           </h4>
-            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+            <div class="card-block"></div>
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
@@ -93,7 +93,7 @@
           <h4 class="card-header">Cours actuel des indices
 		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
-            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Graphe interactif">
+            <div class="card-block"></div>
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
@@ -101,7 +101,7 @@
           <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
 		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
-            <img class="card-img-bottom" data-src="holder.js/100%x180/" width="700" height="500" alt="Tableau">
+            <div class="card-block"></div>
           </div>
         </div>
       </div>

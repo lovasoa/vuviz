@@ -6,3 +6,9 @@
   transition: .2s;
 }
 
+.minifenetres .card-header {
+  height: 3em;
+}
+.minifenetres .card-block {
+  height: 500px;
+}
