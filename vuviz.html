@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" ng-app="vuvizApp">
+<html lang="fr" ng-app="vuvizApp" ng-controller="VuvizController">
   <head>
     <!-- Required meta tags always come first -->
     <meta charset="utf-8">
@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="vuviz.css">
 
-    <title>Prefib</title>
+    <title ng-bind-template="{{nomApplication}}">PRÉFIB</title>
   </head>
-  <body class="container-fluid" ng-controller="VuvizController as control">
+  <body class="container-fluid">
 
     <nav class="navbar navbar-dark bg-inverse">
       <a class="navbar-brand" href="#">{{nomApplication}}</a>
