@@ -16,7 +16,7 @@
   <body class="container-fluid" ng-controller="VuvizController as control">
 
     <nav class="navbar navbar-dark bg-inverse">
-      <a class="navbar-brand" href="#">{{control.nomApplication}}</a>
+      <a class="navbar-brand" href="#">{{nomApplication}}</a>
     </nav>
 
     <main class="container m-y">
@@ -35,8 +35,12 @@
         <form>
           <fieldset class="col-md-12 col-lg-4">
             <div class="btn-group">
-              <label class="btn btn-primary btn-lg" ng-repeat="continent in control.continents()" ng-class="{active:continent===control.aff_continent}">
-                <input type="radio" hidden name="choixContinent" ng-model="control.aff_continent" value="{{continent}}">
+              <label class="btn btn-primary btn-lg"
+                  ng-repeat="continent in liste_continents"
+                  ng-class="{active:filtre.continent===continent}">
+                <input type="radio" hidden name="choixContinent"
+                       ng-model="filtre.continent"
+                       value="{{continent}}">
                 {{continent}}
               </label>
             </div>
@@ -45,20 +49,20 @@
           <fieldset class="col-md-12 col-lg-4">
             <div class="radio">
               <label>
-                <input type="radio" name="typeIndice" value="false" ng-value="false" ng-model="control.aff_sectoriel">
+                <input type="radio" name="typeIndice" value="false" ng-value="false" ng-model="filtre.sectoriel">
                 Indices globaux
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="typeIndice" value="true" ng-value="true" ng-model="control.aff_sectoriel">
+                <input type="radio" name="typeIndice" value="true" ng-value="true" ng-model="filtre.sectoriel">
                 Indices sectoriels
               </label>
             </div>
           </fieldset>
 
           <fieldset class="col-md-12 col-lg-4">
-            <div class="checkbox-inline" ng-repeat="indice in control.aff_indices()">
+            <div class="checkbox-inline" ng-repeat="indice in indices | filter:filtre">
               <label>
                 <input type="checkbox" name="indice.nom" value="{{indice.nom}}" ng-model="indice.selected">
                 {{indice.nom}}
@@ -74,16 +78,18 @@
           <div class="card">
           <h4 class="card-header">
 			Graphique décrivant l'évolution des indices
-		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
-            <nvd3 class="card-block" options="control.graph1.options" data="control.graph1.donnees()"></nvd3>
+            <nvd3 class="card-block"
+                    options="graph1.options"
+                    data="indices | filter:selected | valeursIndices"></nvd3>
           </div>
         </div>
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">
             Évolution des indices
-            <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
             <div class="card-block"></div>
           </div>
@@ -91,7 +97,7 @@
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">Cours actuel des indices
-		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
             <div class="card-block">
               <div class="list-group">
@@ -109,7 +115,7 @@
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
-		   <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		  </h4>
             <div class="card-block"></div>
           </div>
@@ -121,7 +127,7 @@
   <div class="card">
   <h4 class="card-header">
        Commentaire sur l'historique et l'évolution prévisionnelle:
-      <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
+      <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
   </h4>
 
     <div class="card-block">
