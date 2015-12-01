@@ -7,7 +7,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="vuviz.css">
 
     <title>Prefib</title>
@@ -107,7 +108,7 @@
 
 	   <div class="row">
 	        <h4 class="card-header">
-			Commentaire sur l'historique et l'évolution prévisionnelle du 
+			Commentaire sur l'historique et l'évolution prévisionnelle du
 			 <small ng-repeat="i in control.indices_selec()" class="liste-virgules">{{i.nom}}</small>
 			</h4>
 			<div class="col-md-12 col-lg-6">
@@ -136,14 +137,17 @@
 				</div>
 			</div>
 		</div>
-        
+
         <div class="col-md-12 col-lg-6">
       </div>
     </main>
     <!-- jQuery first, then Bootstrap JS. -->
-    <script src="assets/jquery.min.js"></script>
-    <script src="assets/bootstrap.js"></script>
-    <script src="assets/angular.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/build/nv.d3.js"></script>
+    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
     <script src="vuviz.js"></script>
   </body>
 </html>
