@@ -121,15 +121,15 @@
 		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		      </h4>
           <div class="card-block">
-    				  <table width="100%" class="table table-bordered card-block">
+    				  <table width="100%" class="table table-bordered table-hover">
       					<thead>
       						<tr>
-      						<th></th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
+      						<th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
       						</tr>
       					</thead>
       					<tbody>
       						<tr  ng-repeat="ligne in tableau | unique:'indice'" >
-      						<td> {{ligne.indice}}</td>
+      						<th scope="row">{{ligne.indice}}</th>
       						<td ng-repeat="valeur in tableau | filter:{indice:ligne.indice}">{{valeur.value}}</td>
       						</tr>
       					</tbody>
