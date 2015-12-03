@@ -29,26 +29,26 @@ app.controller('VuvizController', function($scope, $filter) {
 
     $scope.selected = {selected: true};
 	$scope.tableau=[
-	{annee:"2012", indice:"DOW JONES", value:"12 965"},
-	{annee:"2013", indice:"DOW JONES", value:"15 010"},
-	{annee:"2014", indice:"DOW JONES", value:"16 778"},
-	{annee:"2015", indice:"DOW JONES", value:"16 010"},
-	{annee:"2016", indice:"DOW JONES", value:"16 500"},
-	{annee:"2017", indice:"DOW JONES", value:"17 000"},
-	{annee:"2012", indice:"NASDAQ", value:"2 966"},
-	{annee:"2013", indice:"NASDAQ", value:"3 541"},
-	{annee:"2014", indice:"NASDAQ", value:"4 375"},
-	{annee:"2015", indice:"NASDAQ", value:"4 000"},
-	{annee:"2016", indice:"NASDAQ", value:"5 000"},
-	{annee:"2017", indice:"NASDAQ", value:"6 000"},
-	{annee:"2012", indice:"S&P500", value:"1 379"},
-	{annee:"2013", indice:"S&P500", value:"1 644"},
-	{annee:"2014", indice:"S&P500", value:"1 931"},
-	{annee:"2015", indice:"S&P500", value:"2 000"},
-	{annee:"2016", indice:"S&P500", value:"2 500"},
-	{annee:"2017", indice:"S&P500", value:"3 000"},
-
+  	{annee:2012, indice:"DOW JONES", value:12965},
+  	{annee:2013, indice:"DOW JONES", value:15010},
+  	{annee:2014, indice:"DOW JONES", value:16778},
+  	{annee:2015, indice:"DOW JONES", value:16010},
+  	{annee:2016, indice:"DOW JONES", value:16500},
+  	{annee:2017, indice:"DOW JONES", value:17000},
+  	{annee:2012, indice:"NASDAQ", value:2966},
+  	{annee:2013, indice:"NASDAQ", value:3541},
+  	{annee:2014, indice:"NASDAQ", value:4375},
+  	{annee:2015, indice:"NASDAQ", value:4000},
+  	{annee:2016, indice:"NASDAQ", value:5000},
+  	{annee:2017, indice:"NASDAQ", value:6000},
+  	{annee:2012, indice:"S&P500", value:1379},
+  	{annee:2013, indice:"S&P500", value:1644},
+  	{annee:2014, indice:"S&P500", value:1931},
+  	{annee:2015, indice:"S&P500", value:2000},
+  	{annee:2016, indice:"S&P500", value:2500},
+  	{annee:2017, indice:"S&P500", value:3000}
 	];
+
   $scope.trouveValeurIndice = function (nomIndice, annee) {
     var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
     if(vals.length !== 1) {
@@ -149,4 +149,28 @@ app.filter('unique', function() {
 
       return output;
    };
+});
+
+app.filter("formatNum", function(){
+  return function (nombre, decimales, separateurMilliers, separateurDecimales){
+    decimales = decimales || 0;
+    separateurMilliers = separateurMilliers || "\u00a0"; //unbreakable space
+    separateurDecimales = separateurDecimales || ",";
+    if (isNaN(nombre)) {
+      return console.warn("Nombre invalide: ", nombre);
+    }
+    nombre = parseFloat(nombre);
+    var s = "";
+    for(var i=0, nbr = nombre|0; nbr > 0; i++) {
+      if (i>0 && i%3==0 && i) s = separateurMilliers + s;
+      s = (nbr % 10) + s;
+      nbr = nbr / 10 | 0;
+    }
+    if (decimales > 0) s += separateurDecimales;
+    for (var i=0, nbr = nombre; i<decimales; i++) {
+      nbr *= 10;
+      s += (nbr|0) % 10;
+    }
+    return s;
+  };
 });
