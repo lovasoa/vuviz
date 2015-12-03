@@ -121,7 +121,7 @@
 		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		      </h4>
           <div class="card-block">
-    				<table width="100%" class="table table-bordered card-block">
+    				  <table width="100%" class="table table-bordered card-block">
       					<thead>
       						<tr>
       						<th></th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
@@ -130,7 +130,7 @@
       					<tbody>
       						<tr  ng-repeat="ligne in tableau | unique:'indice'" >
       						<td> {{ligne.indice}}</td>
-      						<td ng-repeat="ligne2 in tableau" ng-if="ligne2.indice == ligne.indice">{{ligne2.value}}</td>
+      						<td ng-repeat="valeur in tableau | filter:{indice:ligne.indice}">{{valeur.value}}</td>
       						</tr>
       					</tbody>
     				   </table>
