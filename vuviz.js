@@ -49,7 +49,16 @@ app.controller('VuvizController', function($scope, $filter) {
 	{annee:"2017", indice:"S&P500", value:"3 000"},
 
 	];
-
+  $scope.trouveValeurIndice = function (nomIndice, annee) {
+    var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
+    if(vals.length !== 1) {
+      console.error("Impossible de trouver la valeur de l'indice " +
+                        nomIndice + " pour l'annee " + annee + ". " +
+                        "Valeurs trouvées: " + JSON.stringify(vals));
+      return; // Retourne undefined
+    }
+    return vals[0].value;
+  };
 
 
 
