@@ -128,9 +128,9 @@
       						</tr>
       					</thead>
       					<tbody>
-      						<tr  ng-repeat="ligne in tableau | unique:'indice'" >
-      						<th scope="row">{{ligne.indice}}</th>
-      						<td ng-repeat="valeur in tableau | filter:{indice:ligne.indice}">{{valeur.value}}</td>
+      						<tr  ng-repeat="indice in indices | filter:selected" >
+      						<th scope="row">{{indice.nom}}</th>
+      						<td ng-repeat="valeur in tableau | filter:{indice:indice.nom}">{{valeur.value}}</td>
       						</tr>
       					</tbody>
     				   </table>
