@@ -118,23 +118,23 @@
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
-		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-		  </h4>
-            <div class="card-block">
-				<table width="100%" class="table table-bordered">
-					<thead>
-						<tr>
-						<th></th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr  ng-repeat="ligne in tableau | unique:'indice'" >
-						<td> {{ligne.indice}}</td>
-						<td ng-repeat="ligne2 in tableau" ng-if="ligne2.indice == ligne.indice">{{ligne2.value}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+		      </h4>
+          <div class="card-block">
+    				<table width="100%" class="table table-bordered card-block">
+      					<thead>
+      						<tr>
+      						<th></th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
+      						</tr>
+      					</thead>
+      					<tbody>
+      						<tr  ng-repeat="ligne in tableau | unique:'indice'" >
+      						<td> {{ligne.indice}}</td>
+      						<td ng-repeat="ligne2 in tableau" ng-if="ligne2.indice == ligne.indice">{{ligne2.value}}</td>
+      						</tr>
+      					</tbody>
+    				   </table>
+			       </div>
           </div>
         </div>
       </div>
