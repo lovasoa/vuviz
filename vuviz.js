@@ -49,10 +49,10 @@ app.controller('VuvizController', function($scope, $filter) {
 	{annee:"2017", indice:"S&P500", value:"3 000"},
 
 	];
-	
-	
-	
-	
+
+
+
+
     $scope.graph1 = {
       "options" : {
         chart: {
@@ -61,7 +61,7 @@ app.controller('VuvizController', function($scope, $filter) {
         }
       }
     };
-	
+
 	$scope.graph2 = {
       "options" : {
         chart: {
@@ -106,15 +106,15 @@ app.filter('valeursIndices2', function() {
 			{x:2008,y:1140+i.nom.charCodeAt(3)},
 			{x:2009,y:1240+i.nom.charCodeAt(4)},
 			{x:2010,y:1340+i.nom.charCodeAt(5)},
-			{x:2011,y:1440+i.nom.charCodeAt(6)},
-			{x:2012,y:1540+i.nom.charCodeAt(7)},
-			{x:2013,y:1540+i.nom.charCodeAt(8)},
-			{x:2014,y:1640+i.nom.charCodeAt(9)},
-			{x:2015,y:1740+i.nom.charCodeAt(1)},
-			{x:2016,y:1840+i.nom.charCodeAt(11)},
-			{x:2017,y:1940+i.nom.charCodeAt(12)},
-	
-		
+			{x:2011,y:1440+i.nom.charCodeAt(3)},
+			{x:2012,y:1540+i.nom.charCodeAt(0)},
+			{x:2013,y:1540+i.nom.charCodeAt(1)},
+			{x:2014,y:1640+i.nom.charCodeAt(2)},
+			{x:2015,y:1740+i.nom.charCodeAt(3)},
+			{x:2016,y:1840+i.nom.charCodeAt(4)},
+			{x:2017,y:1940+i.nom.charCodeAt(5)},
+
+
 		],
         key: i.nom,
         color: "#00"+i.nom.charCodeAt(0)+i.nom.charCodeAt(1)
@@ -127,7 +127,7 @@ app.filter('valeursIndices2', function() {
 //pour faire un filtre unique dans un ng-repeat
 app.filter('unique', function() {
    return function(collection, keyname) {
-      var output = [], 
+      var output = [],
           keys = [];
 
       angular.forEach(collection, function(item) {
