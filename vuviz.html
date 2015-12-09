@@ -125,14 +125,14 @@
 		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		      </h4>
           <div class="card-block table-responsive">
-    				  <table width="100%" class="table table-bordered table-hover">
+    				  <table width="100%" class="table table-bordered">
       					<thead>
       						<tr>
       						  <th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'">{{ligne.annee}}</th>
       						</tr>
       					</thead>
       					<tbody  ng-repeat="indice in indices | filter:selected">
-      						<tr style="background-color:{{indice.color}};" >
+      						<tr class="highlighted-row">
         						<th scope="row">{{indice.nom}}</th>
         						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
 								      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}

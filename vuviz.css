@@ -12,3 +12,7 @@
 .minifenetres .card-block {
   height: 500px;
 }
+
+.highlighted-row {
+  background-color: #eeeeee;
+}
