@@ -27,29 +27,26 @@ app.controller('VuvizController', function($scope, $filter) {
     };
 
     $scope.selected = {selected: true};
-	$scope.tableau=[
-  	{annee:2012, indice:"DOW JONES", value:12965},
-  	{annee:2013, indice:"DOW JONES", value:15010},
-  	{annee:2014, indice:"DOW JONES", value:16778},
-  	{annee:2015, indice:"DOW JONES", value:16010},
-  	{annee:2016, indice:"DOW JONES", value:16500},
-  	{annee:2017, indice:"DOW JONES", value:17000},
-  	{annee:2012, indice:"NASDAQ", value:2966},
-  	{annee:2013, indice:"NASDAQ", value:3541},
-  	{annee:2014, indice:"NASDAQ", value:4375},
-  	{annee:2015, indice:"NASDAQ", value:4000},
-  	{annee:2016, indice:"NASDAQ", value:5000},
-  	{annee:2017, indice:"NASDAQ", value:6000},
-  	{annee:2012, indice:"S&P500", value:1379},
-  	{annee:2013, indice:"S&P500", value:1644},
-  	{annee:2014, indice:"S&P500", value:1931},
-  	{annee:2015, indice:"S&P500", value:2000},
-  	{annee:2016, indice:"S&P500", value:2500},
-  	{annee:2017, indice:"S&P500", value:3000}
-	];
-	
-	
-  	
+  	$scope.tableau=[
+    	{annee:2012, indice:"DOW JONES", value:12965},
+    	{annee:2013, indice:"DOW JONES", value:15010},
+    	{annee:2014, indice:"DOW JONES", value:16778},
+    	{annee:2015, indice:"DOW JONES", value:16010},
+    	{annee:2016, indice:"DOW JONES", value:16500},
+    	{annee:2017, indice:"DOW JONES", value:17000},
+    	{annee:2012, indice:"NASDAQ", value:2966},
+    	{annee:2013, indice:"NASDAQ", value:3541},
+    	{annee:2014, indice:"NASDAQ", value:4375},
+    	{annee:2015, indice:"NASDAQ", value:4000},
+    	{annee:2016, indice:"NASDAQ", value:5000},
+    	{annee:2017, indice:"NASDAQ", value:6000},
+    	{annee:2012, indice:"S&P500", value:1379},
+    	{annee:2013, indice:"S&P500", value:1644},
+    	{annee:2014, indice:"S&P500", value:1931},
+    	{annee:2015, indice:"S&P500", value:2000},
+    	{annee:2016, indice:"S&P500", value:2500},
+    	{annee:2017, indice:"S&P500", value:3000}
+  	];
 
   $scope.trouveValeurIndice = function (nomIndice, annee) {
     var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
@@ -124,8 +121,6 @@ app.filter('valeursIndices2', function() {
 			{x:2015,y:1740+i.nom.charCodeAt(3)},
 			{x:2016,y:1840+i.nom.charCodeAt(4)},
 			{x:2017,y:1940+i.nom.charCodeAt(5)},
-
-
 		],
         key: i.nom,
         color: "#00"+i.nom.charCodeAt(0)+i.nom.charCodeAt(1)
