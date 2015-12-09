@@ -128,12 +128,20 @@
       						<th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
       						</tr>
       					</thead>
-      					<tbody>
-      						<tr  ng-repeat="indice in indices | filter:selected" >
+      					<tbody  ng-repeat="indice in indices | filter:selected">
+      						<tr  >
         						<th scope="row">{{indice.nom}}</th>
         						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
-                      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
-                    </td>
+								  {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+								</td>
+								
+      						</tr>
+							<tr  >
+        						<th scope="row">%</th>
+        						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
+								  {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+								</td>
+								
       						</tr>
       					</tbody>
     				   </table>

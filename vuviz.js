@@ -14,7 +14,6 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false},
       {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false},
-      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false},
 	  //ASIE
       {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false},
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false},
@@ -47,6 +46,10 @@ app.controller('VuvizController', function($scope, $filter) {
   	{annee:2015, indice:"S&P500", value:2000},
   	{annee:2016, indice:"S&P500", value:2500},
   	{annee:2017, indice:"S&P500", value:3000}
+	];
+	
+	
+  	
 	];
 
   $scope.trouveValeurIndice = function (nomIndice, annee) {
