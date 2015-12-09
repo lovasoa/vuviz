@@ -39,6 +39,7 @@
                   ng-class="{active:filtre.continent===continent}">
                 <input type="radio" hidden name="choixContinent"
                        ng-model="filtre.continent"
+                       ng-change="deselectionnerIndices()"
                        value="{{continent}}">
                 {{continent}}
               </label>

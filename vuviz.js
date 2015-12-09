@@ -48,6 +48,12 @@ app.controller('VuvizController', function($scope, $filter) {
     	{annee:2017, indice:"S&P500", value:3000}
   	];
 
+  $scope.deselectionnerIndices = function() {
+    angular.forEach($scope.indices, function(indice) {
+      indice.selected = false;
+    });
+  };
+
   $scope.trouveValeurIndice = function (nomIndice, annee) {
     var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
     if(vals.length !== 1) {
