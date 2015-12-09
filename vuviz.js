@@ -5,19 +5,19 @@ app.controller('VuvizController', function($scope, $filter) {
     $scope.nomApplication = "Prévision Financière et Boursière";
     $scope.indices = [
 		//Etat Unis
-      {nom:'DOW JONES', continent:'État-Unis', sectoriel:false, selected: false},
-      {nom:'NASDAQ', continent:'État-Unis', sectoriel:false, selected:false},
-      {nom:'S&P500', continent:'État-Unis', sectoriel:false, selected:false},
+      {nom:'DOW JONES', continent:'État-Unis', sectoriel:false, selected: false, color:"#071BA3"},
+      {nom:'NASDAQ', continent:'État-Unis', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'S&P500', continent:'État-Unis', sectoriel:false, selected:false, color:"#96B7E3"},
 	  //europe
-      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false},
-      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false},
-      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false},
-      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false},
-      {nom:'MIB', continent:'Europe', sectoriel:false, selected:false},
+      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#071BA3"},
+      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#96B7E3"},
+      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#D313E8"},
+      {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
 	  //ASIE
-      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false},
-      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false},
-      {nom:'HS', continent:'Asie', sectoriel:false, selected:false}];
+      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
+      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"}];
 
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
 
@@ -50,7 +50,6 @@ app.controller('VuvizController', function($scope, $filter) {
 	
 	
   	
-	];
 
   $scope.trouveValeurIndice = function (nomIndice, annee) {
     var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});

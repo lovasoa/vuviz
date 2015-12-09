@@ -129,7 +129,7 @@
       						</tr>
       					</thead>
       					<tbody  ng-repeat="indice in indices | filter:selected">
-      						<tr  >
+      						<tr style="background-color:{{indice.color}};" >
         						<th scope="row">{{indice.nom}}</th>
         						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
 								  {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
