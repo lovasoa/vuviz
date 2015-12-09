@@ -16,3 +16,11 @@
 .highlighted-row {
   background-color: #eeeeee;
 }
+
+.badge-indice {
+  margin-right: 3px;
+  border-radius: 20px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+}
