@@ -25,6 +25,7 @@ app.controller('VuvizController', function($scope, $filter) {
       "continent" : "État-Unis",
       "sectoriel" : false
     };
+    $scope.duree_prevision = "annuelle";
 
     $scope.selected = {selected: true};
   	$scope.tableau=[
@@ -52,6 +53,13 @@ app.controller('VuvizController', function($scope, $filter) {
     angular.forEach($scope.indices, function(indice) {
       indice.selected = false;
     });
+  };
+
+  $scope.changementIndice = function(indice) {
+      if($scope.duree_prevision === 'trimestrielle') {
+        $scope.deselectionnerIndices();
+        indice.selected = true;
+      }
   };
 
   $scope.trouveValeurIndice = function (nomIndice, annee) {
