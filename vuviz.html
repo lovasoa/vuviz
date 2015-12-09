@@ -94,7 +94,7 @@
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
 			<select><option value="1J">1J</option><option value="5J">5J</option><option value="1M">1M</option><option value="3M">3M</option><option value="6M">6M</option><option value="1A">1A</option></select>
-		  
+
 			<nvd3 class="card-block"
                     options="graph2.options"
                     data="indices | filter:selected | valeursIndices2"></nvd3>
@@ -128,23 +128,22 @@
     				  <table width="100%" class="table table-bordered table-hover">
       					<thead>
       						<tr>
-      						<th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'"> {{ligne.annee}}</th>
+      						  <th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'">{{ligne.annee}}</th>
       						</tr>
       					</thead>
       					<tbody  ng-repeat="indice in indices | filter:selected">
       						<tr style="background-color:{{indice.color}};" >
         						<th scope="row">{{indice.nom}}</th>
         						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
-								  {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
-								</td>
-								
-      						</tr>
-							<tr  >
+								      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+								    </td>
+								  </tr>
+
+							    <tr>
         						<th scope="row">%</th>
         						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
-								  {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
-								</td>
-								
+								      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+								    </td>
       						</tr>
       					</tbody>
     				   </table>
