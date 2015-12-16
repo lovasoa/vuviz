@@ -17,7 +17,17 @@ app.controller('VuvizController', function($scope, $filter) {
 	  //ASIE
       {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"}];
+      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
+	  
+	  //SECTORIEL
+	  {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+	  {nom:'Indice sectoriel moin performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+	  {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+	  {nom:'Indice sectoriel moin performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+	  {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
+	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
+	 
+	  ];
 
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
 

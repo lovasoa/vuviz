@@ -103,8 +103,6 @@
             Évolution des indices
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
-			<select><option value="1J">1J</option><option value="5J">5J</option><option value="1M">1M</option><option value="3M">3M</option><option value="6M">6M</option><option value="1A">1A</option></select>
-
 			<nvd3 class="card-block"
                     options="graph2.options"
                     data="indices | filter:selected | valeursIndices2"></nvd3>
