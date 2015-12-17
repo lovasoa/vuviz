@@ -9,15 +9,15 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'NASDAQ', continent:'État-Unis', sectoriel:false, selected:false, color:"#145EDE"},
       {nom:'S&P500', continent:'État-Unis', sectoriel:false, selected:false, color:"#96B7E3"},
 	  //europe
-      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#071BA3"},
-      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#96B7E3"},
-      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#D313E8"},
+      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#860E8A"},
+      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#CC16FA"},
+      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#F75CE5"},
+      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#C9C9BF"},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
 	  //ASIE
-      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
-      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
+      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#860E8A"},
+      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#F7812D"},
+      {nom:'HSE', continent:'Asie', sectoriel:false, selected:false, color:"#C9C9BF"},
 	  
 	  //SECTORIEL
 	  {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
@@ -25,8 +25,10 @@ app.controller('VuvizController', function($scope, $filter) {
 	  {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
 	  {nom:'Indice sectoriel moin performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
 	  {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
+	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
 	 
+	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
+
 	  ];
 
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
@@ -57,6 +59,7 @@ app.controller('VuvizController', function($scope, $filter) {
     	{annee:2015, indice:"S&P500", value:2000},
     	{annee:2016, indice:"S&P500", value:2500},
     	{annee:2017, indice:"S&P500", value:3000}
+
   	];
 
   $scope.deselectionnerIndices = function() {
