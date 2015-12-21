@@ -19,6 +19,7 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#F7812D"},
       {nom:'HSE', continent:'Asie', sectoriel:false, selected:false, color:"#C9C9BF"},
 	  
+
 	  //SECTORIEL
 	  {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
 	  {nom:'Indice sectoriel moin performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
@@ -29,7 +30,15 @@ app.controller('VuvizController', function($scope, $filter) {
 	 
 	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
 
-	  ];
+      //SECTORIEL
+      {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
+	 
+    ];
 
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
 
