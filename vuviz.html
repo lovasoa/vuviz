@@ -87,16 +87,20 @@
       <div class="row">
         <div class="col-md-12 col-lg-6">
           <div class="card">
-          <h4 class="card-header">
-			Graphique décrivant l'évolution des indices
-		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-		  </h4>
-			<select><option value="1J">1J</option><option value="5J">5J</option><option value="1M">1M</option><option value="3M">3M</option><option value="6M">6M</option><option value="1A">1A</option></select>
-            <nvd3 class="card-block"
-                    options="graph1.options"
-                    data="indices | filter:selected | valeursIndices"></nvd3>
+            <h4 class="card-header">
+  			           Graphique décrivant l'évolution des indices
+  		               <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+                     sur {{duree_graph.selectionne.label}}
+  		      </h4>
+            <div class="card-block">
+              <select name="duree_graph" id="duree_graph"
+                ng-options="duree.label for duree in duree_graph.valeurs_possibles track by duree.valeur"
+                ng-model="duree_graph.selectionne"></select>
+              <nvd3 options="graph1.options" data="indices | filter:selected | valeursIndices"></nvd3>
+            </div>
           </div>
         </div>
+
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">
