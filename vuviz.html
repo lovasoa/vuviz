@@ -107,17 +107,20 @@
             Évolution des indices
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
-			<nvd3 class="card-block"
+			       <nvd3 class="card-block"
                     options="graph2.options"
                     data="indices | filter:selected | valeursIndices2"></nvd3>
 
           </div>
         </div>
+      </div>
+
+      <div class="row">
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">Cours actuel des indices
-		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-		  </h4>
+    		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+    		  </h4>
             <div class="card-block">
               <div class="list-group">
                 <span href="#" class="list-group-item">
