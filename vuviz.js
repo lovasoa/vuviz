@@ -15,11 +15,10 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#C9C9BF"},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
 	  //ASIE
-<<<<<<< HEAD
       {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#860E8A"},
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#F7812D"},
       {nom:'HSE', continent:'Asie', sectoriel:false, selected:false, color:"#C9C9BF"},
-	  
+
 
 	  //SECTORIEL
 	  {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
@@ -28,21 +27,8 @@ app.controller('VuvizController', function($scope, $filter) {
 	  {nom:'Indice sectoriel moin performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
 	  {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
 	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-	 
-	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
-=======
-      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
-      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
->>>>>>> origin/master
 
-      //SECTORIEL
-      {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
+	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
 
     ];
 
