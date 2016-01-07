@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
 var chart = AmCharts.makeChart("chartdiv", {
     "type": "serial",
     "theme": "light",
@@ -649,4 +654,21 @@ function zoomChart() {
 html
 
 <div id="chartdiv"></div>	
+<<<<<<< HEAD
+=======
+
+CSS
+
+#chartdiv {
+	width	: 100%;
+	height	: 500px;
+}			
+						
+include
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+						
+						
+>>>>>>> origin/master
 */

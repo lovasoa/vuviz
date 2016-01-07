@@ -15,6 +15,7 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#C9C9BF"},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
 	  //ASIE
+<<<<<<< HEAD
       {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#860E8A"},
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#F7812D"},
       {nom:'HSE', continent:'Asie', sectoriel:false, selected:false, color:"#C9C9BF"},
@@ -29,6 +30,11 @@ app.controller('VuvizController', function($scope, $filter) {
 	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
 	 
 	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
+=======
+      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
+      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
+>>>>>>> origin/master
 
       //SECTORIEL
       {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
@@ -37,7 +43,7 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'Indice sectoriel moins performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
       {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
       {nom:'Indice sectoriel moins performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
-	 
+
     ];
 
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
@@ -70,6 +76,17 @@ app.controller('VuvizController', function($scope, $filter) {
     	{annee:2017, indice:"S&P500", value:3000}
 
   	];
+    $scope.duree_graph = {
+      selectionne: {valeur:1, label: "1 jour"},
+      valeurs_possibles: [
+        {valeur:1, label: "1 jour"},
+        {valeur:5, label: "5 jours"},
+        {valeur:30, label: "1 mois"},
+        {valeur:30*3, label: "3 mois"},
+        {valeur:30*6, label: "6 mois"},
+        {valeur:365, label: "1 an"}
+      ]
+    };
 
   $scope.deselectionnerIndices = function() {
     angular.forEach($scope.indices, function(indice) {
