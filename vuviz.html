@@ -121,19 +121,45 @@
           <h4 class="card-header">Cours actuel des indices
     		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
     		  </h4>
-            <div class="card-block">
-              <div class="list-group">
-                <span href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading">Dow Jones Industrial Average</h4>
-                  <h5 class="list-group-item-text">
-                      <strong class="h4">17 623,05</strong>
-                      <span class="label label-danger">23,65 (0,13%)</span>
-                  </h5>
-                </span>
-              </div>
-            </div>
+            <div class="card-block table-responsive">
+             <!--affichage des indices selectionné dans un tableau-->
+			  <table width="100%" class="table">
+				<tr>
+					<th ng-repeat="i in indices | filter:selected">
+						<span  href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">{{i.nom}}</h4>
+							<h5 class="list-group-item-text">
+								<strong class="h4">17 623,05</strong>
+								<span class="label label-danger">23,65 (0,13%)</span>
+							</h5>
+						</span>
+					</th>
+				</tr>
+			  </table>
+			<!--affichage graphique cours actuel des indices selectionnées-->
+			   <nvd3 class="card-block"
+				options="graph3.options"
+				xAxisTickFormat="xAxisTickFormatFunction()"
+                data="indices | filter:selected | valeursIndices3"></nvd3>
+			<!--affichage du tableau de commantaires de gestion-->
+			<table width="100%" class="table table-bordered">
+				<tr>
+					<th>Indice</th>
+					<th>Zone</th>
+					<th>Cours prévu</th>
+					<th>Recommandation</th>
+				</tr>
+				<tr ng-repeat="i in indices | filter:selected">
+					<td>{{i.nom}}</td>
+					<td>Zone de vente, zone d'achat, zone d'attente</td>
+					<td>Cours minimal, cours moyen, cours maximal</td>
+					<td>SELL, WAIT, BUY</td>
+				</tr>
+			  </table>
+			</div>
           </div>
         </div>
+      
         <div class="col-md-12 col-lg-6">
           <div class="card">
           <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
@@ -214,12 +240,6 @@
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/nvd3/build/nv.d3.js"></script>
     <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
-	<!--ajout de datatable et amchart-->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/dt/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,af-2.1.0,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,cr-1.3.0,fc-3.2.0,fh-3.1.0,kt-2.1.0,r-2.0.0,rr-1.1.0,sc-1.4.0,se-1.1.0/datatables.min.css"/>
-	<script type="text/javascript" src="https://cdn.datatables.net/s/dt/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,af-2.1.0,b-1.1.0,b-colvis-1.1.0,b-flash-1.1.0,b-html5-1.1.0,b-print-1.1.0,cr-1.3.0,fc-3.2.0,fh-3.1.0,kt-2.1.0,r-2.0.0,rr-1.1.0,sc-1.4.0,se-1.1.0/datatables.min.js"></script>
-    <!--script angular logique-->
-	<script src="vuviz.js"></script>
-	<!--script jquerry logique-->
-	<script src="vuviz2.js"></script>
+    <script src="vuviz.js"></script>
   </body>
 </html>

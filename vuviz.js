@@ -1,46 +1,50 @@
 var app = angular.module('vuvizApp', ["nvd3"]);
 
+//CONTROLLEUR
 app.controller('VuvizController', function($scope, $filter) {
     var control = this;
     $scope.nomApplication = "Prévision Financière et Boursière";
+	//données sur la liste des indices
     $scope.indices = [
 		//Etat Unis
       {nom:'DOW JONES', continent:'État-Unis', sectoriel:false, selected: false, color:"#071BA3"},
       {nom:'NASDAQ', continent:'État-Unis', sectoriel:false, selected:false, color:"#145EDE"},
       {nom:'S&P500', continent:'État-Unis', sectoriel:false, selected:false, color:"#96B7E3"},
 	  //europe
-      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#860E8A"},
-      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#CC16FA"},
-      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#F75CE5"},
-      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#C9C9BF"},
+      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#071BA3"},
+      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#96B7E3"},
+      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#D313E8"},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
 	  //ASIE
-      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#860E8A"},
-      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#F7812D"},
-      {nom:'HSE', continent:'Asie', sectoriel:false, selected:false, color:"#C9C9BF"},
+      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
+      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
+      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
 
-
-	  //SECTORIEL
-	  {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel moin performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel moin performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-	  {nom:'Indice sectoriel moin performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-
-	 	  {nom:'MSCI', continent:'All', sectoriel:true, selected:false, color:"#96B7E3"}
+      //SECTORIEL
+      {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
+      {nom:'Indice sectoriel moins performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
 
     ];
-
+	//données sur les continents
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
-
+	
+	//INITIALISATION
+	//initialisation des filtres
     $scope.filtre = {
       "continent" : "État-Unis",
       "sectoriel" : false
     };
+	//initialisation du type de prévision (annuelle/sectorielle)
     $scope.duree_prevision = "annuelle";
-
+	//filtre
     $scope.selected = {selected: true};
+	
+	//donnée sur la valeur des indices
   	$scope.tableau=[
     	{annee:2012, indice:"DOW JONES", value:12965},
     	{annee:2013, indice:"DOW JONES", value:15010},
@@ -60,8 +64,8 @@ app.controller('VuvizController', function($scope, $filter) {
     	{annee:2015, indice:"S&P500", value:2000},
     	{annee:2016, indice:"S&P500", value:2500},
     	{annee:2017, indice:"S&P500", value:3000}
-
   	];
+	//données pour le selecteur de date du graphique historique évolution
     $scope.duree_graph = {
       selectionne: {valeur:1, label: "1 jour"},
       valeurs_possibles: [
@@ -73,21 +77,26 @@ app.controller('VuvizController', function($scope, $filter) {
         {valeur:365, label: "1 an"}
       ]
     };
-
-  $scope.deselectionnerIndices = function() {
+	
+	//FONCTIONS
+	
+	//fonction qui déselectionne tous les indices selectionné
+	$scope.deselectionnerIndices = function() {
     angular.forEach($scope.indices, function(indice) {
       indice.selected = false;
     });
   };
-
+	//fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
       if($scope.duree_prevision === 'trimestrielle') {
         $scope.deselectionnerIndices();
         indice.selected = true;
       }
   };
-
+  
+  //fonction qui récupere la valeur d'un indice en fonction de son nom et de son année
   $scope.trouveValeurIndice = function (nomIndice, annee) {
+	  //on utilise la fonction filtre appelé filter (c'est ca?)
     var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
     if(vals.length !== 1) {
       console.error("Impossible de trouver la valeur de l'indice " +
@@ -99,7 +108,7 @@ app.controller('VuvizController', function($scope, $filter) {
   };
 
 
-
+	//PARAMETRES GRAPHIQUES
     $scope.graph1 = {
       "options" : {
         chart: {
@@ -117,7 +126,26 @@ app.controller('VuvizController', function($scope, $filter) {
         }
       }
     };
+	
+	$scope.graph3 = {
+      "options" : {
+        chart: {
+           type: 'lineChart',
+           height: 250,
+        }
+      }
+    };
+	//pour afficher les axis en heure (pas encore utilisé)
+	$scope.xAxisTickFormatFunction = function(){ 
+		return function(d) {
+		return d3.time.format('%H:%M')(new Date(d));
+		};
+	}
+
+
 });
+
+//FILTRES
 
 app.filter('valeursIndices', function() {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
@@ -160,6 +188,36 @@ app.filter('valeursIndices2', function() {
 			{x:2015,y:1740+i.nom.charCodeAt(3)},
 			{x:2016,y:1840+i.nom.charCodeAt(4)},
 			{x:2017,y:1940+i.nom.charCodeAt(5)},
+		],
+        key: i.nom,
+        color: i.color
+      }
+    }
+    return _cache;
+  };
+});
+
+app.filter('valeursIndices3', function() {
+  // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
+  // valeurs d'indices compatible avec nvd3
+  var _cache = [];
+  return function(indices) {
+    _cache.length = indices.length;
+    for(var j=0; j<indices.length; j++) {
+      var i = indices[j];
+      _cache[j] = {
+        values : [
+			{x:08,y:1000+i.nom.charCodeAt(2)},
+			{x:09,y:1140+i.nom.charCodeAt(3)},
+			{x:10,y:1240+i.nom.charCodeAt(4)},
+			{x:11,y:1340+i.nom.charCodeAt(5)},
+			{x:12,y:1440+i.nom.charCodeAt(3)},
+			{x:13,y:1540+i.nom.charCodeAt(0)},
+			{x:14,y:1540+i.nom.charCodeAt(1)},
+			{x:15,y:1640+i.nom.charCodeAt(2)},
+			{x:16,y:1740+i.nom.charCodeAt(3)},
+			{x:17,y:1840+i.nom.charCodeAt(4)},
+			{x:18,y:1940+i.nom.charCodeAt(5)},
 		],
         key: i.nom,
         color: i.color
