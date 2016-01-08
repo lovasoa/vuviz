@@ -32,39 +32,49 @@ app.controller('VuvizController', function($scope, $filter) {
     ];
 	//données sur les continents
     $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
-	
+
 	//INITIALISATION
 	//initialisation des filtres
     $scope.filtre = {
       "continent" : "État-Unis",
       "sectoriel" : false
     };
-	//initialisation du type de prévision (annuelle/sectorielle)
+	//initialisation du type de prévision (annuelle/trimestrielle)
     $scope.duree_prevision = "annuelle";
 	//filtre
     $scope.selected = {selected: true};
-	
+
 	//donnée sur la valeur des indices
-  	$scope.tableau=[
-    	{annee:2012, indice:"DOW JONES", value:12965},
-    	{annee:2013, indice:"DOW JONES", value:15010},
-    	{annee:2014, indice:"DOW JONES", value:16778},
-    	{annee:2015, indice:"DOW JONES", value:16010},
-    	{annee:2016, indice:"DOW JONES", value:16500},
-    	{annee:2017, indice:"DOW JONES", value:17000},
-    	{annee:2012, indice:"NASDAQ", value:2966},
-    	{annee:2013, indice:"NASDAQ", value:3541},
-    	{annee:2014, indice:"NASDAQ", value:4375},
-    	{annee:2015, indice:"NASDAQ", value:4000},
-    	{annee:2016, indice:"NASDAQ", value:5000},
-    	{annee:2017, indice:"NASDAQ", value:6000},
-    	{annee:2012, indice:"S&P500", value:1379},
-    	{annee:2013, indice:"S&P500", value:1644},
-    	{annee:2014, indice:"S&P500", value:1931},
-    	{annee:2015, indice:"S&P500", value:2000},
-    	{annee:2016, indice:"S&P500", value:2500},
-    	{annee:2017, indice:"S&P500", value:3000}
-  	];
+  	$scope.historiqueValeurs = {
+      "annuelle" : [
+      	{periode:2012, indice:"DOW JONES", value:12965},
+      	{periode:2013, indice:"DOW JONES", value:15010},
+      	{periode:2014, indice:"DOW JONES", value:16778},
+      	{periode:2015, indice:"DOW JONES", value:16010},
+      	{periode:2016, indice:"DOW JONES", value:16500},
+      	{periode:2017, indice:"DOW JONES", value:17000},
+      	{periode:2012, indice:"NASDAQ", value:2966},
+      	{periode:2013, indice:"NASDAQ", value:3541},
+      	{periode:2014, indice:"NASDAQ", value:4375},
+      	{periode:2015, indice:"NASDAQ", value:4000},
+      	{periode:2016, indice:"NASDAQ", value:5000},
+      	{periode:2017, indice:"NASDAQ", value:6000},
+      	{periode:2012, indice:"S&P500", value:1379},
+      	{periode:2013, indice:"S&P500", value:1644},
+      	{periode:2014, indice:"S&P500", value:1931},
+      	{periode:2015, indice:"S&P500", value:2000},
+      	{periode:2016, indice:"S&P500", value:2500},
+      	{periode:2017, indice:"S&P500", value:3000}
+    	],
+      "trimestrielle": [
+        {periode:"T4-2014", indice:"DOW JONES", value:1},
+      	{periode:"T1-2015", indice:"DOW JONES", value:2},
+      	{periode:"T2-2015", indice:"DOW JONES", value:3},
+      	{periode:"T3-2015", indice:"DOW JONES", value:4},
+      	{periode:"T4-2015", indice:"DOW JONES", value:5, prevision: true},
+      	{periode:"T1-2016", indice:"DOW JONES", value:6, prevision: true}
+      ]
+  };
 	//données pour le selecteur de date du graphique historique évolution
     $scope.duree_graph = {
       selectionne: {valeur:1, label: "1 jour"},
@@ -77,9 +87,9 @@ app.controller('VuvizController', function($scope, $filter) {
         {valeur:365, label: "1 an"}
       ]
     };
-	
+
 	//FONCTIONS
-	
+
 	//fonction qui déselectionne tous les indices selectionné
 	$scope.deselectionnerIndices = function() {
     angular.forEach($scope.indices, function(indice) {
@@ -93,14 +103,15 @@ app.controller('VuvizController', function($scope, $filter) {
         indice.selected = true;
       }
   };
-  
-  //fonction qui récupere la valeur d'un indice en fonction de son nom et de son année
-  $scope.trouveValeurIndice = function (nomIndice, annee) {
-	  //on utilise la fonction filtre appelé filter (c'est ca?)
-    var vals = $filter('filter')($scope.tableau, {indice:nomIndice, annee:annee});
+
+  //fonction qui récupere la valeur d'un indice en fonction de son nom
+  // et de son année ou son trimestre
+  $scope.trouveValeurIndice = function (tab, nomIndice, periode) {
+	  //on utilise la fonction filtre appelé filter
+    var vals = $filter('filter')(tab, {indice:nomIndice, periode:periode});
     if(vals.length !== 1) {
       console.error("Impossible de trouver la valeur de l'indice " +
-                        nomIndice + " pour l'annee " + annee + ". " +
+                        nomIndice + " pour la période " + periode + ". " +
                         "Valeurs trouvées: " + JSON.stringify(vals));
       return; // Retourne undefined
     }
@@ -126,7 +137,7 @@ app.controller('VuvizController', function($scope, $filter) {
         }
       }
     };
-	
+
 	$scope.graph3 = {
       "options" : {
         chart: {
@@ -136,7 +147,7 @@ app.controller('VuvizController', function($scope, $filter) {
       }
     };
 	//pour afficher les axis en heure (pas encore utilisé)
-	$scope.xAxisTickFormatFunction = function(){ 
+	$scope.xAxisTickFormatFunction = function(){
 		return function(d) {
 		return d3.time.format('%H:%M')(new Date(d));
 		};

@@ -159,9 +159,9 @@
 			</div>
           </div>
         </div>
-      
+
         <div class="col-md-12 col-lg-6">
-          <div class="card">
+          <div class="card tableau-historique">
           <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
 		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 		      </h4>
@@ -169,7 +169,12 @@
     				  <table width="100%" class="table table-bordered">
       					<thead>
       						<tr>
-      						  <th>Indice</th><th ng-repeat="ligne in tableau | unique: 'annee'">{{ligne.annee}}</th>
+      						  <th>Indice</th>
+                    <th
+                      ng-repeat="ligne in historiqueValeurs[duree_prevision] | unique: 'periode'"
+                      ng-class='{"valeur-prevision":ligne.prevision}'>
+                        {{ligne.periode}}
+                    </th>
       						</tr>
       					</thead>
       					<tbody  ng-repeat="indice in indices | filter:selected">
@@ -178,8 +183,14 @@
                       <span class="badge-indice" style="background-color:{{indice.color}}"></span>
                       {{indice.nom}}
                     </th>
-        						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
-								      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+        						<td ng-repeat="periodeObj in historiqueValeurs[duree_prevision] | unique: 'periode'"
+                        ng-class='{"valeur-prevision":periodeObj.prevision}'>
+								      {{trouveValeurIndice(
+                                              $parent.historiqueValeurs[duree_prevision],
+                                              indice.nom,
+                                              periodeObj.periode
+                                           ) | formatNum
+                      }}
 								    </td>
 								  </tr>
 

@@ -24,3 +24,7 @@
   width: 10px;
   height: 10px;
 }
+
+.tableau-historique .valeur-prevision {
+    background-color: #D4D4E3;
+}
