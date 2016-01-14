@@ -90,8 +90,8 @@
             <h4 class="card-header">
   			           Graphique décrivant l'évolution des indices
   		               <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-                     sur {{duree_graph.selectionne.label}}
-  		      </h4>
+                    
+  		    </h4>
             <div class="card-block">
               <select name="duree_graph" id="duree_graph"
                 ng-options="duree.label for duree in duree_graph.valeurs_possibles track by duree.valeur"
@@ -147,13 +147,11 @@
 					<th>Indice</th>
 					<th>Zone</th>
 					<th>Cours prévu</th>
-					<th>Recommandation</th>
 				</tr>
 				<tr ng-repeat="i in indices | filter:selected">
 					<td>{{i.nom}}</td>
 					<td>Zone de vente, zone d'achat, zone d'attente</td>
 					<td>Cours minimal, cours moyen, cours maximal</td>
-					<td>SELL, WAIT, BUY</td>
 				</tr>
 			  </table>
 			</div>
