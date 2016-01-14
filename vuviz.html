@@ -23,14 +23,14 @@
       <!-- Butons de choix de la durée des prévisions -->
       <div class="row">
         <div class="col-sm-6" ng-repeat="duree in ['annuelle', 'trimestrielle']">
-              <label class="btn btn-primary btn-lg btn-block">
-                <input type="radio"
-                       name="duree_prevision"
-                       ng-model="$parent.duree_prevision"
-                       ng-change="deselectionnerIndices()"
-                       ng-value="duree">
-                Prévision {{duree}}
-              </label>
+          <label class="btn btn-primary btn-lg btn-block">
+            <input type="radio"
+                   name="duree_prevision"
+                   ng-model="$parent.duree_prevision"
+                   ng-change="deselectionnerIndices()"
+                   ng-value="duree">
+            Prévision {{duree}}
+          </label>
         </div>
       </div>
       <!-- Choix des indices à visualiser-->
@@ -39,12 +39,12 @@
           <fieldset class="col-md-12 col-lg-4">
             <div class="btn-group">
               <label class="btn btn-primary btn-lg"
-                  ng-repeat="continent in liste_continents"
-                  ng-class="{active:filtre.continent===continent}">
+                     ng-repeat="continent in liste_continents"
+                     ng-class="{active:filtre.continent===continent}">
                 <input type="radio" hidden name="choixContinent"
-                       ng-model="filtre.continent"
-                       ng-change="deselectionnerIndices()"
-                       value="{{continent}}">
+                                           ng-model="filtre.continent"
+                                           ng-change="deselectionnerIndices()"
+                                           value="{{continent}}">
                 {{continent}}
               </label>
             </div>
@@ -69,11 +69,11 @@
             <div class="checkbox-inline" ng-repeat="indice in indices | filter:filtre">
               <label>
                 <input
-                  type="checkbox"
-                  name="indice.nom"
-                  value="{{indice.nom}}"
-                  ng-change="changementIndice(indice)"
-                  ng-model="indice.selected">
+                                         type="checkbox"
+                                         name="indice.nom"
+                                         value="{{indice.nom}}"
+                                         ng-change="changementIndice(indice)"
+                                         ng-model="indice.selected">
                 {{indice.nom}}
               </label>
             </div>
@@ -84,171 +84,171 @@
     </aside>
 
     <main class="container-fluid minifenetres">
-      <div class="row">
-        <div class="col-md-12 col-lg-6">
-          <div class="card">
-            <h4 class="card-header">
-  			           Graphique décrivant l'évolution des indices
-  		               <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-                    
-  		    </h4>
-            <div class="card-block">
-              <select name="duree_graph" id="duree_graph"
-                ng-options="duree.label for duree in duree_graph.valeurs_possibles track by duree.valeur"
-                ng-model="duree_graph.selectionne"></select>
-              <nvd3 options="graph1.options" data="indices | filter:selected | valeursIndices"></nvd3>
-            </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="card">
+          <h4 class="card-header">
+            Graphique décrivant l'évolution des indices
+            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+
+          </h4>
+          <div class="card-block">
+            <select name="duree_graph" id="duree_graph"
+                                       ng-options="duree.label for duree in duree_graph.valeurs_possibles track by duree.valeur"
+                                       ng-model="duree_graph.selectionne"></select>
+            <nvd3 options="graph1.options" data="indices | filter:selected | valeursIndices"></nvd3>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-12 col-lg-6">
-          <div class="card">
+      <div class="col-md-12 col-lg-6">
+        <div class="card">
           <h4 class="card-header">
             Évolution des indices
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
-			       <nvd3 class="card-block"
-                    options="graph2.options"
-                    data="indices | filter:selected | valeursIndices2"></nvd3>
+          <nvd3 class="card-block"
+                options="graph2.options"
+                data="indices | filter:selected | valeursIndices2"></nvd3>
 
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 col-lg-6">
-          <div class="card">
-          <h4 class="card-header">Cours actuel des indices
-    		   <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-    		  </h4>
-            <div class="card-block table-responsive">
-             <!--affichage des indices selectionné dans un tableau-->
-			  <table width="100%" class="table">
-				<tr>
-					<th ng-repeat="i in indices | filter:selected">
-						<span  href="#" class="list-group-item">
-							<h4 class="list-group-item-heading">{{i.nom}}</h4>
-							<h5 class="list-group-item-text">
-								<strong class="h4">17 623,05</strong>
-								<span class="label label-danger">23,65 (0,13%)</span>
-							</h5>
-						</span>
-					</th>
-				</tr>
-			  </table>
-			<!--affichage graphique cours actuel des indices selectionnées-->
-			   <nvd3 class="card-block"
-				options="graph3.options"
-				xAxisTickFormat="xAxisTickFormatFunction()"
-                data="indices | filter:selected | valeursIndices3"></nvd3>
-			<!--affichage du tableau de commantaires de gestion-->
-			<table width="100%" class="table table-bordered">
-				<tr>
-					<th>Indice</th>
-					<th>Zone</th>
-					<th>Cours prévu</th>
-				</tr>
-				<tr ng-repeat="i in indices | filter:selected">
-					<td>{{i.nom}}</td>
-					<td>Zone de vente, zone d'achat, zone d'attente</td>
-					<td>Cours minimal, cours moyen, cours maximal</td>
-				</tr>
-			  </table>
-			</div>
-          </div>
-        </div>
-
-        <div class="col-md-12 col-lg-6">
-          <div class="card tableau-historique">
-          <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
-		          <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-		      </h4>
-          <div class="card-block table-responsive">
-    				  <table width="100%" class="table table-bordered">
-      					<thead>
-      						<tr>
-      						  <th>Indice</th>
-                    <th
-                      ng-repeat="ligne in historiqueValeurs[duree_prevision] | unique: 'periode'"
-                      ng-class='{"valeur-prevision":ligne.prevision}'>
-                        {{ligne.periode}}
-                    </th>
-      						</tr>
-      					</thead>
-      					<tbody  ng-repeat="indice in indices | filter:selected">
-      						<tr class="highlighted-row">
-        						<th scope="row">
-                      <span class="badge-indice" style="background-color:{{indice.color}}"></span>
-                      {{indice.nom}}
-                    </th>
-        						<td ng-repeat="periodeObj in historiqueValeurs[duree_prevision] | unique: 'periode'"
-                        ng-class='{"valeur-prevision":periodeObj.prevision}'>
-								      {{trouveValeurIndice(
-                                              $parent.historiqueValeurs[duree_prevision],
-                                              indice.nom,
-                                              periodeObj.periode
-                                           ) | formatNum
-                      }}
-								    </td>
-								  </tr>
-
-							    <tr>
-        						<th scope="row">%</th>
-        						<td ng-repeat="anneeObj in tableau | unique: 'annee'">
-								      {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
-								    </td>
-      						</tr>
-      					</tbody>
-    				   </table>
-			       </div>
-          </div>
-        </div>
-      </div>
-</main>
-
-<aside class="container">
-<div class="row">
-  <div class="card">
-  <h4 class="card-header">
-       Commentaire sur l'historique et l'évolution prévisionnelle:
-      <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-  </h4>
-
-    <div class="card-block">
-      <div class="row">
-        <div class="col-md-6">
-          <ul class="list-group">
-            <li class="list-group-item">
-               <span class="label label-danger label-pill">↘</span>
-              La Russie déclare la guerre à la Turquie</li>
-            <li class="list-group-item">
-              <span class="label label-danger label-pill">↘</span>
-              Grand moratoire sur la vente de carottes râpées</li>
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <ul class="list-group">
-            <li class="list-group-item">
-              <span class="label label-warning label-pill">→</span>
-              AirFrance rachètera Bonduelle</li>
-            <li class="list-group-item">
-              <span class="label label-success label-pill">↗</span>
-              Total achètera une petite éolienne en Picardie</li>
-          </ul>
         </div>
       </div>
     </div>
-  </div>
-</div>
-</main>
 
-    <!-- jQuery first, then Bootstrap JS. -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/d3/d3.js"></script>
-    <script src="bower_components/nvd3/build/nv.d3.js"></script>
-    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
-    <script src="vuviz.js"></script>
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="card">
+          <h4 class="card-header">Cours actuel des indices
+            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+          </h4>
+          <div class="card-block table-responsive">
+            <!--affichage des indices selectionné dans un tableau-->
+            <table width="100%" class="table">
+              <tr>
+                <th ng-repeat="i in indices | filter:selected">
+                  <span  href="#" class="list-group-item">
+                    <h4 class="list-group-item-heading">{{i.nom}}</h4>
+                    <h5 class="list-group-item-text">
+                      <strong class="h4">17 623,05</strong>
+                      <span class="label label-danger">23,65 (0,13%)</span>
+                    </h5>
+                  </span>
+                </th>
+              </tr>
+            </table>
+            <!--affichage graphique cours actuel des indices selectionnées-->
+            <nvd3 class="card-block"
+                  options="graph3.options"
+                  xAxisTickFormat="xAxisTickFormatFunction()"
+                  data="indices | filter:selected | valeursIndices3"></nvd3>
+            <!--affichage du tableau de commantaires de gestion-->
+            <table width="100%" class="table table-bordered">
+              <tr>
+                <th>Indice</th>
+                <th>Zone</th>
+                <th>Cours prévu</th>
+              </tr>
+              <tr ng-repeat="i in indices | filter:selected">
+                <td>{{i.nom}}</td>
+                <td>Zone de vente, zone d'achat, zone d'attente</td>
+                <td>Cours minimal, cours moyen, cours maximal</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-6">
+        <div class="card tableau-historique">
+          <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
+            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+          </h4>
+          <div class="card-block table-responsive">
+            <table width="100%" class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Indice</th>
+                  <th
+                                ng-repeat="ligne in historiqueValeurs[duree_prevision] | unique: 'periode'"
+                                ng-class='{"valeur-prevision":ligne.prevision}'>
+                    {{ligne.periode}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody  ng-repeat="indice in indices | filter:selected">
+                <tr class="highlighted-row">
+                  <th scope="row">
+                    <span class="badge-indice" style="background-color:{{indice.color}}"></span>
+                    {{indice.nom}}
+                  </th>
+                  <td ng-repeat="periodeObj in historiqueValeurs[duree_prevision] | unique: 'periode'"
+                      ng-class='{"valeur-prevision":periodeObj.prevision}'>
+                    {{trouveValeurIndice(
+                    $parent.historiqueValeurs[duree_prevision],
+                    indice.nom,
+                    periodeObj.periode
+                    ) | formatNum
+                    }}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row">%</th>
+                  <td ng-repeat="anneeObj in tableau | unique: 'annee'">
+                    {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </main>
+
+    <aside class="container">
+      <div class="row">
+        <div class="card">
+          <h4 class="card-header">
+            Commentaire sur l'historique et l'évolution prévisionnelle:
+            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+          </h4>
+
+          <div class="card-block">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <span class="label label-danger label-pill">↘</span>
+                    La Russie déclare la guerre à la Turquie</li>
+                  <li class="list-group-item">
+                    <span class="label label-danger label-pill">↘</span>
+                    Grand moratoire sur la vente de carottes râpées</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <span class="label label-warning label-pill">→</span>
+                    AirFrance rachètera Bonduelle</li>
+                  <li class="list-group-item">
+                    <span class="label label-success label-pill">↗</span>
+                    Total achètera une petite éolienne en Picardie</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </main>
+
+      <!-- jQuery first, then Bootstrap JS. -->
+      <script src="bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/d3/d3.js"></script>
+      <script src="bower_components/nvd3/build/nv.d3.js"></script>
+      <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+      <script src="vuviz.js"></script>
   </body>
 </html>
