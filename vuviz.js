@@ -134,6 +134,13 @@ app.controller('VuvizController', function($scope, $filter) {
         chart: {
            type: 'lineChart',
            height: 450,
+           xAxis : {
+             "axisLabel" : "période",
+             "tickFormat" : function(x) {
+               //Formatage des dates
+               return $filter("printPeriode")(x);
+             }
+           }
         }
       }
     };
@@ -275,5 +282,13 @@ app.filter("formatNum", function(){
       s += (nbr|0) % 10;
     }
     return s;
+  };
+});
+
+app.filter("printPeriode", function(){
+  return function (periode){
+    var annee = parseInt(periode);
+    var trimestre = parseInt((periode-annee)*4) + 1;
+    return annee + " T" + trimestre;
   };
 });
