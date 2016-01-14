@@ -67,12 +67,12 @@ app.controller('VuvizController', function($scope, $filter) {
       	{periode:2017, indice:"S&P500", value:3000}
     	],
       "trimestrielle": [
-        {periode:"T4-2014", indice:"DOW JONES", value:1},
-      	{periode:"T1-2015", indice:"DOW JONES", value:2},
-      	{periode:"T2-2015", indice:"DOW JONES", value:3},
-      	{periode:"T3-2015", indice:"DOW JONES", value:4},
-      	{periode:"T4-2015", indice:"DOW JONES", value:5, prevision: true},
-      	{periode:"T1-2016", indice:"DOW JONES", value:6, prevision: true}
+        {periode:"T4-2014", indice:"DOW JONES", value:4375},
+      	{periode:"T1-2015", indice:"DOW JONES", value:4000},
+      	{periode:"T2-2015", indice:"DOW JONES", value:3954},
+      	{periode:"T3-2015", indice:"DOW JONES", value:4045},
+      	{periode:"T4-2015", indice:"DOW JONES", value:5000, prevision: true},
+      	{periode:"T1-2016", indice:"DOW JONES", value:5500, prevision: true}
       ]
   };
 	//données pour le selecteur de date du graphique historique évolution
@@ -176,30 +176,28 @@ app.filter('valeursIndices', function() {
   };
 });
 
-app.filter('valeursIndices2', function() {
+app.filter('valeursIndices2', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
+  function parsePeriode(periode) {
+    //Retourne un nombre à partir d'une période, qui peut être soir une année,
+    //soit une chaine de caractères de la forme "T1-2015"
+    if (typeof(periode) === "number") return periode;
+    return parseInt(periode.split('-')[1]) +
+           (parseInt(periode[1]) - 1) / 4;
+  }
+
   var _cache = [];
-  return function(indices) {
+  return function(indices, valeurs) {
     _cache.length = indices.length;
     for(var j=0; j<indices.length; j++) {
       var i = indices[j];
       _cache[j] = {
-        values : [
-			{x:2005,y:840+i.nom.charCodeAt(0)},
-			{x:2006,y:931+i.nom.charCodeAt(1)},
-			{x:2007,y:1000+i.nom.charCodeAt(2)},
-			{x:2008,y:1140+i.nom.charCodeAt(3)},
-			{x:2009,y:1240+i.nom.charCodeAt(4)},
-			{x:2010,y:1340+i.nom.charCodeAt(5)},
-			{x:2011,y:1440+i.nom.charCodeAt(3)},
-			{x:2012,y:1540+i.nom.charCodeAt(0)},
-			{x:2013,y:1540+i.nom.charCodeAt(1)},
-			{x:2014,y:1640+i.nom.charCodeAt(2)},
-			{x:2015,y:1740+i.nom.charCodeAt(3)},
-			{x:2016,y:1840+i.nom.charCodeAt(4)},
-			{x:2017,y:1940+i.nom.charCodeAt(5)},
-		],
+        values : $filter('filter')
+                    (valeurs, {"indice":i.nom})
+                     .map(function(histo){
+                       return {x: parsePeriode(histo.periode), y:histo.value};
+                     }),
         key: i.nom,
         color: i.color
       }
