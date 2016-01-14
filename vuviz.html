@@ -136,24 +136,64 @@
                 </th>
               </tr>
             </table>
+            <!--affichage du tableau de commantaires de gestion pour annuelle-->
+            <div ng-if="duree_prevision=='annuelle'">
+                <h5>
+                Commentaires de gestion à court terme
+                </h5>
+                <table width="100%" class="table table-bordered">
+                  <tr>
+                    <th>Indice actuel</th>
+                    <th>Cours moyen 2015</th>
+                    <th>Cours moyen prévisionnelle 2016</th>
+                    <th>Cours moyen prévisionnelle 2017</th>
+                  </tr>
+                  <tr ng-repeat="i in indices | filter:selected">
+                    <td>{{i.nom}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+            </div>      
             <!--affichage graphique cours actuel des indices selectionnées-->
             <nvd3 class="card-block"
                   options="graph3.options"
                   xAxisTickFormat="xAxisTickFormatFunction()"
                   data="indices | filter:selected | valeursIndices3"></nvd3>
-            <!--affichage du tableau de commantaires de gestion-->
-            <table width="100%" class="table table-bordered">
-              <tr>
-                <th>Indice</th>
-                <th>Zone</th>
-                <th>Cours prévu</th>
-              </tr>
-              <tr ng-repeat="i in indices | filter:selected">
-                <td>{{i.nom}}</td>
-                <td>Zone de vente, zone d'achat, zone d'attente</td>
-                <td>Cours minimal, cours moyen, cours maximal</td>
-              </tr>
-            </table>
+            <div ng-if="duree_prevision=='annuelle'">
+                <h5>
+                Comparaison avec le cours actuel
+                </h5>
+                <table width="100%" class="table table-bordered">
+                    <tr>
+                        <td>Meilleur choix optimal permettant un achat bénéfique</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Recommandation</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>      
+            <!--affichage du tableau de commantaires de gestion pour trimestriel-->
+            <div ng-if="duree_prevision=='trimestrielle'">
+                <h5>
+                Commentaires de gestion à court terme
+                </h5>
+                <table width="100%" class="table table-bordered">
+                  <tr>
+                    <th>Indice actuel</th>
+                    <th>Zone</th>
+                    <th>Cours prévu</th>
+                  </tr>
+                  <tr ng-repeat="i in indices | filter:selected">
+                    <td>{{i.nom}}</td>
+                    <td>Zone de vente, zone d'achat, zone d'attente</td>
+                    <td>Cours minimal, cours moyen, cours maximal</td>
+                  </tr>
+                </table>
+            </div>
           </div>
         </div>
       </div>
