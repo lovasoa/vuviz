@@ -16,6 +16,7 @@ app.controller('VuvizController', function($scope, $filter) {
       {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#96B7E3"},
       {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#D313E8"},
       {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
+      {nom:'Euro Stoxx50', continent:'Europe', sectoriel:false, selected:false, color:"#505D61"},
 	  //ASIE
       {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
       {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
@@ -51,20 +52,20 @@ app.controller('VuvizController', function($scope, $filter) {
       	{periode:2013, indice:"DOW JONES", value:15010},
       	{periode:2014, indice:"DOW JONES", value:16778},
       	{periode:2015, indice:"DOW JONES", value:16010},
-      	{periode:2016, indice:"DOW JONES", value:16500},
-      	{periode:2017, indice:"DOW JONES", value:17000},
+      	{periode:2016, indice:"DOW JONES", value:16500, prevision: true},
+      	{periode:2017, indice:"DOW JONES", value:17000, prevision: true},
       	{periode:2012, indice:"NASDAQ", value:2966},
       	{periode:2013, indice:"NASDAQ", value:3541},
       	{periode:2014, indice:"NASDAQ", value:4375},
       	{periode:2015, indice:"NASDAQ", value:4000},
-      	{periode:2016, indice:"NASDAQ", value:5000},
-      	{periode:2017, indice:"NASDAQ", value:6000},
+      	{periode:2016, indice:"NASDAQ", value:5000, prevision: true},
+      	{periode:2017, indice:"NASDAQ", value:6000, prevision: true},
       	{periode:2012, indice:"S&P500", value:1379},
       	{periode:2013, indice:"S&P500", value:1644},
       	{periode:2014, indice:"S&P500", value:1931},
       	{periode:2015, indice:"S&P500", value:2000},
-      	{periode:2016, indice:"S&P500", value:2500},
-      	{periode:2017, indice:"S&P500", value:3000}
+      	{periode:2016, indice:"S&P500", value:2500, prevision: true},
+      	{periode:2017, indice:"S&P500", value:3000, prevision: true}
     	],
       "trimestrielle": [
         {periode:"T4-2014", indice:"DOW JONES", value:4375},
@@ -77,9 +78,8 @@ app.controller('VuvizController', function($scope, $filter) {
   };
 	//données pour le selecteur de date du graphique historique évolution
     $scope.duree_graph = {
-      selectionne: {valeur:1, label: "1 jour"},
+      selectionne: {valeur:5, label: "5 jour"},
       valeurs_possibles: [
-        {valeur:1, label: "1 jour"},
         {valeur:5, label: "5 jours"},
         {valeur:30, label: "1 mois"},
         {valeur:30*3, label: "3 mois"},
