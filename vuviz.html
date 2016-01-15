@@ -96,7 +96,8 @@
             <select name="duree_graph" id="duree_graph"
                                        ng-options="duree.label for duree in duree_graph.valeurs_possibles track by duree.valeur"
                                        ng-model="duree_graph.selectionne"></select>
-            <nvd3 options="graph1.options" data="indices | filter:selected | valeursIndices"></nvd3>
+            <nvd3 options="graphOptions('prevision')"
+                  data="indices | filter:selected | valeursIndices"></nvd3>
           </div>
         </div>
       </div>
@@ -108,7 +109,7 @@
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
           <nvd3 class="card-block"
-                options="graph2.options"
+                options="graphOptions('evolution', histoActuel())"
                 data="indices | filter:selected | valeursIndices2:historiqueValeurs[duree_prevision]"></nvd3>
         </div>
       </div>
@@ -154,7 +155,7 @@
             </div>
             <!--affichage graphique cours actuel des indices selectionnées-->
             <nvd3 class="card-block"
-                  options="graph3.options"
+                  options="graphOptions('coursactuel')"
                   xAxisTickFormat="xAxisTickFormatFunction()"
                   data="indices | filter:selected | valeursIndices3"></nvd3>
             <div ng-if="duree_prevision=='annuelle'">

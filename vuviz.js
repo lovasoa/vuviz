@@ -108,57 +108,54 @@ app.controller('VuvizController', function($scope, $filter) {
   // et de son année ou son trimestre
   $scope.trouveValeurIndice = function (tab, nomIndice, periode) {
 	  //on utilise la fonction filtre appelé filter
-    var vals = $filter('filter')(tab, {indice:nomIndice, periode:periode});
+    var vals = $filter('filter')(tab, {indice:nomIndice, periode:periode}, true);
     if(vals.length !== 1) {
       console.error("Impossible de trouver la valeur de l'indice " +
                         nomIndice + " pour la période " + periode + ". " +
                         "Valeurs trouvées: " + JSON.stringify(vals));
-      return; // Retourne undefined
+      return undefined;
     }
     return vals[0].value;
   };
 
+  $scope.histoActuel = function() {
+    //Retourne un tableau des valeurs d'historiques pour l'indice actuellement
+    //sélectionné et la période sélectionnée
+    return $filter('filter')(
+      $scope.historiqueValeurs[$scope.duree_prevision],
+      function(el){
+        return $filter('filter')($scope.indices, {nom: el.indice})[0].selected;
+      });
+  }
 
-	//PARAMETRES GRAPHIQUES
-    $scope.graph1 = {
-      "options" : {
-        chart: {
-           type: 'lineChart',
-           height: 450,
-        }
-      }
-    };
-
-	$scope.graph2 = {
-      "options" : {
-        chart: {
-           type: 'lineChart',
-           height: 450,
-           xAxis : {
+  $scope.graphOptions = memoize(function(type, histoActuel) {
+    var ret= {
+        "chart": {
+           "type": 'lineChart',
+           "height": 450,
+           "xAxis" : {
              "axisLabel" : "période",
+             "showMaxMin" : false,
+             "tickValues" : (function tickValues() {
+               if (type !== "evolution") return null;
+               return histoActuel.map(function (h) {return h.periode});
+             })(),
              "tickFormat" : function(x) {
                //Formatage des dates
                return $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
              }
            }
         }
-      }
-    };
+      };
+      return ret;
+  });
 
-	$scope.graph3 = {
-      "options" : {
-        chart: {
-           type: 'lineChart',
-           height: 250,
-        }
-      }
+  //pour afficher les axis en heure (pas encore utilisé)
+  $scope.xAxisTickFormatFunction = function(){
+    return function(d) {
+      return d3.time.format('%H:%M')(new Date(d));
     };
-	//pour afficher les axis en heure (pas encore utilisé)
-	$scope.xAxisTickFormatFunction = function(){
-		return function(d) {
-		return d3.time.format('%H:%M')(new Date(d));
-		};
-	}
+  }
 
 
 });
@@ -285,3 +282,14 @@ app.filter("printPeriode", function(){
     return annee + (anneeSeulement ? "" : (" T" + trimestre));
   };
 });
+
+function memoize(f) {
+  var dict = {};
+  return function() {
+    var args = JSON.stringify(arguments);
+    if(dict.hasOwnProperty(args)) return dict[args];
+    var res = f.apply(null, arguments);
+    dict[args] = res;
+    return res;
+  }
+}
