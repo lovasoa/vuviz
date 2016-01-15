@@ -166,7 +166,7 @@ app.filter('valeursIndices', function() {
   };
 });
 
-app.filter('valeursIndices2', function($filter) {
+app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
 
