@@ -218,14 +218,9 @@
                     <span class="badge-indice" style="background-color:{{indice.color}}"></span>
                     {{indice.nom}}
                   </th>
-                  <td ng-repeat="periodeObj in historiqueValeurs[duree_prevision] | unique: 'periode'"
-                      ng-class='{"valeur-prevision":periodeObj.prevision}'>
-                    {{trouveValeurIndice(
-                    $parent.historiqueValeurs[duree_prevision],
-                    indice.nom,
-                    periodeObj.periode
-                    ) | formatNum
-                    }}
+                  <td ng-repeat="valeurHisto in histoActuel() | filter:{indice:indice.nom}:true"
+                      ng-class='{"valeur-prevision":valeurHisto.prevision}'>
+                    {{ valeurHisto.value | formatNum}}
                   </td>
                 </tr>
 

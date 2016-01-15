@@ -104,20 +104,6 @@ app.controller('VuvizController', function($scope, $filter) {
       }
   };
 
-  //fonction qui récupere la valeur d'un indice en fonction de son nom
-  // et de son année ou son trimestre
-  $scope.trouveValeurIndice = function (tab, nomIndice, periode) {
-	  //on utilise la fonction filtre appelé filter
-    var vals = $filter('filter')(tab, {indice:nomIndice, periode:periode}, true);
-    if(vals.length !== 1) {
-      console.error("Impossible de trouver la valeur de l'indice " +
-                        nomIndice + " pour la période " + periode + ". " +
-                        "Valeurs trouvées: " + JSON.stringify(vals));
-      return undefined;
-    }
-    return vals[0].value;
-  };
-
   $scope.histoActuel = function() {
     //Retourne un tableau des valeurs d'historiques pour l'indice actuellement
     //sélectionné et la période sélectionnée
