@@ -210,7 +210,7 @@
                   <th
                                 ng-repeat="ligne in historiqueValeurs[duree_prevision] | unique: 'periode'"
                                 ng-class='{"valeur-prevision":ligne.prevision}'>
-                    {{ligne.periode}}
+                    {{ligne.periode | printPeriode:(duree_prevision==="annuelle")}}
                   </th>
                 </tr>
               </thead>
