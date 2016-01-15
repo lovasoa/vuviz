@@ -138,7 +138,7 @@ app.controller('VuvizController', function($scope, $filter) {
              "axisLabel" : "période",
              "tickFormat" : function(x) {
                //Formatage des dates
-               return $filter("printPeriode")(x);
+               return $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
              }
            }
         }
