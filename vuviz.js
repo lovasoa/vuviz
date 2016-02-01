@@ -48,32 +48,47 @@ app.controller('VuvizController', function($scope, $filter) {
 	//donnée sur la valeur des indices
   	$scope.historiqueValeurs = {
       "annuelle" : [
-      	{periode:2012, indice:"DOW JONES", value:12965},
-      	{periode:2013, indice:"DOW JONES", value:15010},
-      	{periode:2014, indice:"DOW JONES", value:16778},
-      	{periode:2015, indice:"DOW JONES", value:16010},
-      	{periode:2016, indice:"DOW JONES", value:16500, prevision: true},
-      	{periode:2017, indice:"DOW JONES", value:17000, prevision: true},
-      	{periode:2012, indice:"NASDAQ", value:2966},
-      	{periode:2013, indice:"NASDAQ", value:3541},
-      	{periode:2014, indice:"NASDAQ", value:4375},
-      	{periode:2015, indice:"NASDAQ", value:4000},
-      	{periode:2016, indice:"NASDAQ", value:5000, prevision: true},
-      	{periode:2017, indice:"NASDAQ", value:6000, prevision: true},
-      	{periode:2012, indice:"S&P500", value:1379},
-      	{periode:2013, indice:"S&P500", value:1644},
-      	{periode:2014, indice:"S&P500", value:1931},
-      	{periode:2015, indice:"S&P500", value:2000},
-      	{periode:2016, indice:"S&P500", value:2500, prevision: true},
-      	{periode:2017, indice:"S&P500", value:3000, prevision: true}
+      	{periode:2012, indice:"DOW JONES", "value":12965, "type":"moyenne"},
+      	{periode:2013, indice:"DOW JONES", "value":15010, "type":"moyenne"},
+      	{periode:2014, indice:"DOW JONES", "value":16778, "type":"moyenne"},
+      	{periode:2015, indice:"DOW JONES", "value":15010, "type":"moyenne"},
+        {periode:2012, indice:"DOW JONES", "value":10965, "type":"min"},
+      	{periode:2013, indice:"DOW JONES", "value":11010, "type":"min"},
+      	{periode:2014, indice:"DOW JONES", "value":14778, "type":"min"},
+      	{periode:2015, indice:"DOW JONES", "value":14110, "type":"min"},
+        {periode:2012, indice:"DOW JONES", "value":13500, "type":"max"},
+      	{periode:2013, indice:"DOW JONES", "value":16010, "type":"max"},
+      	{periode:2014, indice:"DOW JONES", "value":17778, "type":"max"},
+      	{periode:2015, indice:"DOW JONES", "value":16010, "type":"max"},
+      	{periode:2016, indice:"DOW JONES", "value":16500, "type":"moyenne", prevision: true},
+      	{periode:2017, indice:"DOW JONES", "value":17000, "type":"moyenne", prevision: true},
+      	{periode:2012, indice:"NASDAQ", "value":2966, "type":"moyenne"},
+      	{periode:2013, indice:"NASDAQ", "value":3541, "type":"moyenne"},
+      	{periode:2014, indice:"NASDAQ", "value":4375, "type":"moyenne"},
+      	{periode:2015, indice:"NASDAQ", "value":4000, "type":"moyenne"},
+      	{periode:2016, indice:"NASDAQ", "value":5000, "type":"moyenne", prevision: true},
+      	{periode:2017, indice:"NASDAQ", "value":6000, "type":"moyenne", prevision: true},
+        {periode:2017, indice:"NASDAQ", "value":6800, "type":"max", prevision: true},
+      	{periode:2012, indice:"S&P500", "value":1379, "type":"moyenne"},
+      	{periode:2013, indice:"S&P500", "value":1644, "type":"moyenne"},
+      	{periode:2014, indice:"S&P500", "value":1931, "type":"moyenne"},
+      	{periode:2015, indice:"S&P500", "value":2000, "type":"moyenne"},
+      	{periode:2016, indice:"S&P500", "value":2500, "type":"moyenne", prevision: true},
+      	{periode:2017, indice:"S&P500", "value":3000, "type":"moyenne", prevision: true}
     	],
       "trimestrielle": [
-        {"periode":2014.75,"indice":"DOW JONES","value":4375},
-        {"periode":2015,"indice":"DOW JONES","value":4000},
-        {"periode":2015.25,"indice":"DOW JONES","value":3954},
-        {"periode":2015.5,"indice":"DOW JONES","value":4045},
-        {"periode":2015.75,"indice":"DOW JONES","value":5000,"prevision":true},
-        {"periode":2016,"indice":"DOW JONES","value":5500,"prevision":true}
+        {"periode":2014.75,"indice":"DOW JONES","value":4375, "type":"moyenne"},
+        {"periode":2014.75,"indice":"DOW JONES","value":4270, "type":"min"},
+        {"periode":2015,"indice":"DOW JONES","value":4000, "type":"moyenne"},
+        {"periode":2015,"indice":"DOW JONES","value":3900, "type":"min"},
+        {"periode":2015.25,"indice":"DOW JONES","value":3954, "type":"moyenne"},
+        {"periode":2015.5,"indice":"DOW JONES","value":4045, "type":"moyenne"},
+        {"periode":2015.75,"indice":"DOW JONES","value":5000, "type":"moyenne","prevision":true},
+        {"periode":2016,"indice":"DOW JONES","value":5500, "type":"moyenne","prevision":true},
+        {"periode":2014.75,"indice":"NASDAQ","value":3375, "type":"moyenne"},
+        {"periode":2014.75,"indice":"NASDAQ","value":3075, "type":"min"},
+        {"periode":2015,"indice":"NASDAQ","value":3000, "type":"moyenne"},
+        {"periode":2015,"indice":"NASDAQ","value":2900, "type":"min"}
       ]
   };
 	//données pour le selecteur de date du graphique historique évolution
@@ -87,8 +102,16 @@ app.controller('VuvizController', function($scope, $filter) {
         {valeur:365, label: "1 an"}
       ]
     };
+    $scope.valeurs_ui = {dates: [], indices: []};
 
 	//FONCTIONS
+  $scope.updateValeursUI = function updateValeursUI() {
+    $scope.valeurs_ui = $filter("selectedValues")(
+                                    $scope.historiqueValeurs,
+                                    $scope.indices,
+                                    $scope.duree_prevision);
+  };
+  $scope.$watchGroup(["historiqueValeurs", "indices", "duree_prevision"], $scope.updateValeursUI);
 
 	//fonction qui déselectionne tous les indices selectionné
 	$scope.deselectionnerIndices = function() {
@@ -98,6 +121,7 @@ app.controller('VuvizController', function($scope, $filter) {
   };
 	//fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
+      $scope.updateValeursUI();
       if($scope.duree_prevision === 'trimestrielle') {
         $scope.deselectionnerIndices();
         indice.selected = true;
@@ -112,7 +136,7 @@ app.controller('VuvizController', function($scope, $filter) {
       function(el){
         return $filter('filter')($scope.indices, {nom: el.indice})[0].selected;
       });
-  }
+  };
 
   $scope.graphOptions = memoize(function(type, histoActuel) {
     var ret= {
@@ -169,22 +193,27 @@ app.filter('valeursIndices', function() {
 app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
-
+  var couleurType = {"min": "#4efe4e", "max":"#fe4e4e"};
   var _cache = [];
-  return function(indices, valeurs) {
-    _cache.length = indices.length;
-    for(var j=0; j<indices.length; j++) {
-      var i = indices[j];
-      _cache[j] = {
-        values : $filter('filter')
-                    (valeurs, {"indice":i.nom})
-                     .map(function(histo){
-                       return {x: histo.periode, y:histo.value};
-                     }),
-        key: i.nom,
-        color: i.color
+  return function(valeurs) {
+    var n = 0;
+    for(var i=0; i<valeurs.indices.length; i++) {
+      var indice = valeurs.indices[i];
+      for (var j = 0; j < indice.histos.length; j++) {
+        var histo = indice.histos[j];
+        var values = [];
+        for (var k = 0; k < histo.valeurs.length; k++) {
+          if (histo.valeurs[k] != null)
+            values.push({y: histo.valeurs[k], x:valeurs.dates[k].value});
+        }
+        _cache[n++] = {
+          values : values,
+          key: indice.nom + ' (' + histo.type + ')',
+          color: couleurType[histo.type] || indice.couleur
+        };
       }
     }
+    _cache.length = n;
     return _cache;
   };
 });
@@ -242,9 +271,7 @@ app.filter("formatNum", function(){
     decimales = decimales || 0;
     separateurMilliers = separateurMilliers || "\u00a0"; //unbreakable space
     separateurDecimales = separateurDecimales || ",";
-    if (isNaN(nombre)) {
-      return console.warn("Nombre invalide: ", nombre);
-    }
+    if (isNaN(nombre)) return "";
     nombre = parseFloat(nombre);
     var s = "";
     for(var i=0, nbr = nombre|0; nbr > 0; i++) {
@@ -266,6 +293,83 @@ app.filter("printPeriode", function(){
     var annee = parseInt(periode);
     var trimestre = parseInt((periode-annee)*4) + 1;
     return annee + (anneeSeulement ? "" : (" T" + trimestre));
+  };
+});
+
+app.filter("selectedValues", function($filter){
+  // Crée un tableau avec les valeurs des indices sélectionnés de la forme:
+  /*
+  {
+  "dates" : [
+    {value: 2012, nom:"2012", prevision: false},
+    {value: 2013, nom:"2013", prevision: false},
+    {value: 2016, nom:"2016", prevision: true},
+  ],
+
+  "indices" : [{
+    nom: "DOW JONES",
+    histos: [
+      {"type": "min", valeurs: [105, 201, 155]},
+      {"type": "max", valeurs: [109, 291, 182]},
+      {"type": "moyenne", valeurs: [106, 210, 160]},
+    ]
+  }],
+  }
+  */
+  function findPropInArray(array, property, value) {
+      for(var i=0; i<array.length; i++) {
+        if (array[i][property] === value) return i;
+      }
+      return -1;
+  }
+
+  return function(valeurs, indices, type) {
+    var nomsIndices = $filter("filter")(indices, {selected:true}, true).map(function(i){return i.nom});
+    var couleurs = indices.reduce(function(p, c){
+      p[c.nom] = c.color;
+      return p;
+    }, {});
+    var res = {"dates" : [], "indices":[]};
+    res.dates = valeurs[type].reduce(function(prev, cur){
+      if (~nomsIndices.indexOf(cur.indice)) {
+        var i = findPropInArray(prev, "value", cur.periode);
+        if (i === -1) {
+          i = -1 + prev.push({
+            value : cur.periode,
+            nom: $filter("printPeriode")(cur.periode, type === "annuelle"),
+            prevision: cur.prevision
+          });
+        }
+        prev[i].prevision = prev[i].prevision || cur.prevision;
+      }
+      return prev;
+    }, []).sort(function(a,b){return a.value - b.value});
+
+    res.indices = valeurs[type].reduce(function(prev, cur) {
+      if (~nomsIndices.indexOf(cur.indice)) {
+        var i = findPropInArray(prev, "nom", cur.indice);
+        if (i === -1) {
+          i = prev.length;
+          prev.push({
+            "nom": cur.indice,
+            "couleur": couleurs[cur.indice],
+            "histos": []
+          });
+        }
+        var j = findPropInArray(prev[i].histos, "type", cur.type);
+        if (j === -1) {
+          j = prev[i].histos.length;
+          prev[i].histos.push({
+            "type": cur.type,
+            "valeurs": new Array(res.dates.length)
+          });
+        }
+        var k = findPropInArray(res.dates, "value", cur.periode);
+        prev[i].histos[j].valeurs[k] = cur.value;
+      }
+      return prev;
+    }, []);
+    return res;
   };
 });
 

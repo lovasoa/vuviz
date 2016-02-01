@@ -110,7 +110,7 @@
           </h4>
           <nvd3 class="card-block"
                 options="graphOptions('evolution', histoActuel())"
-                data="indices | filter:selected | valeursIndicesEvolution:historiqueValeurs[duree_prevision]">
+                data="valeurs_ui | valeursIndicesEvolution">
           </nvd3>
         </div>
       </div>
@@ -198,7 +198,7 @@
 
       <div class="col-md-12 col-lg-6">
         <div class="card tableau-historique">
-          <h4 class="card-header">Tableau synthétisant l'évolution des indices moyens
+          <h4 class="card-header">Tableau synthétisant l'évolution des indices
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
           <div class="card-block table-responsive">
@@ -207,28 +207,20 @@
                 <tr>
                   <th>Indice</th>
                   <th
-                                ng-repeat="ligne in historiqueValeurs[duree_prevision] | unique: 'periode'"
-                                ng-class='{"valeur-prevision":ligne.prevision}'>
-                    {{ligne.periode | printPeriode:(duree_prevision==="annuelle")}}
+                                ng-repeat="periode in valeurs_ui.dates"
+                                ng-class='{"valeur-prevision":periode.prevision}'>
+                    {{periode.nom}}
                   </th>
                 </tr>
               </thead>
-              <tbody  ng-repeat="indice in indices | filter:selected">
-                <tr class="highlighted-row">
+              <tbody  ng-repeat="indice in valeurs_ui.indices">
+                <tr ng-class='{"highlighted-row":(histo.type==="moyenne")}' ng-repeat="histo in indice.histos">
                   <th scope="row">
-                    <span class="badge-indice" style="background-color:{{indice.color}}"></span>
-                    {{indice.nom}}
+                    <span class="badge-indice" style="background-color:{{indice.couleur}}"></span>
+                    {{indice.nom}} ({{histo.type}})
                   </th>
-                  <td ng-repeat="valeurHisto in histoActuel() | filter:{indice:indice.nom}:true"
-                      ng-class='{"valeur-prevision":valeurHisto.prevision}'>
-                    {{ valeurHisto.value | formatNum}}
-                  </td>
-                </tr>
-
-                <tr>
-                  <th scope="row">%</th>
-                  <td ng-repeat="anneeObj in tableau | unique: 'annee'">
-                    {{trouveValeurIndice(indice.nom, anneeObj.annee) | formatNum}}
+                  <td ng-repeat="valeur in histo.valeurs track by $index">
+                    {{ valeur | formatNum}}
                   </td>
                 </tr>
               </tbody>
