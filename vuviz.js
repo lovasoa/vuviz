@@ -1,43 +1,31 @@
 var app = angular.module('vuvizApp', ["nvd3"]);
 
 //CONTROLLEUR
-app.controller('VuvizController', function($scope, $filter) {
+app.controller('VuvizController', function($scope, $filter, $http) {
     var control = this;
     $scope.nomApplication = "Prévision Financière et Boursière";
 	//données sur la liste des indices
-    $scope.indices = [
-		//Etat Unis
-      {nom:'DOW JONES', continent:'État-Unis', sectoriel:false, selected: false, color:"#071BA3"},
-      {nom:'NASDAQ', continent:'État-Unis', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'S&P500', continent:'État-Unis', sectoriel:false, selected:false, color:"#96B7E3"},
-	  //europe
-      {nom:'DAX', continent:'Europe', sectoriel:false, selected:false, color:"#071BA3"},
-      {nom:'FOOTSIE', continent:'Europe', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'CAC40', continent:'Europe', sectoriel:false, selected:false, color:"#96B7E3"},
-      {nom:'IBEX', continent:'Europe', sectoriel:false, selected:false, color:"#D313E8"},
-      {nom:'MIB', continent:'Europe', sectoriel:false, selected:false, color:"#F7812D"},
-      {nom:'Euro Stoxx50', continent:'Europe', sectoriel:false, selected:false, color:"#505D61"},
-	  //ASIE
-      {nom:'NIKKEI250', continent:'Asie', sectoriel:false, selected:false, color:"#071BA3"},
-      {nom:'SSE', continent:'Asie', sectoriel:false, selected:false, color:"#145EDE"},
-      {nom:'HS', continent:'Asie', sectoriel:false, selected:false, color:"#96B7E3"},
+    $scope.indices = [];
+    //données sur les continents
+    $scope.liste_continents = [];
+    $http.get("api/indices.php").then(function(res){
+      // Téléchargement des indices depuis l'API
+      $scope.indices = res.data.map(function(indice){
+        indice.selected = false;
+        return indice;
+      });
+      $scope.liste_continents = res.data.reduce(function(continents, indice){
+        if (continents.indexOf(indice.continent) === -1)
+          continents.push(indice.continent);
+        return continents;
+      }, []);
+    });
 
-      //SECTORIEL
-      {nom:'Indice sectoriel performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'Asie', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'Europe', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"},
-      {nom:'Indice sectoriel moins performant', continent:'État-Unis', sectoriel:true, selected:false, color:"#96B7E3"}
-
-    ];
-	//données sur les continents
-    $scope.liste_continents = ["État-Unis", "Europe", "Asie"];
 
 	//INITIALISATION
 	//initialisation des filtres
     $scope.filtre = {
-      "continent" : "État-Unis",
+      "continent" : "États-Unis",
       "sectoriel" : false
     };
 	//initialisation du type de prévision (annuelle/trimestrielle)
@@ -134,7 +122,8 @@ app.controller('VuvizController', function($scope, $filter) {
     return $filter('filter')(
       $scope.historiqueValeurs[$scope.duree_prevision],
       function(el){
-        return $filter('filter')($scope.indices, {nom: el.indice})[0].selected;
+        var indices = $filter('filter')($scope.indices, {nom: el.indice});
+        return indices.length === 1 && indices[0].selected;
       });
   };
 
