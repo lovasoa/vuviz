@@ -88,7 +88,7 @@
       <div class="col-md-12 col-lg-6">
         <div class="card">
           <h4 class="card-header">
-            Évolution historique des indices
+            Évolution historique:
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
 
           </h4>
@@ -105,7 +105,7 @@
       <div class="col-md-12 col-lg-6">
         <div class="card">
           <h4 class="card-header">
-             Évolution prévisionnelle des indices (trimestrielle)
+             Évolution prévisionnelle:
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
           <nvd3 class="card-block"
@@ -119,7 +119,7 @@
     <div class="row">
       <div class="col-md-12 col-lg-6">
         <div class="card">
-          <h4 class="card-header">Cours actuel des indices
+          <h4 class="card-header">Cours actuel:
             <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
           </h4>
           <div class="card-block table-responsive">
@@ -165,11 +165,10 @@
                 </h5>
                 <table width="100%" class="table table-bordered">
                     <tr>
-                        <td>Meilleur choix optimal permettant un achat bénéfique</td>
+                        <td>Meilleur choix permettant un achat bénéfique</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Recommandation</td>
                         <td></td>
                     </tr>
                 </table>
@@ -177,7 +176,7 @@
             <!--affichage du tableau de commantaires de gestion pour trimestriel-->
             <div ng-if="duree_prevision=='trimestrielle'">
                 <h5>
-                Commentaires de gestion à court terme (sur prévision timerstielle)
+                Commentaires de gestion à court terme (sur prévision trimestrielle)
                 </h5>
                 <table width="100%" class="table table-bordered">
                   <tr>
