@@ -4,6 +4,7 @@ app.controller('IndicesController', function($scope, $http) {
   $scope.status = "✓";
   $scope.indices = [];
   $scope.continents = [];
+  $scope.recherche = "";
   var dernier_id = 0;
 
   function nouvel_indice() {
@@ -52,5 +53,15 @@ app.controller('IndicesController', function($scope, $http) {
     });
     indice.disabled = true;
     $scope.status = "⥀";
+  };
+});
+
+app.filter("cherche", function($filter){
+  return function (indices, recherche){
+    return $filter("filter")(indices, function correspond(indice) {
+      return indice.continent.toLowerCase().indexOf(recherche.toLowerCase()) === 0 ||
+             indice.nom.toLowerCase().indexOf(recherche.toLowerCase()) >= 0 ||
+             indice.nouveau;
+    });
   };
 });

@@ -18,7 +18,12 @@
 
   <main class="container-fluid minifenetres">
     <h3>Liste des indices <small>{{status}}</small></h3>
-    <div ng-repeat="indice in indices track by indice.id"
+
+    <form>
+      <input type="search" class="form-control" placeholder="Rechercher un indice" ng-model="recherche">
+    </form>
+
+    <div ng-repeat="indice in indices|cherche:recherche track by indice.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled}">
       <h4 class="card-header" ng-if="indice.nouveau">Ajouter un nouvel indice</h4>
       <div class="card-block">
