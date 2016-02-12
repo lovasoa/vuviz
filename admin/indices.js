@@ -11,7 +11,7 @@ app.controller('IndicesController', function($scope, $http) {
       id: ++dernier_id,
       nouveau: true,
       nom: "",
-      couleur: "#ff0000",
+      couleur: "#8800aa",
       sectoriel: false,
       continent: "Europe"
     };
