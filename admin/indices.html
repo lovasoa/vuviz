@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="vuvizApp" ng-controller="IndicesController">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
+  <link rel="stylesheet" href="indices.css">
+
+  <title>PRÉFIB - administration</title>
+</head>
+<body class="container-fluid">
+
+  <main class="container-fluid minifenetres">
+    <h3>Liste des indices <small>{{status}}</small></h3>
+    <div class="card" ng-repeat="indice in indices track by indice.id">
+      <div class="card-block">
+        <form class="form-inline">
+          <input type="color" class="form-control couleur-indice" ng-model="indice.couleur">
+          <input type="text" class="form-control" ng-model="indice.nom" placeholder="nom de l'indice">
+          <select ng-options="cont for cont in continents"
+                  ng-model="indice.continent" class="form-control"></select>
+          <label>Indice sectoriel ?<input type="checkbox" ng-model="indice.sectoriel"></label>
+          <button type="button" class="btn btn-success form-control"
+                  ng-click="postIndice(indice)">Mettre à jour</button>
+          <button type="button" class="btn btn-error form-control"
+                  ng-click="supprIndice(indice)">Supprimer</button>                  
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- jQuery first, then Bootstrap JS. -->
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="indices.js"></script>
+</body>
+</html>

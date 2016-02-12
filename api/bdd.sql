@@ -3,11 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: prefibcoti1.mysql.db
--- Generation Time: Feb 07, 2016 at 01:27 PM
+-- Generation Time: Feb 11, 2016 at 11:09 AM
 -- Server version: 5.5.46-0+deb7u1-log
 -- PHP Version: 5.3.8
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -57,14 +60,14 @@ CREATE TABLE IF NOT EXISTS `commentaire_indice` (
 DROP TABLE IF EXISTS `continent`;
 CREATE TABLE IF NOT EXISTS `continent` (
   `id_continent` int(11) NOT NULL DEFAULT '0',
-  `nom` varchar(255) DEFAULT NULL
+  `nom_continent` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `continent`
 --
 
-INSERT INTO `continent` (`id_continent`, `nom`) VALUES
+INSERT INTO `continent` (`id_continent`, `nom_continent`) VALUES
 (0, 'États-Unis'),
 (1, 'Europe'),
 (2, 'Asie');
@@ -101,12 +104,10 @@ INSERT INTO `indice` (`id_indice`, `nom_indice`, `id_continent`, `couleur`, `sec
 (10, 'NIKKEI250', 2, '#071BA3', 0),
 (11, 'SSE', 2, '#145EDE', 0),
 (12, 'HS', 2, '#96B7E3', 0),
-(13, 'Indice sectoriel performant', 2, '#96B7E3', 1),
-(14, 'Indice sectoriel moins performant', 2, '#96B7E3', 1),
-(15, 'Indice sectoriel performant', 1, '#96B7E3', 1),
-(16, 'Indice sectoriel moins performant', 1, '#96B7E3', 1),
-(17, 'Indice sectoriel performant', 0, '#96B7E3', 1),
-(18, 'Indice sectoriel moins performant', 0, '#96B7E3', 1);
+(15, 'Indices sectoriels plus performants ', 1, '#96B7E3', 1),
+(16, 'Indices sectoriels moins performants ', 1, '#96B7E3', 1),
+(17, 'Indices sectoriels plus performants ', 0, '#96B7E3', 1),
+(18, 'Indices sectoriels moins performants ', 0, '#96B7E3', 1);
 
 -- --------------------------------------------------------
 
@@ -133,7 +134,16 @@ CREATE TABLE IF NOT EXISTS `type_valeur` (
   `id_type_valeur` int(11) NOT NULL,
   `nom_type_valeur` varchar(255) NOT NULL,
   `couleur_type_valeur` char(7) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `type_valeur`
+--
+
+INSERT INTO `type_valeur` (`id_type_valeur`, `nom_type_valeur`, `couleur_type_valeur`) VALUES
+(1, 'min', '#009900'),
+(2, 'max', '#990000'),
+(3, 'moyenne', '');
 
 -- --------------------------------------------------------
 
@@ -147,7 +157,8 @@ CREATE TABLE IF NOT EXISTS `valeur` (
   `periode` date NOT NULL DEFAULT '0000-00-00',
   `id_type_valeur` int(11) NOT NULL DEFAULT '0',
   `valeur` float DEFAULT NULL,
-  `est_prevision` tinyint(1) DEFAULT NULL
+  `est_prevision` tinyint(1) DEFAULT NULL,
+  `annuelle` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -212,7 +223,7 @@ ALTER TABLE `indice`
 -- AUTO_INCREMENT for table `type_valeur`
 --
 ALTER TABLE `type_valeur`
-  MODIFY `id_type_valeur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_type_valeur` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
@@ -234,8 +245,10 @@ ALTER TABLE `indice`
 -- Constraints for table `valeur`
 --
 ALTER TABLE `valeur`
-  ADD CONSTRAINT `valeur_ibfk_2` FOREIGN KEY (`id_type_valeur`) REFERENCES `type_valeur` (`id_type_valeur`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `valeur_ibfk_1` FOREIGN KEY (`id_indice`) REFERENCES `indice` (`id_indice`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `valeur_ibfk_1` FOREIGN KEY (`id_indice`) REFERENCES `indice` (`id_indice`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `valeur_ibfk_2` FOREIGN KEY (`id_type_valeur`) REFERENCES `type_valeur` (`id_type_valeur`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
