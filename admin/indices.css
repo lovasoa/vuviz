@@ -2,3 +2,7 @@
   width: 70px !important;
   padding: 2px;
 }
+
+.indice-disabled {
+  background-color: #ccc;
+}
