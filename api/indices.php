@@ -5,7 +5,8 @@ $sql = "
 SELECT
   id_indice, nom_indice, nom_continent, sectoriel, couleur
 FROM indice
-INNER JOIN continent ON continent.id_continent = indice.id_continent;
+INNER JOIN continent ON continent.id_continent = indice.id_continent
+ORDER BY id_indice;
 ";
 $res = array();
 foreach ($BDD->query($sql) as $row) {
