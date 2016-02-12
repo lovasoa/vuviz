@@ -6,3 +6,7 @@
 .indice-disabled {
   background-color: #ccc;
 }
+
+#recherche {
+  width: 90%;
+}

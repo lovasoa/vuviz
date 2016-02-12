@@ -17,11 +17,22 @@
   </nav>
 
   <main class="container-fluid minifenetres">
-    <h3>Liste des indices <small>{{status}}</small></h3>
+    <h3>Liste des indices
+      <small class="label label-pill"
+              ng-class="{'label-success':status==='✓', 'label-warning':status==='⥀', 'label-error':status==='⚠'}">
+              {{status}}
+      </small>
+    </h3>
 
-    <form>
-      <input type="search" class="form-control" placeholder="Rechercher un indice" ng-model="recherche">
-    </form>
+    <div class="card">
+      <div class="card-block">
+        <form class="form">
+          <input type="search" class="form-control" id="recherche"
+                 placeholder="Filtrer les indices par nom ou continent"
+                 ng-model="recherche">
+        </form>
+      </div>
+    </div>
 
     <div ng-repeat="indice in indices|cherche:recherche track by indice.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled}">
