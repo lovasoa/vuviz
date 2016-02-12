@@ -4,19 +4,37 @@ app.controller('IndicesController', function($scope, $http) {
   $scope.status = "✓";
   $scope.indices = [];
   $scope.continents = [];
+  var dernier_id = 0;
+
+  function nouvel_indice() {
+    return {
+      id: ++dernier_id,
+      nouveau: true,
+      nom: "",
+      couleur: "#ff0000",
+      sectoriel: false,
+      continent: "Europe"
+    };
+  };
+
   $http.get("../api/indices.php").then(function(res){
-    $scope.indices = res.data;
-    $scope.continents = res.data.reduce(function(continents, indice){
-      if (!~continents.indexOf(indice.continent)) continents.push(indice.continent);
-      return continents;
-    }, []);
+    for(var i=0; i<res.data.length; i++) {
+      var indice = res.data[i];
+      $scope.indices.push(indice);
+      if (!~$scope.continents.indexOf(indice.continent))
+        $scope.continents.push(indice.continent);
+      if (dernier_id < indice.id) dernier_id = indice.id;
+    }
+    $scope.indices.push(nouvel_indice());
   });
 
-  $scope.postIndice = function postIndice(indice) {
+  $scope.postIndice = function creerIndice(indice) {
     // Met à jour la base de données avec un indice modifié
-    $http.post("api/maj_indice.php", indice).then(function(){
+    var url = indice.nouveau ? "api/creer_indice.php" : "api/maj_indice.php";
+    $http.post(url, indice).then(function(){
       $scope.status = "✓";
-      indice.disabled = false;
+      if (indice.nouveau) $scope.indices.push(nouvel_indice());
+      indice.disabled = indice.nouveau = false;
     }, function() {
       $scope.status = "⚠";
     });
@@ -26,8 +44,6 @@ app.controller('IndicesController', function($scope, $http) {
 
   $scope.supprIndice = function supprIndice(indice) {
     // Supprime un indice de la base de données
-    var msg = "Êtes-vous sûr de vouloir supprimer l'indice «"+indice.nom+"» ?";
-    if (!confirm(msg)) return;
     $http.post("api/suppr_indice.php", indice).then(function(){
       $scope.status = "✓";
       $scope.indices = $scope.indices.filter(function(i){return i !== indice});

@@ -17,6 +17,7 @@
     <h3>Liste des indices <small>{{status}}</small></h3>
     <div ng-repeat="indice in indices track by indice.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled}">
+      <h4 class="card-header" ng-if="indice.nouveau">Ajouter un nouvel indice</h4>
       <div class="card-block">
         <form class="form-inline">
           <input type="color" class="form-control couleur-indice"
@@ -24,6 +25,7 @@
                 ng-model="indice.couleur">
           <input type="text" class="form-control"
                   placeholder="nom de l'indice"
+                  required="true"
                   ng-disabled="indice.disabled"
                   ng-model="indice.nom">
           <select class="form-control"
@@ -31,12 +33,18 @@
                   ng-disabled="indice.disabled"
                   ng-model="indice.continent"></select>
           <label>Indice sectoriel ?<input type="checkbox" ng-model="indice.sectoriel"></label>
-          <button type="button" class="btn btn-success form-control"
+          <button type="button"
+                  ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-success':indice.nouveau, 'form-control':1}"
                   ng-disabled="indice.disabled"
-                  ng-click="postIndice(indice)">Mettre à jour</button>
+                  ng-click="postIndice(indice)">
+                  {{indice.nouveau ? "Créer" : "Mettre à jour"}}
+          </button>
           <button type="button" class="btn btn-danger form-control"
                   ng-disabled="indice.disabled"
-                  ng-click="supprIndice(indice)">Supprimer</button>
+                  ng-if="!indice.nouveau"
+                  ng-click="indice.suppression ? supprIndice(indice) : (indice.suppression = true)">
+                  {{indice.suppression ? "Confirmer la suppression" : "Supprimer"}}
+          </button>
         </form>
       </div>
     </div>
