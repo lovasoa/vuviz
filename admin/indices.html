@@ -35,34 +35,43 @@
     </div>
 
     <div ng-repeat="indice in indices|cherche:recherche track by indice.id"
-        ng-class="{'card':true, 'indice-disabled':indice.disabled}">
-      <h4 class="card-header" ng-if="indice.nouveau">Ajouter un nouvel indice</h4>
+        ng-class="{'card':true, 'indice-disabled':indice.disabled, 'card-inverse':indice.suppression, 'card-danger':indice.suppression}">
+      <h3 class="card-header" ng-if="indice.nouveau">Créer un nouvel indice</h3>
       <div class="card-block">
-        <form class="form-inline">
+        <h4 class="card-title">{{indice.nom}}</h4>
+        <form class="form-inline" ng-submit="postIndice(indice)">
           <input type="color" class="form-control couleur-indice"
                 ng-disabled="indice.disabled"
-                ng-model="indice.couleur">
+                ng-model="indice.couleur"
+                title="Couleur associée à l'indice">
           <input type="text" class="form-control"
                   placeholder="nom de l'indice"
                   required="true"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.nom">
+                  ng-model="indice.nom"
+                  title="Nom de l'indice (ne peut pas être vide)">
           <select class="form-control"
                   ng-options="cont for cont in continents"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.continent"></select>
-          <label>Indice sectoriel ?<input type="checkbox" ng-model="indice.sectoriel"></label>
-          <button type="button"
+                  ng-model="indice.continent"
+                  title="Continent">
+          </select>
+          <label title="Indice global ou sectoriel">Indice sectoriel ?
+            <input type="checkbox" ng-model="indice.sectoriel"
+                   title="Cocher si l'indice est sectoriel">
+          </label>
+          <input type="submit"
                   ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-success':indice.nouveau, 'form-control':1}"
                   ng-disabled="indice.disabled"
-                  ng-click="postIndice(indice)">
-                  {{indice.nouveau ? "Créer" : "Mettre à jour"}}
-          </button>
+                  ng-value="indice.nouveau ? 'Créer' : 'Mettre à jour'"
+                  title="Enregistrer les valeurs dans la base de données">
+          </input>
           <button type="button" class="btn btn-danger form-control"
                   ng-disabled="indice.disabled"
                   ng-if="!indice.nouveau"
                   ng-blur="indice.suppression = false"
-                  ng-click="indice.suppression ? supprIndice(indice) : (indice.suppression = true)">
+                  ng-click="indice.suppression ? supprIndice(indice) : (indice.suppression = true)"
+                  title="Supprimer définitivement cet indice">
                   {{indice.suppression ? "Confirmer la suppression" : "Supprimer"}}
           </button>
         </form>
