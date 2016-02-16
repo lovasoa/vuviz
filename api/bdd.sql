@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: prefibcoti1.mysql.db
--- Generation Time: Feb 11, 2016 at 11:09 AM
+-- Generation Time: Feb 16, 2016 at 04:18 PM
 -- Server version: 5.5.46-0+deb7u1-log
 -- PHP Version: 5.3.8
 
@@ -39,6 +39,11 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
   `id_type_commentaire` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `commentaire`
+--
+
+TRUNCATE TABLE `commentaire`;
 -- --------------------------------------------------------
 
 --
@@ -51,6 +56,11 @@ CREATE TABLE IF NOT EXISTS `commentaire_indice` (
   `id_indice` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `commentaire_indice`
+--
+
+TRUNCATE TABLE `commentaire_indice`;
 -- --------------------------------------------------------
 
 --
@@ -63,6 +73,11 @@ CREATE TABLE IF NOT EXISTS `continent` (
   `nom_continent` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `continent`
+--
+
+TRUNCATE TABLE `continent`;
 --
 -- Dumping data for table `continent`
 --
@@ -85,8 +100,13 @@ CREATE TABLE IF NOT EXISTS `indice` (
   `id_continent` int(11) DEFAULT NULL,
   `couleur` char(7) DEFAULT NULL,
   `sectoriel` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `indice`
+--
+
+TRUNCATE TABLE `indice`;
 --
 -- Dumping data for table `indice`
 --
@@ -123,6 +143,11 @@ CREATE TABLE IF NOT EXISTS `type_commentaire` (
   `couleur` char(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `type_commentaire`
+--
+
+TRUNCATE TABLE `type_commentaire`;
 -- --------------------------------------------------------
 
 --
@@ -136,6 +161,11 @@ CREATE TABLE IF NOT EXISTS `type_valeur` (
   `couleur_type_valeur` char(7) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
+--
+-- Truncate table before insert `type_valeur`
+--
+
+TRUNCATE TABLE `type_valeur`;
 --
 -- Dumping data for table `type_valeur`
 --
@@ -160,6 +190,18 @@ CREATE TABLE IF NOT EXISTS `valeur` (
   `est_prevision` tinyint(1) DEFAULT NULL,
   `annuelle` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Truncate table before insert `valeur`
+--
+
+TRUNCATE TABLE `valeur`;
+--
+-- Dumping data for table `valeur`
+--
+
+INSERT INTO `valeur` (`id_indice`, `periode`, `id_type_valeur`, `valeur`, `est_prevision`, `annuelle`) VALUES
+(1, '2016-01-01', 2, 125, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -218,7 +260,7 @@ ALTER TABLE `valeur`
 -- AUTO_INCREMENT for table `indice`
 --
 ALTER TABLE `indice`
-  MODIFY `id_indice` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `id_indice` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `type_valeur`
 --
