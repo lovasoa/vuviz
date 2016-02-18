@@ -9,13 +9,16 @@ INNER JOIN type_valeur ON type_valeur.id_type_valeur = valeur.id_type_valeur
 INNER JOIN indice ON valeur.id_indice = indice.id_indice
 WHERE annuelle = ?
 ");
-$stmt->execute(array($_GET['annuelle']));
+$stmt->execute(array($_GET['duree'] === "annuelle"));
 $res = array();
 foreach ($stmt as $row) {
+	/* Type de données:
+		{"periode":2016,"indice":"DOW JONES","value":5500, "type":"moyenne","prevision":true}
+	*/
   $res[] = array(
-    "nom_indice" => $row['nom_indice'],
+    "indice"     => $row['nom_indice'],
     "type"       => $row['nom_type_valeur'],
-    "valeur"     => $row['valeur'],
+    "valeur"     => floatval($row['valeur']),
     "periode"    => $row['periode'],
     "prevision"  => boolval($row['est_prevision'])
   );
