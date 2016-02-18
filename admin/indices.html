@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
   <link rel="stylesheet" href="indices.css">
 
-  <title>PRÉFIB - administration</title>
+  <title>{{status}}PRÉFIB - administration</title>
 </head>
 <body class="container-fluid">
   <nav class="navbar navbar-dark bg-inverse">
@@ -34,30 +34,30 @@
       </div>
     </div>
 
-    <div ng-repeat="indice in indices|cherche:recherche track by indice.id"
+    <div ng-repeat="indice in indices.liste|cherche:recherche track by indice.d.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled, 'card-inverse':indice.suppression, 'card-danger':indice.suppression}">
       <h3 class="card-header" ng-if="indice.nouveau">Créer un nouvel indice</h3>
       <div class="card-block">
-        <h4 class="card-title">{{indice.nom}}</h4>
-        <form class="form-inline" ng-submit="postIndice(indice)">
+        <h4 class="card-title">{{indice.d.nom}}</h4>
+        <form class="form-inline" ng-submit="indice.post()">
           <input type="color" class="form-control couleur-indice"
                 ng-disabled="indice.disabled"
-                ng-model="indice.couleur"
+                ng-model="indice.d.couleur"
                 title="Couleur associée à l'indice">
           <input type="text" class="form-control"
                   placeholder="nom de l'indice"
                   required="true"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.nom"
+                  ng-model="indice.d.nom"
                   title="Nom de l'indice (ne peut pas être vide)">
           <select class="form-control"
-                  ng-options="cont for cont in continents"
+                  ng-options="cont for cont in indices.continents"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.continent"
+                  ng-model="indice.d.continent"
                   title="Continent">
           </select>
           <label title="Indice global ou sectoriel">Indice sectoriel ?
-            <input type="checkbox" ng-model="indice.sectoriel"
+            <input type="checkbox" ng-model="indice.d.sectoriel"
                    title="Cocher si l'indice est sectoriel">
           </label>
           <input type="submit"
@@ -70,10 +70,28 @@
                   ng-disabled="indice.disabled"
                   ng-if="!indice.nouveau"
                   ng-blur="indice.suppression = false"
-                  ng-click="indice.suppression ? supprIndice(indice) : (indice.suppression = true)"
+                  ng-click="indice.clic_supprimer()"
                   title="Supprimer définitivement cet indice">
                   {{indice.suppression ? "Confirmer la suppression" : "Supprimer"}}
           </button>
+        </form>
+        <h5 class="card-title">Valeurs</h5>
+        <form class="form-inline">
+          <table class="table table-bordered">
+            <thead>
+              <tr><th>Date</th><th>Valeur</th></tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="v in valeurs | filter:{indice:indice.nom}:true">
+                <td><input class="form-control" ng-model="v.periode"></td>
+                <td><input class="form-control" ng-model="v.valeur"></td>
+              </tr>
+              <tr class="add-value">
+                <td><input class="form-control" placeholder="nouvelle date"/></td>
+                <td><input class="form-control" placeholder="nouvelle valeur"/></td>
+              </tr>
+            </tbody>
+          </table>
         </form>
       </div>
     </div>
