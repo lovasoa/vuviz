@@ -75,23 +75,35 @@
                   {{indice.suppression ? "Confirmer la suppression" : "Supprimer"}}
           </button>
         </form>
-        <h5 class="card-title">Valeurs</h5>
-        <form class="form-inline">
-          <table class="table table-bordered">
+        <form class="form-inline" ng-if="!indice.nouveau">
+          <h5 class="card-title">Valeurs</h5>
+          <table class="table table-bordered" ng-if="indice.valeurs.length > 0">
             <thead>
               <tr><th>Date</th><th>Valeur</th></tr>
             </thead>
             <tbody>
-              <tr ng-repeat="v in valeurs | filter:{indice:indice.nom}:true">
-                <td><input class="form-control" ng-model="v.periode"></td>
-                <td><input class="form-control" ng-model="v.valeur"></td>
-              </tr>
-              <tr class="add-value">
-                <td><input class="form-control" placeholder="nouvelle date"/></td>
-                <td><input class="form-control" placeholder="nouvelle valeur"/></td>
-              </tr>
+              <tr ng-repeat="val in indice.valeurs">
+                <td>
+                  <input  type="text"
+                          class="form-control"
+                          ng-model="val.d.periode"
+                          ng-blur="val.format()"
+                          placeholder="date" />
+                 </td>
+                 <td>
+                   <input  type="number"
+                           class="form-control"
+                           ng-model="val.d.valeur"
+                           ng-blur="val.format()"
+                           placeholder="valeur de l'indice" />
+                  </td>
+                </tr>
             </tbody>
           </table>
+          <button class="form-control btn btn-default"
+                  ng-click="indice.ajout_valeur()">
+            Ajouter une valeur
+          </button>
         </form>
       </div>
     </div>
