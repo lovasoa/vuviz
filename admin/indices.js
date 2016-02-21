@@ -124,6 +124,15 @@ app.controller('IndicesController', function($scope, $http) {
            d.nom.toLowerCase().indexOf(recherche.toLowerCase()) >= 0 ||
            this.nouveau;
   };
+  Indice.prototype.csv = function () {
+    //Retourne une chaine de caractères représentant les valeurs de l'indice au format csv
+    return "Date,Valeur,Type de valeur,Prévision\n" +
+            this.valeurs.map(function(v){return v.csv()}).join('\n');
+  };
+  Indice.prototype.ouvrir_csv = function () {
+    var blob = new Blob([this.csv()], {type: "text/csv"});
+    window.location = URL.createObjectURL(blob);
+  };
 
   function Valeur(indice, data) {
     this.indice = indice;
@@ -149,6 +158,13 @@ app.controller('IndicesController', function($scope, $http) {
     this.d.id_indice = this.indice.d.id;
     this.d.annuelle = true;
     return this.d;
+  };
+  Valeur.prototype.csv = function () {
+    this.format();
+    var d = this.d;
+    return ["periode","valeur","type","prevision"]
+              .map(function(h){return d[h]})
+              .join(',');
   };
 
   function requete (opts) {

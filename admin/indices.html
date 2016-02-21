@@ -113,9 +113,13 @@
                 </tr>
             </tbody>
           </table>
+          <input type="submit"
+                  class="form-control btn btn-default"
+                  ng-click="indice.ajout_valeur()"
+                  value="Ajouter une valeur" />
           <button class="form-control btn btn-default"
-                  ng-click="indice.ajout_valeur()">
-            Ajouter une valeur
+                  ng-click="indice.ouvrir_csv()">
+              Exporter en CSV
           </button>
         </form>
       </div>
