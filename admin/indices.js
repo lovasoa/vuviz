@@ -133,6 +133,9 @@ app.controller('IndicesController', function($scope, $http) {
     var blob = new Blob([this.csv()], {type: "text/csv"});
     window.location = URL.createObjectURL(blob);
   };
+  Indice.prototype.import_csv = function(file) {
+    console.log(file);
+  }
 
   function Valeur(indice, data) {
     this.indice = indice;
