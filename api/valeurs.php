@@ -8,6 +8,7 @@ FROM `valeur`
 INNER JOIN type_valeur ON type_valeur.id_type_valeur = valeur.id_type_valeur
 INNER JOIN indice ON valeur.id_indice = indice.id_indice
 WHERE annuelle = ?
+ORDER BY valeur.id_indice, valeur.periode, valeur.id_type_valeur
 ");
 $stmt->execute(array($_GET['duree'] === "annuelle"));
 $res = array();

@@ -149,7 +149,7 @@ app.controller('IndicesController', function($scope, $http) {
     this.d.id_indice = this.indice.d.id;
     this.d.annuelle = true;
     return this.d;
-  }
+  };
 
   function requete (opts) {
     // Fait une requête au serveur et met à jour le statut de l'application
