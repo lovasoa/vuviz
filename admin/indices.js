@@ -73,6 +73,7 @@ app.controller('IndicesController', function($scope, $http) {
     this.disabled    = false;
     this.valeurs     = [];
     this.d           = data;
+    this.url_csv     = "#";
   }
   Indice.prototype.ajout_valeur = function (data) {
     this.valeurs.push(new Valeur(this, data));
@@ -126,22 +127,74 @@ app.controller('IndicesController', function($scope, $http) {
   };
   Indice.prototype.csv = function () {
     //Retourne une chaine de caractères représentant les valeurs de l'indice au format csv
-    return "Date,Valeur,Type de valeur,Prévision\n" +
+    return Valeur.entete_csv() + "\n" +
             this.valeurs.map(function(v){return v.csv()}).join('\n');
   };
-  Indice.prototype.ouvrir_csv = function () {
+  Indice.prototype.creer_csv = function () {
     var blob = new Blob([this.csv()], {type: "text/csv"});
-    window.location = URL.createObjectURL(blob);
+    this.url_csv = URL.createObjectURL(blob);
   };
   Indice.prototype.import_csv = function(file) {
-    console.log(file);
+    var indice = this;
+    var r = new FileReader;
+    r.onload = function() {$scope.$apply(function(){
+      var csv = r.result;
+      var lines = csv.split('\n');
+      if (lines[0] !== Valeur.entete_csv()) {
+        alert("Fichier invalide.");
+        return;
+      }
+      for (var i = 1, n = 0; i < lines.length; i++) {
+        try {
+          var val = Valeur.parse_csv(indice, lines[i]);
+          indice.valeurs[n++] = val;
+        } catch (e) {
+          console.log("Valeur invalide dans le fichier CSV.", e);
+        }
+      }
+      indice.valeurs.length = n;
+    })};
+    r.readAsText(file);
   }
 
   function Valeur(indice, data) {
     this.indice = indice;
     if (!data) data = Valeur.creer_donnees();
     this.d = data;
+    this.format();
   }
+  Valeur.champs = [
+    {
+      "desc": "Date",
+      "nom": "periode",
+      "format": function(x) {return (new Date(x)).toISOString().slice(0,10)}
+    },
+    {
+      "desc": "Valeur",
+      "nom": "valeur",
+      "format": parseFloat
+    },
+    {
+      "desc": "Type de valeur",
+      "nom": "type"
+    },
+    {
+      "desc": "Prévision",
+      "nom": "prevision",
+      "format": function(x) {return !{FAUX:1,FALSE:1,false:1,0:1}[x]}
+    }
+  ];
+  Valeur.entete_csv = function() {
+    return Valeur.champs.map(function (c){return c.desc}).join(',');
+  };
+  Valeur.parse_csv = function (indice, csv) {
+    var data = csv.split(",").reduce(function(data, val, indice) {
+      var col = Valeur.champs[indice];
+      data[col.nom] = val;
+      return data;
+    }, {});
+    return new Valeur(indice, data);
+  };
   Valeur.creer_donnees = function () {
       return {
         periode:"",
@@ -156,8 +209,10 @@ app.controller('IndicesController', function($scope, $http) {
            this.d.valeur !== "";
   };
   Valeur.prototype.format = function() {
-    this.d.periode = (new Date(this.d.periode)).toISOString().slice(0,10);
-    this.d.valeur  = parseFloat(this.d.valeur);
+    for (var i = 0; i < Valeur.champs.length; i++) {
+      var col = Valeur.champs[i];
+      if (col.format) this.d[col.nom] = col.format(this.d[col.nom]);
+    }
     this.d.id_indice = this.indice.d.id;
     this.d.annuelle = true;
     return this.d;
@@ -165,8 +220,8 @@ app.controller('IndicesController', function($scope, $http) {
   Valeur.prototype.csv = function () {
     this.format();
     var d = this.d;
-    return ["periode","valeur","type","prevision"]
-              .map(function(h){return d[h]})
+    return Valeur.champs
+              .map(function(c){return d[c.nom]})
               .join(',');
   };
 
@@ -183,6 +238,7 @@ app.controller('IndicesController', function($scope, $http) {
     });
   }
 
+  $scope.Valeur = Valeur;
   $scope.status = "✓";
   $scope.indices = new ListeIndices;
   $scope.recherche = "";
@@ -196,3 +252,7 @@ app.filter("cherche", function($filter){
     });
   };
 });
+
+app.config(['$compileProvider', function( $compileProvider ){
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+}]);

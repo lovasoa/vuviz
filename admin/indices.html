@@ -79,7 +79,7 @@
           <h5 class="card-title">Valeurs</h5>
           <table class="table table-sm" ng-if="indice.valeurs.length > 0">
             <thead>
-              <tr><th>Date<th>Valeur<th>Type de valeur<th>Prévision ?</tr>
+              <tr><th ng-repeat="c in Valeur.champs">{{c.desc}}</th></tr>
             </thead>
             <tbody>
               <tr ng-repeat="val in indice.valeurs"
@@ -117,11 +117,13 @@
                   class="form-control btn btn-default"
                   ng-click="indice.ajout_valeur()"
                   value="Ajouter une valeur" />
-          <button class="form-control btn btn-default"
-                  ng-click="indice.ouvrir_csv()"
-                  title="Exporter les valeurs dans un fichier CSV, pour les afficher et les modifier dans un tableur">
+          <a class="form-control btn btn-default"
+              href="{{indice.url_csv}}"
+              download="{{indice.d.nom}}.csv"
+              ng-click="indice.creer_csv()"
+              title="Exporter les valeurs dans un fichier CSV, pour les afficher et les modifier dans un tableur">
               Exporter en CSV
-          </button>
+          </a>
           <label class="file" title="Importer un fichier CSV contenant des valeurs">
             <input type="file" id="file"
                     accept="text/csv"
