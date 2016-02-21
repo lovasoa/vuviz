@@ -122,7 +122,7 @@
               download="{{indice.d.nom}}.csv"
               ng-click="indice.creer_csv()"
               title="Exporter les valeurs dans un fichier CSV, pour les afficher et les modifier dans un tableur">
-              Exporter en CSV
+              {{indice.valeurs.length ? "Exporter en CSV" : "Télécharger un fichier CSV à compléter"}}
           </a>
           <label class="file" title="Importer un fichier CSV contenant des valeurs">
             <input type="file" id="file"
