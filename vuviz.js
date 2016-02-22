@@ -45,14 +45,16 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     $scope.duree_prevision = "annuelle";
   // Récupération des bonnes valeurs lorsque la durée de prévision change
     function recup_valeurs (duree) {
+      console.log(duree);
       $http.get("api/valeurs.php?duree="+duree).then(function res_valeurs(res) {
         $scope.historiqueValeurs = res.data.map(function(val) {
           val.periode = (new Date(val.periode)).getTime();
           return val;
         });
+        console.log($scope.historiqueValeurs);
       });
     }
-    $scope.$watch("duree_prevision", function (varname, ancienne_duree, nouvelle_duree) {
+    $scope.$watch("duree_prevision", function (nouvelle_duree, ancienne_duree) {
       recup_valeurs(nouvelle_duree);
       // Vérification que la durée soit bien toujours "annuelle" ou "trimestrielle"
       return ~$scope.durees_possibles.indexOf(nouvelle_duree) ? nouvelle_duree : ancienne_duree;
