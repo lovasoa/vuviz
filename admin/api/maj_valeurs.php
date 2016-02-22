@@ -6,19 +6,19 @@ $res = array(
   "deleted" => 0,
   "failed"  => 0
 );
-$res["deleted"] = $BDD->exec("DELETE FROM valeur WHERE id_indice = " . intval($valeurs[0]->id_indice));
+$id_indice = intval($_GET["id_indice"]);
+$res["deleted"] = $BDD->exec("DELETE FROM valeur WHERE id_indice = " . $id_indice);
 $stmt = $BDD->prepare("
 INSERT INTO
   valeur (id_indice, periode, valeur, est_prevision, annuelle,
           id_type_valeur)
-  VALUES (?        , ?      , ?     , ?            , ?        ,
+  VALUES ($id_indice, ?      , ?     , ?            , ?        ,
           (SELECT id_type_valeur FROM type_valeur WHERE nom_type_valeur = ?))
 ");
 
 $nbradded = 0;
 foreach ($valeurs as $valeur) {
   $ret = $stmt->execute(array(
-      $valeur->id_indice,
       $valeur->periode,
       $valeur->valeur,
       $valeur->prevision,

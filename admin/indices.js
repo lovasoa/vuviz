@@ -98,7 +98,6 @@ app.controller('IndicesController', function($scope, $http) {
     // Met à jour la base de données avec un indice modifié
     var indice = this;
     indice.disabled = true;
-    console.log(this.valeurs);
     requete({
       url  : indice.nouveau ? "api/creer_indice.php" : "api/maj_indice.php",
       data : indice.d,
@@ -106,7 +105,7 @@ app.controller('IndicesController', function($scope, $http) {
         if (indice.nouveau) $scope.indices.nouvel_indice_vide();
         indice.disabled = indice.nouveau = false;
         requete({
-          url: "api/maj_valeurs.php",
+          url: "api/maj_valeurs.php?id_indice=" + indice.d.id,
           data: indice.formater_valeurs()
         });
       }
