@@ -239,28 +239,16 @@
           </h4>
 
           <div class="card-block">
-            <div class="row">
-              <div class="col-md-6">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <span class="label label-danger label-pill">↘</span>
-                    La Russie déclare la guerre à la Turquie</li>
-                  <li class="list-group-item">
-                    <span class="label label-danger label-pill">↘</span>
-                    Grand moratoire sur la vente de carottes râpées</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <span class="label label-warning label-pill">→</span>
-                    AirFrance rachètera Bonduelle</li>
-                  <li class="list-group-item">
-                    <span class="label label-success label-pill">↗</span>
-                    Total achètera une petite éolienne en Picardie</li>
-                </ul>
-              </div>
-            </div>
+            <ul class="list-group">
+              <li class="list-group-item"
+                  ng-repeat="com in commentaires">
+                <span class="label label-pill"
+                      style="background-color:{{com.type.couleur}}"
+                      title="{{com.type.description}}">{{com.type.icone}}</span>
+                  <i ng-repeat="indice in com.indices" class="liste-virgules">{{indice.nom}}</i>:
+                  {{com.texte}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>

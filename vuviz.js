@@ -8,6 +8,8 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     $scope.indices = [];
     //données sur les continents
     $scope.liste_continents = [];
+    // Commentaires sur l'évolution des valeurs
+    $scope.commentaires = [];
     $http.get("api/indices.php").then(function(res){
       // Téléchargement des indices depuis l'API
       $scope.indices = res.data.map(function(indice){
@@ -19,8 +21,18 @@ app.controller('VuvizController', function($scope, $filter, $http) {
           continents.push(indice.continent);
         return continents;
       }, []);
-    });
 
+       // Récupération des commentaires sur les indices
+       $http.get("api/commentaires.php").then(function(res){
+         $scope.commentaires = res.data.commentaires;
+         angular.forEach($scope.commentaires, function (com) {
+           com.type = res.data.types[com.type];
+           com.indices = $scope.indices.filter(function(indice){
+             return ~com.indices.indexOf(indice.id);
+           });
+         });
+       });
+    });
 
 	//INITIALISATION
 	//initialisation des filtres
