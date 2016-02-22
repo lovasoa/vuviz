@@ -52,7 +52,7 @@ app.controller('VuvizController', function($scope, $filter, $http) {
         });
       });
     }
-    $scope.watch("duree_prevision", function (varname, ancienne_duree, nouvelle_duree) {
+    $scope.$watch("duree_prevision", function (varname, ancienne_duree, nouvelle_duree) {
       recup_valeurs(nouvelle_duree);
       // Vérification que la durée soit bien toujours "annuelle" ou "trimestrielle"
       return ~$scope.durees_possibles.indexOf(nouvelle_duree) ? nouvelle_duree : ancienne_duree;
