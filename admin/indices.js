@@ -159,15 +159,20 @@ app.controller('IndicesController', function($scope, $http) {
 
   function Valeur(indice, data) {
     this.indice = indice;
-    if (!data) data = Valeur.creer_donnees();
-    this.d = data;
-    this.format();
+    if (!data) this.d = Valeur.creer_donnees();
+    else {
+      this.d = data;
+      this.format();
+    }
   }
   Valeur.champs = [
     {
       "desc": "Date",
       "nom": "periode",
-      "format": function(x) {return (new Date(x)).toISOString().slice(0,10)}
+      "format": function(x) {
+        var d = new Date(x);
+        return isNaN(d.getTime()) ? "" : d.toISOString().slice(0,10);
+      }
     },
     {
       "desc": "Valeur",
