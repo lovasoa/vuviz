@@ -241,7 +241,8 @@
           <div class="card-block">
             <ul class="list-group">
               <li class="list-group-item"
-                  ng-repeat="com in commentaires">
+                  ng-repeat="com in commentaires"
+                  ng-class="{invisible:!(com.indices | selectionne)}">
                 <span class="label label-pill"
                       style="background-color:{{com.type.couleur}}"
                       title="{{com.type.description}}">{{com.type.icone}}</span>

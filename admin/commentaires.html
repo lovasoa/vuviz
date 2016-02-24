@@ -1,0 +1,23 @@
+<div class="card"
+      ng-repeat="com in commentaires">
+  <h3 class="card-header">Commentaire</h3>
+  <div class="card-block">
+    <form class="form-inline">
+      <h4>Commentaire</h4>
+      <textarea class="form-control" ng-model="com.texte"></textarea>
+      <h4>Type</h4>
+      <label ng-repeat="type in types"
+              class="label label-pill labell-success"
+              ng-style="{backgroundColor:type.couleur}">
+        <input type="radio" name="typecom-{{com.id}}">
+        {{type.description}}
+        </input>
+      </label>
+      <h4>Indices concernés</h4>
+        <span class="label label-pill label-success"
+              ng-repeat="indice in com.indices">
+              {{indice | nomIndice:indices}}
+        </span>
+    </form>
+  </div>
+</div>

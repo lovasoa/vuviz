@@ -1,22 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr" ng-app="vuvizApp" ng-controller="IndicesController">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
-  <link rel="stylesheet" href="indices.css">
-
-  <title>{{status}}PRÉFIB - administration</title>
-</head>
-<body class="container-fluid">
-  <nav class="navbar navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">PRÉFIB - Administration</a>
-  </nav>
-
-  <main class="container-fluid minifenetres">
+<main>
     <h3>Liste des indices
       <small class="label label-pill"
               ng-class="{'label-success':status==='✓', 'label-warning':status==='⥀', 'label-error':status==='⚠'}">
@@ -133,10 +115,4 @@
         </form>
       </div>
     </div>
-  </main>
-
-  <!-- jQuery first, then Bootstrap JS. -->
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="indices.js"></script>
-</body>
-</html>
+</main>

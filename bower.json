@@ -2,8 +2,9 @@
     "name": "prefib",
     "version": "0.0.1",
     "dependencies": {
-        "bootstrap": "4.0",
-        "angular": "1.4.x",
-        "angular-nvd3": ""
+        "bootstrap": "4.x",
+        "angular": "1.x",
+        "angular-nvd3": "",
+        "angular-route": "1.x"
     }
 }

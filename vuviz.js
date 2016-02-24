@@ -352,6 +352,14 @@ app.filter("selectedValues", function($filter){
   };
 });
 
+app.filter("selectionne", function(){
+  return function selectionne (indices) {
+    return indices.reduce(function (selectionne, indice){
+      return selectionne || indice.selected;
+    }, false);
+  };
+});
+
 function memoize(f) {
   var dict = {};
   return function() {

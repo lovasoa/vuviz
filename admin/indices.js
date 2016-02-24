@@ -1,6 +1,7 @@
-var app = angular.module('vuvizApp', []);
+var adminIndices = angular.module('AdminIndices', []);
 
-app.controller('IndicesController', function($scope, $http) {
+adminIndices.controller('IndicesController', function($scope, $http) {
+  console.log("J'existe");
   function ListeIndices() {
     this.dernier_id = 0;
     this.liste = [];
@@ -249,7 +250,7 @@ app.controller('IndicesController', function($scope, $http) {
   $scope.valeurs = [];
 });
 
-app.filter("cherche", function($filter){
+adminIndices.filter("cherche", function($filter){
   return function (indices, recherche){
     return $filter("filter")(indices, function correspond(indice) {
       return indice.affiche_recherche(recherche);
@@ -257,6 +258,6 @@ app.filter("cherche", function($filter){
   };
 });
 
-app.config(['$compileProvider', function( $compileProvider ){
+adminIndices.config(['$compileProvider', function($compileProvider){
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
 }]);
