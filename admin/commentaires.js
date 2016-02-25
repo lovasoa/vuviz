@@ -3,6 +3,7 @@ adminCom.controller('CommentairesController', function($scope, $http) {
   $scope.commentaires = [];
   $scope.indices = [];
   $scope.types = [];
+  $scope.rechercheIndice = "";
   $http.get("../api/indices.php").then(function(res){
     $scope.indices = res.data;
   });
@@ -10,6 +11,12 @@ adminCom.controller('CommentairesController', function($scope, $http) {
     $scope.commentaires = res.data.commentaires;
     $scope.types = res.data.types;
   });
+
+  $scope.switchIndice = function (liste, elem) {
+    var idx = liste.indexOf(elem);
+    if (idx === -1) liste.push(elem)
+    else liste.splice(idx, 1);
+  };
 });
 
 adminCom.filter('nomIndice', function(){

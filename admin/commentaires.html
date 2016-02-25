@@ -14,9 +14,15 @@
         </input>
       </label>
       <h4>Indices concernés</h4>
-        <span class="label label-pill label-success"
-              ng-repeat="indice in com.indices">
-              {{indice | nomIndice:indices}}
+        <input type="search"
+              class="form-control"
+              ng-model="rechercheIndice"/>
+        <span class="label label-pill"
+              ng-class="{'label-success':com.indices.indexOf(indice.id)>-1,
+                         'label-warning':com.indices.indexOf(indice.id)===-1}"
+              ng-repeat="indice in indices | filter:rechercheIndice"
+              ng-click="switchIndice(com.indices, indice.id)">
+              {{indice.continent}} / {{indice.nom}}
         </span>
     </form>
   </div>
