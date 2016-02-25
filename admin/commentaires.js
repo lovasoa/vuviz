@@ -50,7 +50,18 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
         "indices": [],
         "date" : (new Date).toISOString().slice(0,10)
     });
-  }
+  };
+
+  $scope.sauvegarder = function sauvegarder() {
+    var data = {
+      "commentaires": $scope.commentaires,
+      "types": $scope.types
+    };
+    $scope.sauvagerde_inactive = true;
+    $http.post("api/maj_commentaires.php", data).then(function() {
+      $scope.sauvagerde_inactive = false;
+    });
+  };
 });
 
 adminCom.filter('nomIndice', function(){

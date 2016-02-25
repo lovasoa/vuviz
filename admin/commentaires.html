@@ -86,5 +86,9 @@
 </div>
 
 <div>
-  <button class="btn btn-warning btn-lg form-control">Sauvegarder toutes les modifications sur le serveur</button>
+  <button class="btn btn-warning btn-lg form-control"
+          ng-click="sauvegarder()"
+          ng-disabled="sauvegarde_inactive">
+          Sauvegarder toutes les modifications sur le serveur
+  </button>
 </div>
