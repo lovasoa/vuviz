@@ -24,4 +24,20 @@ adminCom.filter('nomIndice', function(){
     var indice = indices.filter(function(i){return i.id === num})[0];
     return indice.continent + ' / ' + indice.nom;
   };
+});
+
+adminCom.filter('couper', function(){
+  // Coupe une chaîne de caractères après n caractères, ajoutant des points
+  // de suspension si la chaîne a été coupée
+  return function(texte, n){
+    // Essaye de couper après un mot
+    var res = "", splitted = texte.split(' ');
+    for(var i=0; i<splitted.length; i++) {
+      if (res.length + splitted[i].length > n) break;
+      res += splitted[i] + ' ';
+    }
+    if (res.length === 0)
+      res = texte.slice(0, n-1);
+    return res + (res.length < texte.length ? '…' : '');
+  };
 })
