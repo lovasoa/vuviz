@@ -242,7 +242,7 @@
             <ul class="list-group">
               <li class="list-group-item"
                   ng-repeat="com in commentaires"
-                  ng-class="{invisible:!(com.indices | selectionne)}">
+                  ng-style="{opacity:(com.indices | selectionne) ? 1 : 0.4}">
                 <span class="label label-pill"
                       style="background-color:{{com.type.couleur}}"
                       title="{{com.type.description}}">{{com.type.icone}}</span>
