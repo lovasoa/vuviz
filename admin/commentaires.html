@@ -34,6 +34,10 @@
 </div>
 
 <h1>Liste des commentaires</h1>
+<div class="card">
+<button class="card-block btn btn-primary btn-lg form-control">Ajouter un nouveau commentaire</button>
+</div>
+
 <div class="card"
       ng-repeat="(comidx, com) in commentaires">
   <h3 class="card-header">{{com.texte | couper:50}}</h3>
@@ -65,8 +69,13 @@
               ng-click="switchIndice(com.indices, indice.id)">
               {{indice.continent}} / {{indice.nom}}
         </button></p>
+        <h4>Date</h4>
+        <input class="form-control" ng-model="com.date"
+                placeholder="AAAA-MM-JJ"/>
     </form>
-    <button type="button" class="btn btn-danger form-control"
+  </div>
+  <div class="card-footer">
+    <button type="button" class="btn btn-danger"
             ng-click="commentaires.splice(comidx, 1)">
       Supprimer ce commentaire
     </button>
@@ -74,6 +83,5 @@
 </div>
 
 <div>
-  <button class="btn btn-primary">Ajouter un nouveau commentaire</button>
-  <button class="btn btn-warning">Envoyer les modifications au serveur</button>
+  <button class="btn btn-warning btn-lg form-control">Sauvegarder toutes les modifications sur le serveur</button>
 </div>
