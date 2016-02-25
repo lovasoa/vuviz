@@ -27,13 +27,30 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
   }
 
   $scope.nouveauType = function () {
+    var idmax = $scope.types.reduce(function(maximum, type){
+      return Math.max(type.id, maximum);
+    }, 0);
     $scope.types.push({
       "icone": "",
       "description": "",
       "couleur": "#123456",
-      "id" : $scope.types.reduce(function(m,i){return i.id>m?i.id:m}, 0)+1
+      "id" : idmax + 1
     });
   };
+
+  $scope.nouveauCom = function nouveauCom() {
+    //Crée un nouveau commentaire
+    var idmax = $scope.types.reduce(function(maximum, com){
+      return Math.max(com.id, maximum);
+    }, 0);
+    $scope.commentaires.unshift({
+        "id" : idmax + 1,
+        "texte" : "",
+        "type": 0,
+        "indices": [],
+        "date" : (new Date).toISOString().slice(0,10)
+    });
+  }
 });
 
 adminCom.filter('nomIndice', function(){
