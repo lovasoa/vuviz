@@ -1,5 +1,5 @@
 var adminCom = angular.module('AdminCommentaires', []);
-adminCom.controller('CommentairesController', function($scope, $http) {
+adminCom.controller('CommentairesController', function($scope, $filter, $http) {
   $scope.commentaires = [];
   $scope.indices = [];
   $scope.types = [];
@@ -16,6 +16,21 @@ adminCom.controller('CommentairesController', function($scope, $http) {
     var idx = liste.indexOf(elem);
     if (idx === -1) liste.push(elem)
     else liste.splice(idx, 1);
+  };
+
+  $scope.supprType = function(type) {
+    for (var i = 0; i < $scope.commentaires.length; i++) {
+      var com = $scope.commentaires[i];
+      if (com.type === type.id) {
+        alert("Vous ne pouvez pas supprimer le type «" +
+              type.description +
+              "» car le commentaire «" +
+              $filter("couper")(com.texte, 50) +
+              "» l'utilise.");
+        return;
+      };
+    }
+    $scope.types = $scope.types.filter(function(t){return t!==type});
   };
 });
 
