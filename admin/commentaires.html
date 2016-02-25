@@ -35,14 +35,34 @@
 
 <h1>Liste des commentaires</h1>
 <div class="card">
-  <button class="card-block btn btn-primary btn-lg form-control"
+<div class="card-block row">
+  <div class="col-lg-3">
+  <button class="btn btn-primary form-control"
           ng-click="nouveauCom()">
     Ajouter un nouveau commentaire
   </button>
+  </div>
+  <div class="col-lg-5">
+  <input type="search" class="form-control"
+          placeholder="Rechercher un commentaire"
+          ng-model="filtreCommentaires"
+          title="N'afficher que les commentaires dont le nom, type, date ou indice correspond à la recherche"/>
+  </div>
+  <div class="col-lg-3">
+    <button class="btn btn-warning form-control"
+            ng-click="sauvegarder()"
+            ng-disabled="sauvegarde_inactive"
+            title="Sauvegarder toutes les modifications sur le serveur">
+            Sauvegarder
+    </button>
+  </div>
+</div>
 </div>
 
+<div class="card-deck-wrapper liste-commentaires"><div class="card-deck">
 <div class="card"
-      ng-repeat="(comidx, com) in commentaires">
+      ng-repeat="(comidx, com) in commentaires"
+      ng-class="{cache: !correspondRecherche(com)}">
   <h3 class="card-header">{{com.texte | couper:50}}</h3>
   <div class="card-block">
     <form>
@@ -84,11 +104,4 @@
     </button>
   </div>
 </div>
-
-<div>
-  <button class="btn btn-warning btn-lg form-control"
-          ng-click="sauvegarder()"
-          ng-disabled="sauvegarde_inactive">
-          Sauvegarder toutes les modifications sur le serveur
-  </button>
-</div>
+</div></div>

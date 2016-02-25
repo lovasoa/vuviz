@@ -4,6 +4,8 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
   $scope.indices = [];
   $scope.types = [];
   $scope.rechercheIndice = "";
+  $scope.filtreCommentaires = "";
+
   $http.get("../api/indices.php").then(function(res){
     $scope.indices = res.data;
   });
@@ -62,6 +64,28 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
       $scope.sauvagerde_inactive = false;
     });
   };
+
+  $scope.correspondRecherche = function(com) {
+    // Retourne vrai si le commentaire correspond à la recherche actuelle
+    var rec = $scope.filtreCommentaires.toLowerCase();
+
+    function isMatch(str) {
+      return ~str.toLowerCase().indexOf(rec);
+    };
+
+    if (isMatch(com.texte) || isMatch(com.date)) return true;
+
+    for (var i = 0; i < $scope.indices.length; i++) {
+      var indice = $scope.indices[i];
+      if (~com.indices.indexOf(indice.id) && isMatch(indice.nom)) return true;
+    }
+
+    for (var i = 0; i < $scope.types.length; i++) {
+      var type = $scope.types[i];
+      if (com.type === type.id  && (isMatch(type.description) || isMatch(type.icone))) return true;
+    }
+    return false;
+  };
 });
 
 adminCom.filter('nomIndice', function(){
@@ -85,4 +109,4 @@ adminCom.filter('couper', function(){
       res = texte.slice(0, n-1);
     return res + (res.length < texte.length ? '…' : '');
   };
-})
+});

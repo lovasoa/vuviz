@@ -10,3 +10,11 @@
 #recherche {
   width: 90%;
 }
+
+.liste-commentaires {
+  overflow: auto;
+}
+
+.cache {
+  display: none !important;
+}
