@@ -1,7 +1,7 @@
 <h1>Types de commentaires</h1>
 <div class="row">
   <div class="card col-lg-3"
-        ng-repeat="type in types">
+        ng-repeat="(typeidx, type) in types">
         <form>
           <label for="imgtype{{type.id}}"><strong>Nom</strong> du type de commentaire&nbsp;:</label>
           <input id="imgtype{{type.id}}"
@@ -18,7 +18,12 @@
                  class="form-control"
                  type="color"
                  ng-model="type.couleur" />
-        <button class="btn btn-danger" ng-click="supprType(type)">Supprimer</button>
+        <button class="btn btn-danger"
+                ng-click="types.splice(typeidx, 1)"
+                ng-disabled="typeUtilisePar(type)"
+                title="{{c = typeUtilisePar(type);
+                         c ? 'Le commentaire «' + c.texte + '» utilise ce type'
+                           : 'Supprimer ce type de commentaire'}}">Supprimer</button>
         </form>
   </div>
   <div class="col-lg-3">
@@ -30,7 +35,7 @@
 
 <h1>Liste des commentaires</h1>
 <div class="card"
-      ng-repeat="com in commentaires">
+      ng-repeat="(comidx, com) in commentaires">
   <h3 class="card-header">{{com.texte | couper:50}}</h3>
   <div class="card-block">
     <form>
@@ -61,5 +66,9 @@
               {{indice.continent}} / {{indice.nom}}
         </button></p>
     </form>
+    <button type="button" class="btn btn-danger form-control"
+            ng-click="commentaires.splice(comidx, 1)">
+      Supprimer ce commentaire
+    </button>
   </div>
 </div>

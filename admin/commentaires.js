@@ -18,20 +18,13 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
     else liste.splice(idx, 1);
   };
 
-  $scope.supprType = function(type) {
+  $scope.typeUtilisePar = function typeUtilisePar(type) {
+    // Retourne le premier commentaire qui utilise le type, ou undefined
     for (var i = 0; i < $scope.commentaires.length; i++) {
       var com = $scope.commentaires[i];
-      if (com.type === type.id) {
-        alert("Vous ne pouvez pas supprimer le type «" +
-              type.description +
-              "» car le commentaire «" +
-              $filter("couper")(com.texte, 50) +
-              "» l'utilise.");
-        return;
-      };
+      if (com.type === type.id) return com;
     }
-    $scope.types = $scope.types.filter(function(t){return t!==type});
-  };
+  }
 
   $scope.nouveauType = function () {
     $scope.types.push({
