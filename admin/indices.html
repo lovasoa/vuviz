@@ -43,7 +43,7 @@
                    title="Cocher si l'indice est sectoriel">
           </label>
           <input type="submit"
-                  ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-success':indice.nouveau, 'form-control':1}"
+                  ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-primary':indice.nouveau, 'form-control':1}"
                   ng-disabled="indice.disabled"
                   ng-value="indice.nouveau ? 'Créer' : 'Mettre à jour'"
                   title="Enregistrer les valeurs dans la base de données">
@@ -96,10 +96,10 @@
             </tbody>
           </table>
           <input type="submit"
-                  class="form-control btn btn-default"
+                  class="form-control btn btn-primary"
                   ng-click="indice.ajout_valeur()"
                   value="Ajouter une valeur" />
-          <a class="form-control btn btn-default"
+          <a class="form-control btn btn-info"
               href="{{indice.url_csv}}"
               download="{{indice.d.nom}}.csv"
               ng-click="indice.creer_csv()"
