@@ -5,6 +5,7 @@ SELECT
 	commentaire.id_commentaire, commentaire.texte, commentaire.date,
 	commentaire.id_type_commentaire
 FROM commentaire
+ORDER BY date DESC
 ");
 $stmtIndices = $BDD->prepare("SELECT id_indice FROM commentaire_indice WHERE id_commentaire = ?");
 $stmt->execute();
