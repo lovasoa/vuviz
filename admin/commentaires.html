@@ -10,23 +10,26 @@
       <label ng-repeat="type in types"
               class="label label-pill labell-success"
               ng-style="{backgroundColor:type.couleur}">
-        <input type="radio" name="typecom-{{com.id}}">
+        <input type="radio" name="typecom-{{com.id}}"
+               ng-value="type.id"
+               ng-model="com.type">
         {{type.description}}
         </input>
       </label>
+      {{com}}
       <h4>Indices concernés</h4>
         <input type="search"
               class="form-control"
               ng-model="rechercheIndice"
               title="Filtrer la liste d'indices par nom ou par continent"
                placeholder="chercher un indice"/>
-        <p><span class="label label-pill"
+        <p><button class="label label-pill"
               ng-class="{'label-success':com.indices.indexOf(indice.id)>-1,
                          'label-warning':com.indices.indexOf(indice.id)===-1}"
               ng-repeat="indice in indices | filter:rechercheIndice"
               ng-click="switchIndice(com.indices, indice.id)">
               {{indice.continent}} / {{indice.nom}}
-        </span></p>
+        </button></p>
     </form>
   </div>
 </div>
