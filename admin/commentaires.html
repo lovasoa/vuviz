@@ -3,7 +3,12 @@
   <div class="card col-lg-3"
         ng-repeat="type in types">
         <form>
-          <label for="nomtype{{type.id}}"><strong>Nom</strong> du type de commentaire&nbsp;:</label>
+          <label for="imgtype{{type.id}}"><strong>Nom</strong> du type de commentaire&nbsp;:</label>
+          <input id="imgtype{{type.id}}"
+                class="form-control"
+                type="text"
+                ng-model="type.icone" />
+          <label for="nomtype{{type.id}}"><strong>Description</strong> du type de commentaire&nbsp;:</label>
           <input id="nomtype{{type.id}}"
                 class="form-control"
                 type="text"
@@ -16,6 +21,11 @@
         <button class="btn btn-danger" ng-click="supprType(type)">Supprimer</button>
         </form>
   </div>
+  <div class="col-lg-3">
+    <button class="form-control bg-success"
+            ng-click="nouveauType()">
+      Ajouter un nouveau type de commentaire</button>
+  </div>
 </div>
 
 <h1>Liste des commentaires</h1>
@@ -23,17 +33,18 @@
       ng-repeat="com in commentaires">
   <h3 class="card-header">{{com.texte | couper:50}}</h3>
   <div class="card-block">
-    <form class="form-inline">
+    <form>
       <h4>Commentaire</h4>
       <textarea class="form-control" ng-model="com.texte"></textarea>
       <h4>Type</h4>
       <label ng-repeat="type in types"
               class="label label-pill labell-success"
-              ng-style="{backgroundColor:type.couleur}">
+              ng-style="{backgroundColor:type.couleur}"
+              title="{{type.description}}">
         <input type="radio" name="typecom-{{com.id}}"
                ng-value="type.id"
                ng-model="com.type">
-        {{type.description}}
+        {{type.icone}}
         </input>
       </label>
       <h4>Indices concernés</h4>

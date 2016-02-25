@@ -32,6 +32,15 @@ adminCom.controller('CommentairesController', function($scope, $filter, $http) {
     }
     $scope.types = $scope.types.filter(function(t){return t!==type});
   };
+
+  $scope.nouveauType = function () {
+    $scope.types.push({
+      "icone": "",
+      "description": "",
+      "couleur": "#123456",
+      "id" : $scope.types.reduce(function(m,i){return i.id>m?i.id:m}, 0)+1
+    });
+  };
 });
 
 adminCom.filter('nomIndice', function(){
