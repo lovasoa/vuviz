@@ -67,7 +67,8 @@
   <div class="card-block">
     <form>
       <h4>Commentaire</h4>
-      <textarea class="form-control" ng-model="com.texte"></textarea>
+      <textarea class="form-control" ng-model="com.texte"
+                placeholder="Corps du commentaire"></textarea>
       <h4>Type</h4>
       <label ng-repeat="type in types"
               class="label label-pill labell-success"
@@ -94,6 +95,7 @@
         </button></p>
         <h4>Date</h4>
         <input class="form-control" ng-model="com.date"
+                title="Date du début de l'évènement concerné par le commentaire"
                 placeholder="AAAA-MM-JJ"/>
     </form>
   </div>
