@@ -1,13 +1,11 @@
 var adminIndices = angular.module('AdminIndices', []);
 
 adminIndices.controller('IndicesController', function($scope, $http) {
-  console.log("J'existe");
   function ListeIndices() {
     this.dernier_id = 0;
     this.liste = [];
     this.continents = [];
     this.index_nom = {}; //Associe les noms d'indice à leur valeur
-    this.rafraichir();
   }
   ListeIndices.prototype.recherche = function (nom) {
     return this.index_nom[nom];
@@ -34,7 +32,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
     this.index_nom[data.nom] = indice;
     this.liste.push(indice);
   };
-  ListeIndices.prototype.rafraichir = function() {
+  ListeIndices.prototype.rafraichir = function(duree) {
     //Va chercher la liste des indices sur le serveur
     var that = this;
     requete({
@@ -50,7 +48,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
 
         //Recherche des valeurs des indices dans l'API
         requete({
-          url: "../api/valeurs.php?duree=annuelle",
+          url: "../api/valeurs.php?duree=" + duree,
           callback: function(res){
             for (var i = 0; i < res.data.length; i++) {
               var val = res.data[i];
@@ -106,7 +104,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
         if (indice.nouveau) $scope.indices.nouvel_indice_vide();
         indice.disabled = indice.nouveau = false;
         requete({
-          url: "api/maj_valeurs.php?id_indice=" + indice.d.id,
+          url: "api/maj_valeurs.php?id_indice=" + indice.d.id + "&duree=" + $scope.duree_prevision,
           data: indice.formater_valeurs()
         });
       }
@@ -206,7 +204,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
         valeur: "",
         prevision: false,
         type: "moyenne",
-        annuelle: true
+        annuelle: $scope.annuelle()
       };
   };
   Valeur.prototype.valide = function () {
@@ -219,7 +217,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
       if (col.format) this.d[col.nom] = col.format(this.d[col.nom]);
     }
     this.d.id_indice = this.indice.d.id;
-    this.d.annuelle = true;
+    this.d.annuelle = $scope.annuelle();
     return this.d;
   };
   Valeur.prototype.csv = function () {
@@ -234,7 +232,7 @@ adminIndices.controller('IndicesController', function($scope, $http) {
     // Fait une requête au serveur et met à jour le statut de l'application
     // en fonction de la réponse
     var fun = (opts.data || opts.method === "POST") ? $http.post : $http.get;
-    $scope.status = "⥀";
+    $scope.status = "…";
     return fun(opts.url, opts.data).then(function(res){
       $scope.status = "✓";
       if (opts.callback) return opts.callback(res);
@@ -248,6 +246,14 @@ adminIndices.controller('IndicesController', function($scope, $http) {
   $scope.indices = new ListeIndices;
   $scope.recherche = "";
   $scope.valeurs = [];
+  $scope.durees_possibles = ["annuelle", "trimestrielle"];
+  $scope.duree_prevision = "annuelle";
+  $scope.annuelle = function() {
+    return $scope.duree_prevision === "annuelle";
+  };
+  $scope.$watch("duree_prevision", function (nouvelle_duree, ancienne_duree) {
+    $scope.indices.rafraichir(nouvelle_duree);
+  });
 });
 
 adminIndices.filter("cherche", function($filter){

@@ -1,7 +1,20 @@
 <main>
+
+  <div class="row">
+    <div class="col-sm-6" ng-repeat="duree in durees_possibles">
+      <label class="btn btn-primary btn-lg btn-block">
+        <input type="radio"
+               name="duree_prevision"
+               ng-model="$parent.duree_prevision"
+               ng-value="duree">
+        Prévision {{duree}}
+      </label>
+    </div>
+  </div>
+
     <h3>Liste des indices
       <small class="label label-pill"
-              ng-class="{'label-success':status==='✓', 'label-warning':status==='⥀', 'label-error':status==='⚠'}">
+              ng-class="{'label-success':status==='✓', 'label-warning':status==='…', 'label-error':status==='⚠'}">
               {{status}}
       </small>
     </h3>
@@ -58,7 +71,7 @@
           </button>
         </form>
         <form class="form-inline" ng-if="!indice.nouveau">
-          <h5 class="card-title">Valeurs</h5>
+          <h5 class="card-title">Valeurs {{duree_prevision}}s</h5>
           <table class="table table-sm" ng-if="indice.valeurs.length > 0">
             <thead>
               <tr><th ng-repeat="c in Valeur.champs">{{c.desc}}</th></tr>

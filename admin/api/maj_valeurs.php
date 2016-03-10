@@ -7,7 +7,17 @@ $res = array(
   "failed"  => 0
 );
 $id_indice = intval($_GET["id_indice"]);
-$res["deleted"] = $BDD->exec("DELETE FROM valeur WHERE id_indice = " . $id_indice);
+$annuelle  = $_GET["duree"] === "annuelle";
+
+$res["deleted"] = $BDD->exec("
+DELETE FROM
+  valeur
+WHERE
+  id_indice = $id_indice
+  AND
+  annuelle = " . ($annuelle ? "TRUE" : "FALSE")
+);
+
 $stmt = $BDD->prepare("
 INSERT INTO
   valeur (id_indice, periode, valeur, est_prevision, annuelle,
