@@ -45,13 +45,11 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     $scope.duree_prevision = "annuelle";
   // Récupération des bonnes valeurs lorsque la durée de prévision change
     function recup_valeurs (duree) {
-      console.log(duree);
       $http.get("api/valeurs.php?duree="+duree).then(function res_valeurs(res) {
         $scope.historiqueValeurs = res.data.map(function(val) {
           val.periode = (new Date(val.periode)).getTime();
           return val;
         });
-        console.log($scope.historiqueValeurs);
       });
     }
     $scope.$watch("duree_prevision", function (nouvelle_duree, ancienne_duree) {
@@ -98,11 +96,11 @@ app.controller('VuvizController', function($scope, $filter, $http) {
   };
 	//fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
-      $scope.updateValeursUI();
       if($scope.duree_prevision === 'trimestrielle') {
         $scope.deselectionnerIndices();
         indice.selected = true;
       }
+      $scope.updateValeursUI();
   };
 
   $scope.histoActuel = function() {
