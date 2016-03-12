@@ -169,7 +169,7 @@ app.filter('valeursIndices', function() {
 app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
-  var couleurType = {"min": "#4efe4e", "max":"#fe4e4e"};
+  var couleurType = {"max": "#4efe4e", "min":"#fe4e4e"};
   var _cache = [];
   return function(valeurs) {
     var n = 0;
