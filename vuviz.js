@@ -329,7 +329,6 @@ app.filter("selectedValues", function($filter){
           i = prev.length;
           prev.push({
             "nom": cur.indice,
-            "couleur": couleurs[cur.indice],
             "histos": []
           });
         }
@@ -337,6 +336,7 @@ app.filter("selectedValues", function($filter){
         if (j === -1) {
           j = prev[i].histos.length;
           prev[i].histos.push({
+            "couleur": cur.couleur,
             "type": cur.type,
             "valeurs": new Array(res.dates.length)
           });

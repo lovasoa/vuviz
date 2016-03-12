@@ -183,7 +183,7 @@
               <tbody  ng-repeat="indice in valeurs_ui.indices">
                 <tr ng-class='{"highlighted-row":(histo.type==="moyenne")}' ng-repeat="histo in indice.histos">
                   <th scope="row">
-                    <span class="badge-indice" style="background-color:{{indice.couleur}}"></span>
+                    <span class="badge-indice" style="background-color:{{histo.couleur}}"></span>
                     {{indice.nom}} ({{histo.type}})
                   </th>
                   <td ng-repeat="valeur in histo.valeurs track by $index">
