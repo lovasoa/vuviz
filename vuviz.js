@@ -358,6 +358,22 @@ app.filter("selectionne", function(){
   };
 });
 
+app.filter("pourcentages", function(){
+  return function pourcentages (tab) {
+    return tab.map(function (elem, i){
+      var prev = tab[i-1];
+      if (!prev) return null;
+      return (elem-prev)/prev;
+    });
+  };
+});
+app.filter("formatPourcent", function(){
+  return function pourcentages (p) {
+    if (p === null || isNaN(p)) return "";
+    return (p>0 ? "+" : "-") + " " + Math.abs(Math.round(p*100)) + "%";
+  };
+});
+
 function memoize(f) {
   var dict = {};
   return function() {
