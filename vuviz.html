@@ -177,6 +177,7 @@
                                 ng-repeat="periode in valeurs_ui.dates"
                                 ng-class='{"valeur-prevision":periode.prevision}'>
                     {{periode.nom}}
+                    <em ng-if="periode.prevision">(prévision)</em>
                   </th>
                 </tr>
               </thead>
