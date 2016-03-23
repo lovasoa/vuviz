@@ -133,7 +133,7 @@ app.controller('VuvizController', function($scope, $filter, $http) {
                for (var i=0; i<$scope.historiqueValeurs.length; i++) {
                  var val = $scope.historiqueValeurs[i];
                  if (val.periode === x && val.prevision) {
-                   return label + " (prevision)"
+                   return label + " (prévision)"
                  }
                };
                return label;
