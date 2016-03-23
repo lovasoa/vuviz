@@ -118,6 +118,7 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     var ret= {
         "chart": {
            "type": 'lineChart',
+           "useInteractiveGuideline": true,
            "height": 450,
            "xAxis" : {
              "axisLabel" : "période",
