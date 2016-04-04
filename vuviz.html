@@ -22,7 +22,7 @@
     <aside class="container m-y">
       <!-- Butons de choix de la durée des prévisions -->
       <div class="row">
-        <div class="col-sm-6" ng-repeat="duree in ['annuelle', 'trimestrielle']">
+        <div class="col-sm-6" ng-repeat="duree in durees_possibles">
           <label class="btn btn-primary btn-lg btn-block">
             <input type="radio"
                    name="duree_prevision"
@@ -137,42 +137,12 @@
                 </th>
               </tr>
             </table>
-            <!--affichage du tableau de commantaires de gestion pour annuelle-->
-            <div ng-if="duree_prevision=='annuelle'">
-                <table width="100%" class="table table-bordered">
-                  <tr>
-                    <th>Indice actuel</th>
-                    <th>Cours moyen 2015</th>
-                    <th>Cours moyen prévisionnelle 2016</th>
-                    <th>Cours moyen prévisionnelle 2017</th>
-                  </tr>
-                  <tr ng-repeat="i in indices | filter:selected">
-                    <td>{{i.nom}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
-            </div>
             <!--affichage graphique cours actuel des indices selectionnées-->
             <nvd3 class="card-block"
                   options="graphOptions('coursactuel')"
                   xAxisTickFormat="xAxisTickFormatFunction()"
                   data="indices | filter:selected | valeursIndices3"></nvd3>
-            <div ng-if="duree_prevision=='annuelle'">
-                <h5>
-                Comparaison avec le cours actuel
-                </h5>
-                <table width="100%" class="table table-bordered">
-                    <tr>
-                        <td>Meilleur choix permettant un achat bénéfique</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
+
             <!--affichage du tableau de commantaires de gestion pour trimestriel-->
             <div ng-if="duree_prevision=='trimestrielle'">
                 <h5>
@@ -197,9 +167,7 @@
 
       <div class="col-md-12 col-lg-6">
         <div class="card tableau-historique">
-          <h4 class="card-header">Tableau synthétisant l'évolution des indices
-            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
-          </h4>
+          <h4 class="card-header">Tableau synthétisant l'évolution</h4>
           <div class="card-block table-responsive">
             <table width="100%" class="table table-bordered">
               <thead>
@@ -209,17 +177,23 @@
                                 ng-repeat="periode in valeurs_ui.dates"
                                 ng-class='{"valeur-prevision":periode.prevision}'>
                     {{periode.nom}}
+                    <em ng-if="periode.prevision">(prévision)</em>
                   </th>
                 </tr>
               </thead>
               <tbody  ng-repeat="indice in valeurs_ui.indices">
-                <tr ng-class='{"highlighted-row":(histo.type==="moyenne")}' ng-repeat="histo in indice.histos">
-                  <th scope="row">
-                    <span class="badge-indice" style="background-color:{{indice.couleur}}"></span>
+                <tr ng-class='{"highlighted-row":(histo.type==="moyenne")}' ng-repeat-start="histo in indice.histos">
+                  <th scope="row" rowspan="2">
+                    <span class="badge-indice" style="background-color:{{histo.couleur}}"></span>
                     {{indice.nom}} ({{histo.type}})
                   </th>
                   <td ng-repeat="valeur in histo.valeurs track by $index">
                     {{ valeur | formatNum}}
+                  </td>
+                </tr>
+                <tr ng-repeat-end>
+                  <td ng-repeat="valeur in (histo.valeurs|pourcentages) track by $index">
+                    <em>{{valeur | formatPourcent}}</em>
                   </td>
                 </tr>
               </tbody>
@@ -239,28 +213,17 @@
           </h4>
 
           <div class="card-block">
-            <div class="row">
-              <div class="col-md-6">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <span class="label label-danger label-pill">↘</span>
-                    La Russie déclare la guerre à la Turquie</li>
-                  <li class="list-group-item">
-                    <span class="label label-danger label-pill">↘</span>
-                    Grand moratoire sur la vente de carottes râpées</li>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <span class="label label-warning label-pill">→</span>
-                    AirFrance rachètera Bonduelle</li>
-                  <li class="list-group-item">
-                    <span class="label label-success label-pill">↗</span>
-                    Total achètera une petite éolienne en Picardie</li>
-                </ul>
-              </div>
-            </div>
+            <ul class="list-group">
+              <li class="list-group-item"
+                  ng-repeat="com in commentaires"
+                  ng-style="{opacity:(com.indices | selectionne) ? 1 : 0.4}">
+                <span class="label label-pill"
+                      style="background-color:{{com.type.couleur}}"
+                      title="{{com.type.description}}">{{com.type.icone}}</span>
+                  <i ng-repeat="indice in com.indices" class="liste-virgules">{{indice.nom}}</i>:
+                  {{com.texte}}
+              </li>
+            </ul>
           </div>
         </div>
       </div>

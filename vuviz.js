@@ -8,6 +8,8 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     $scope.indices = [];
     //données sur les continents
     $scope.liste_continents = [];
+    // Commentaires sur l'évolution des valeurs
+    $scope.commentaires = [];
     $http.get("api/indices.php").then(function(res){
       // Téléchargement des indices depuis l'API
       $scope.indices = res.data.map(function(indice){
@@ -19,8 +21,18 @@ app.controller('VuvizController', function($scope, $filter, $http) {
           continents.push(indice.continent);
         return continents;
       }, []);
-    });
 
+       // Récupération des commentaires sur les indices
+       $http.get("api/commentaires.php").then(function(res){
+         $scope.commentaires = res.data.commentaires;
+         angular.forEach($scope.commentaires, function (com) {
+           com.type = res.data.types[com.type];
+           com.indices = $scope.indices.filter(function(indice){
+             return ~com.indices.indexOf(indice.id);
+           });
+         });
+       });
+    });
 
 	//INITIALISATION
 	//initialisation des filtres
@@ -29,56 +41,31 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       "sectoriel" : false
     };
 	//initialisation du type de prévision (annuelle/trimestrielle)
+    $scope.durees_possibles = ["annuelle", "trimestrielle"]
     $scope.duree_prevision = "annuelle";
+  // Récupération des bonnes valeurs lorsque la durée de prévision change
+    function recup_valeurs (duree) {
+      $http.get("api/valeurs.php?duree="+duree).then(function res_valeurs(res) {
+        $scope.historiqueValeurs = res.data.map(function(val) {
+          val.periode = (new Date(val.periode)).getTime();
+          return val;
+        });
+      });
+    }
+    $scope.$watch("duree_prevision", function (nouvelle_duree, ancienne_duree) {
+      recup_valeurs(nouvelle_duree);
+      // Vérification que la durée soit bien toujours "annuelle" ou "trimestrielle"
+      return ~$scope.durees_possibles.indexOf(nouvelle_duree) ? nouvelle_duree : ancienne_duree;
+    });
+    // Récupération des valeurs initiales
+    recup_valeurs($scope.duree_prevision);
+
 	//filtre
     $scope.selected = {selected: true};
 
 	//donnée sur la valeur des indices
-  	$scope.historiqueValeurs = {
-      "annuelle" : [
-      	{periode:2012, indice:"DOW JONES", "value":12965, "type":"moyenne"},
-      	{periode:2013, indice:"DOW JONES", "value":15010, "type":"moyenne"},
-      	{periode:2014, indice:"DOW JONES", "value":16778, "type":"moyenne"},
-      	{periode:2015, indice:"DOW JONES", "value":15010, "type":"moyenne"},
-        {periode:2012, indice:"DOW JONES", "value":10965, "type":"min"},
-      	{periode:2013, indice:"DOW JONES", "value":11010, "type":"min"},
-      	{periode:2014, indice:"DOW JONES", "value":14778, "type":"min"},
-      	{periode:2015, indice:"DOW JONES", "value":14110, "type":"min"},
-        {periode:2012, indice:"DOW JONES", "value":13500, "type":"max"},
-      	{periode:2013, indice:"DOW JONES", "value":16010, "type":"max"},
-      	{periode:2014, indice:"DOW JONES", "value":17778, "type":"max"},
-      	{periode:2015, indice:"DOW JONES", "value":16010, "type":"max"},
-      	{periode:2016, indice:"DOW JONES", "value":16500, "type":"moyenne", prevision: true},
-      	{periode:2017, indice:"DOW JONES", "value":17000, "type":"moyenne", prevision: true},
-      	{periode:2012, indice:"NASDAQ", "value":2966, "type":"moyenne"},
-      	{periode:2013, indice:"NASDAQ", "value":3541, "type":"moyenne"},
-      	{periode:2014, indice:"NASDAQ", "value":4375, "type":"moyenne"},
-      	{periode:2015, indice:"NASDAQ", "value":4000, "type":"moyenne"},
-      	{periode:2016, indice:"NASDAQ", "value":5000, "type":"moyenne", prevision: true},
-      	{periode:2017, indice:"NASDAQ", "value":6000, "type":"moyenne", prevision: true},
-        {periode:2017, indice:"NASDAQ", "value":6800, "type":"max", prevision: true},
-      	{periode:2012, indice:"S&P500", "value":1379, "type":"moyenne"},
-      	{periode:2013, indice:"S&P500", "value":1644, "type":"moyenne"},
-      	{periode:2014, indice:"S&P500", "value":1931, "type":"moyenne"},
-      	{periode:2015, indice:"S&P500", "value":2000, "type":"moyenne"},
-      	{periode:2016, indice:"S&P500", "value":2500, "type":"moyenne", prevision: true},
-      	{periode:2017, indice:"S&P500", "value":3000, "type":"moyenne", prevision: true}
-    	],
-      "trimestrielle": [
-        {"periode":2014.75,"indice":"DOW JONES","value":4375, "type":"moyenne"},
-        {"periode":2014.75,"indice":"DOW JONES","value":4270, "type":"min"},
-        {"periode":2015,"indice":"DOW JONES","value":4000, "type":"moyenne"},
-        {"periode":2015,"indice":"DOW JONES","value":3900, "type":"min"},
-        {"periode":2015.25,"indice":"DOW JONES","value":3954, "type":"moyenne"},
-        {"periode":2015.5,"indice":"DOW JONES","value":4045, "type":"moyenne"},
-        {"periode":2015.75,"indice":"DOW JONES","value":5000, "type":"moyenne","prevision":true},
-        {"periode":2016,"indice":"DOW JONES","value":5500, "type":"moyenne","prevision":true},
-        {"periode":2014.75,"indice":"NASDAQ","value":3375, "type":"moyenne"},
-        {"periode":2014.75,"indice":"NASDAQ","value":3075, "type":"min"},
-        {"periode":2015,"indice":"NASDAQ","value":3000, "type":"moyenne"},
-        {"periode":2015,"indice":"NASDAQ","value":2900, "type":"min"}
-      ]
-  };
+  	$scope.historiqueValeurs = [];
+
 	//données pour le selecteur de date du graphique historique évolution
     $scope.duree_graph = {
       selectionne: {valeur:5, label: "5 jour"},
@@ -109,18 +96,18 @@ app.controller('VuvizController', function($scope, $filter, $http) {
   };
 	//fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
-      $scope.updateValeursUI();
       if($scope.duree_prevision === 'trimestrielle') {
         $scope.deselectionnerIndices();
         indice.selected = true;
       }
+      $scope.updateValeursUI();
   };
 
   $scope.histoActuel = function() {
     //Retourne un tableau des valeurs d'historiques pour l'indice actuellement
     //sélectionné et la période sélectionnée
     return $filter('filter')(
-      $scope.historiqueValeurs[$scope.duree_prevision],
+      $scope.historiqueValeurs,
       function(el){
         var indices = $filter('filter')($scope.indices, {nom: el.indice});
         return indices.length === 1 && indices[0].selected;
@@ -131,6 +118,7 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     var ret= {
         "chart": {
            "type": 'lineChart',
+           "useInteractiveGuideline": true,
            "height": 450,
            "xAxis" : {
              "axisLabel" : "période",
@@ -141,7 +129,14 @@ app.controller('VuvizController', function($scope, $filter, $http) {
              })(),
              "tickFormat" : function(x) {
                //Formatage des dates
-               return $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
+               var label = $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
+               for (var i=0; i<$scope.historiqueValeurs.length; i++) {
+                 var val = $scope.historiqueValeurs[i];
+                 if (val.periode === x && val.prevision) {
+                   return label + " (prévision)"
+                 }
+               };
+               return label;
              }
            }
         }
@@ -182,7 +177,7 @@ app.filter('valeursIndices', function() {
 app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
-  var couleurType = {"min": "#4efe4e", "max":"#fe4e4e"};
+  var couleurType = {"max": "#4efe4e", "min":"#fe4e4e"};
   var _cache = [];
   return function(valeurs) {
     var n = 0;
@@ -279,8 +274,9 @@ app.filter("formatNum", function(){
 
 app.filter("printPeriode", function(){
   return function (periode, anneeSeulement){
-    var annee = parseInt(periode);
-    var trimestre = parseInt((periode-annee)*4) + 1;
+    var d = new Date(periode);
+    var annee = d.getFullYear();
+    var trimestre = Math.floor(d.getMonth() / 4) + 1;
     return annee + (anneeSeulement ? "" : (" T" + trimestre));
   };
 });
@@ -315,11 +311,11 @@ app.filter("selectedValues", function($filter){
   return function(valeurs, indices, type) {
     var nomsIndices = $filter("filter")(indices, {selected:true}, true).map(function(i){return i.nom});
     var couleurs = indices.reduce(function(p, c){
-      p[c.nom] = c.color;
+      p[c.nom] = c.couleur;
       return p;
     }, {});
     var res = {"dates" : [], "indices":[]};
-    res.dates = valeurs[type].reduce(function(prev, cur){
+    res.dates = valeurs.reduce(function(prev, cur){
       if (~nomsIndices.indexOf(cur.indice)) {
         var i = findPropInArray(prev, "value", cur.periode);
         if (i === -1) {
@@ -334,14 +330,13 @@ app.filter("selectedValues", function($filter){
       return prev;
     }, []).sort(function(a,b){return a.value - b.value});
 
-    res.indices = valeurs[type].reduce(function(prev, cur) {
+    res.indices = valeurs.reduce(function(prev, cur) {
       if (~nomsIndices.indexOf(cur.indice)) {
         var i = findPropInArray(prev, "nom", cur.indice);
         if (i === -1) {
           i = prev.length;
           prev.push({
             "nom": cur.indice,
-            "couleur": couleurs[cur.indice],
             "histos": []
           });
         }
@@ -349,16 +344,41 @@ app.filter("selectedValues", function($filter){
         if (j === -1) {
           j = prev[i].histos.length;
           prev[i].histos.push({
+            "couleur": cur.couleur,
             "type": cur.type,
             "valeurs": new Array(res.dates.length)
           });
         }
         var k = findPropInArray(res.dates, "value", cur.periode);
-        prev[i].histos[j].valeurs[k] = cur.value;
+        prev[i].histos[j].valeurs[k] = cur.valeur;
       }
       return prev;
     }, []);
     return res;
+  };
+});
+
+app.filter("selectionne", function(){
+  return function selectionne (indices) {
+    return indices.reduce(function (selectionne, indice){
+      return selectionne || indice.selected;
+    }, false);
+  };
+});
+
+app.filter("pourcentages", function(){
+  return function pourcentages (tab) {
+    return tab.map(function (elem, i){
+      var prev = tab[i-1];
+      if (!prev) return null;
+      return (elem-prev)/prev;
+    });
+  };
+});
+app.filter("formatPourcent", function(){
+  return function pourcentages (p) {
+    if (p === null || isNaN(p)) return "";
+    return (p>0 ? "+" : "-") + " " + Math.abs(Math.round(p*100)) + "%";
   };
 });
 

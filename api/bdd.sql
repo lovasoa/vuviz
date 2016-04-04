@@ -3,14 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: prefibcoti1.mysql.db
--- Generation Time: Feb 16, 2016 at 04:18 PM
+-- Generation Time: Mar 10, 2016 at 01:22 AM
 -- Server version: 5.5.46-0+deb7u1-log
 -- PHP Version: 5.3.8
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -22,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `prefibcoti1`
 --
-CREATE DATABASE IF NOT EXISTS `prefibcoti1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `prefibcoti1`;
 
 -- --------------------------------------------------------
 
@@ -31,7 +26,6 @@ USE `prefibcoti1`;
 -- Table structure for table `commentaire`
 --
 
-DROP TABLE IF EXISTS `commentaire`;
 CREATE TABLE IF NOT EXISTS `commentaire` (
   `id_commentaire` int(11) NOT NULL DEFAULT '0',
   `texte` text,
@@ -40,44 +34,41 @@ CREATE TABLE IF NOT EXISTS `commentaire` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Truncate table before insert `commentaire`
+-- Dumping data for table `commentaire`
 --
 
-TRUNCATE TABLE `commentaire`;
+INSERT INTO `commentaire` (`id_commentaire`, `texte`, `date`, `id_type_commentaire`) VALUES
+(2, 'Goldman Sachs anticipe une accélération du « QE » de la BCE et une baisse de taux en mars', '2016-02-29', 0);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `commentaire_indice`
 --
 
-DROP TABLE IF EXISTS `commentaire_indice`;
 CREATE TABLE IF NOT EXISTS `commentaire_indice` (
   `id_commentaire` int(11) NOT NULL DEFAULT '0',
   `id_indice` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Truncate table before insert `commentaire_indice`
+-- Dumping data for table `commentaire_indice`
 --
 
-TRUNCATE TABLE `commentaire_indice`;
+INSERT INTO `commentaire_indice` (`id_commentaire`, `id_indice`) VALUES
+(2, 4);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `continent`
 --
 
-DROP TABLE IF EXISTS `continent`;
 CREATE TABLE IF NOT EXISTS `continent` (
   `id_continent` int(11) NOT NULL DEFAULT '0',
   `nom_continent` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncate table before insert `continent`
---
-
-TRUNCATE TABLE `continent`;
 --
 -- Dumping data for table `continent`
 --
@@ -93,7 +84,6 @@ INSERT INTO `continent` (`id_continent`, `nom_continent`) VALUES
 -- Table structure for table `indice`
 --
 
-DROP TABLE IF EXISTS `indice`;
 CREATE TABLE IF NOT EXISTS `indice` (
   `id_indice` int(11) NOT NULL,
   `nom_indice` varchar(255) DEFAULT NULL,
@@ -103,20 +93,13 @@ CREATE TABLE IF NOT EXISTS `indice` (
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 --
--- Truncate table before insert `indice`
---
-
-TRUNCATE TABLE `indice`;
---
 -- Dumping data for table `indice`
 --
 
 INSERT INTO `indice` (`id_indice`, `nom_indice`, `id_continent`, `couleur`, `sectoriel`) VALUES
-(1, 'DOW JONES', 0, '#071BA3', 0),
-(2, 'NASDAQ', 0, '#145EDE', 0),
-(3, 'S&P500', 0, '#96B7E3', 0),
-(4, 'DAX', 1, '#071BA3', 0),
-(5, 'FOOTSIE', 1, '#145EDE', 0),
+(3, 'DJ', 0, '#96B7E3', 0),
+(4, 'AAA', 1, '#071BA3', 1),
+(5, 'BBBB', 1, '#145EDE', 0),
 (6, 'CAC40', 1, '#96B7E3', 0),
 (7, 'IBEX', 1, '#D313E8', 0),
 (8, 'MIB', 1, '#F7812D', 0),
@@ -124,10 +107,11 @@ INSERT INTO `indice` (`id_indice`, `nom_indice`, `id_continent`, `couleur`, `sec
 (10, 'NIKKEI250', 2, '#071BA3', 0),
 (11, 'SSE', 2, '#145EDE', 0),
 (12, 'HS', 2, '#96B7E3', 0),
-(15, 'Indices sectoriels plus performants ', 1, '#96B7E3', 1),
-(16, 'Indices sectoriels moins performants ', 1, '#96B7E3', 1),
+(15, 'Indices sectoriels plus AAA', 0, '#96B7E3', 1),
+(16, 'Indices sectoriels bbbbb', 0, '#96B7E3', 1),
 (17, 'Indices sectoriels plus performants ', 0, '#96B7E3', 1),
-(18, 'Indices sectoriels moins performants ', 0, '#96B7E3', 1);
+(18, 'Indices sectoriels moins performants ', 0, '#96B7E3', 1),
+(19, 'NASDAQ', 0, '#8800aa', 0);
 
 -- --------------------------------------------------------
 
@@ -135,7 +119,6 @@ INSERT INTO `indice` (`id_indice`, `nom_indice`, `id_continent`, `couleur`, `sec
 -- Table structure for table `type_commentaire`
 --
 
-DROP TABLE IF EXISTS `type_commentaire`;
 CREATE TABLE IF NOT EXISTS `type_commentaire` (
   `id_type_commentaire` int(11) NOT NULL DEFAULT '0',
   `description` varchar(255) DEFAULT NULL,
@@ -144,28 +127,24 @@ CREATE TABLE IF NOT EXISTS `type_commentaire` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Truncate table before insert `type_commentaire`
+-- Dumping data for table `type_commentaire`
 --
 
-TRUNCATE TABLE `type_commentaire`;
+INSERT INTO `type_commentaire` (`id_type_commentaire`, `description`, `icone`, `couleur`) VALUES
+(1, 'Prévision Goldman Sachs', 'test1', '#123456');
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `type_valeur`
 --
 
-DROP TABLE IF EXISTS `type_valeur`;
 CREATE TABLE IF NOT EXISTS `type_valeur` (
   `id_type_valeur` int(11) NOT NULL,
   `nom_type_valeur` varchar(255) NOT NULL,
   `couleur_type_valeur` char(7) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Truncate table before insert `type_valeur`
---
-
-TRUNCATE TABLE `type_valeur`;
 --
 -- Dumping data for table `type_valeur`
 --
@@ -181,27 +160,35 @@ INSERT INTO `type_valeur` (`id_type_valeur`, `nom_type_valeur`, `couleur_type_va
 -- Table structure for table `valeur`
 --
 
-DROP TABLE IF EXISTS `valeur`;
 CREATE TABLE IF NOT EXISTS `valeur` (
   `id_indice` int(11) NOT NULL DEFAULT '0',
   `periode` date NOT NULL DEFAULT '0000-00-00',
   `id_type_valeur` int(11) NOT NULL DEFAULT '0',
+  `annuelle` tinyint(1) NOT NULL,
   `valeur` float DEFAULT NULL,
-  `est_prevision` tinyint(1) DEFAULT NULL,
-  `annuelle` tinyint(1) NOT NULL
+  `est_prevision` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncate table before insert `valeur`
---
-
-TRUNCATE TABLE `valeur`;
 --
 -- Dumping data for table `valeur`
 --
 
 INSERT INTO `valeur` (`id_indice`, `periode`, `id_type_valeur`, `valeur`, `est_prevision`, `annuelle`) VALUES
-(1, '2016-01-01', 2, 125, 1, 1);
+(3, '2013-01-01', 3, 15010, 0, 1),
+(3, '2014-01-01', 3, 16795, 0, 1),
+(3, '2015-01-01', 3, 17587, 0, 1),
+(3, '2016-01-01', 3, 17000, 0, 1),
+(3, '2017-01-01', 3, 17200, 1, 1),
+(3, '2018-01-01', 3, 18000, 1, 1),
+(4, '2012-01-01', 3, 1999, 0, 1),
+(5, '2012-01-01', 3, 10000, 0, 1),
+(15, '2012-01-01', 3, NULL, 0, 1),
+(19, '2012-01-01', 3, 2972, 0, 1),
+(19, '2013-01-01', 3, 3535, 0, 1),
+(19, '2014-01-01', 3, 4391, 0, 1),
+(19, '2015-01-01', 3, 4400, 0, 1),
+(19, '2016-01-01', 3, 4400, 1, 1),
+(19, '2017-01-01', 3, 4200, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -249,7 +236,7 @@ ALTER TABLE `type_valeur`
 -- Indexes for table `valeur`
 --
 ALTER TABLE `valeur`
-  ADD PRIMARY KEY (`id_indice`,`periode`,`id_type_valeur`),
+  ADD PRIMARY KEY (`id_indice`,`periode`,`id_type_valeur`,`annuelle`),
   ADD KEY `valeur_ibfk_2` (`id_type_valeur`);
 
 --
@@ -289,8 +276,6 @@ ALTER TABLE `indice`
 ALTER TABLE `valeur`
   ADD CONSTRAINT `valeur_ibfk_1` FOREIGN KEY (`id_indice`) REFERENCES `indice` (`id_indice`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `valeur_ibfk_2` FOREIGN KEY (`id_type_valeur`) REFERENCES `type_valeur` (`id_type_valeur`) ON DELETE CASCADE ON UPDATE CASCADE;
-SET FOREIGN_KEY_CHECKS=1;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

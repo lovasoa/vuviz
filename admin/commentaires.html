@@ -1,0 +1,109 @@
+<h1>Types de commentaires</h1>
+<div class="row">
+  <div class="card col-lg-3"
+        ng-repeat="(typeidx, type) in types">
+        <form>
+          <label for="imgtype{{type.id}}"><strong>Nom</strong> du type de commentaire&nbsp;:</label>
+          <input id="imgtype{{type.id}}"
+                class="form-control"
+                type="text"
+                ng-model="type.icone" />
+          <label for="nomtype{{type.id}}"><strong>Description</strong> du type de commentaire&nbsp;:</label>
+          <input id="nomtype{{type.id}}"
+                class="form-control"
+                type="text"
+                ng-model="type.description" />
+          <label for="couleurtype{{type.id}}"> Couleur associée&nbsp;:</label>
+          <input id="couleurtype{{type.id}}"
+                 class="form-control"
+                 type="color"
+                 ng-model="type.couleur" />
+        <button class="btn btn-danger"
+                ng-click="types.splice(typeidx, 1)"
+                ng-disabled="typeUtilisePar(type)"
+                title="{{c = typeUtilisePar(type);
+                         c ? 'Le commentaire «' + c.texte + '» utilise ce type'
+                           : 'Supprimer ce type de commentaire'}}">Supprimer</button>
+        </form>
+  </div>
+  <div class="col-lg-3">
+    <button class="form-control bg-primary"
+            ng-click="nouveauType()">
+      Ajouter un nouveau type de commentaire</button>
+  </div>
+</div>
+
+<h1>Liste des commentaires</h1>
+<div class="card">
+<div class="card-block row">
+  <div class="col-lg-3">
+  <button class="btn btn-primary form-control"
+          ng-click="nouveauCom()">
+    Ajouter un nouveau commentaire
+  </button>
+  </div>
+  <div class="col-lg-5">
+  <input type="search" class="form-control"
+          placeholder="Rechercher un commentaire"
+          ng-model="filtreCommentaires"
+          title="N'afficher que les commentaires dont le nom, type, date ou indice correspond à la recherche"/>
+  </div>
+  <div class="col-lg-3">
+    <button class="btn btn-warning form-control"
+            ng-click="sauvegarder()"
+            ng-disabled="sauvegarde_inactive"
+            title="Sauvegarder toutes les modifications sur le serveur">
+            Sauvegarder
+    </button>
+  </div>
+</div>
+</div>
+
+<div class="card-deck-wrapper liste-commentaires"><div class="card-deck">
+<div class="card"
+      ng-repeat="(comidx, com) in commentaires"
+      ng-class="{cache: !correspondRecherche(com)}">
+  <h3 class="card-header">{{com.texte | couper:50}}</h3>
+  <div class="card-block">
+    <form>
+      <h4>Commentaire</h4>
+      <textarea class="form-control" ng-model="com.texte"
+                placeholder="Corps du commentaire"></textarea>
+      <h4>Type</h4>
+      <label ng-repeat="type in types"
+              class="label label-pill labell-success"
+              ng-style="{backgroundColor:type.couleur}"
+              title="{{type.description}}">
+        <input type="radio" name="typecom-{{com.id}}"
+               ng-value="type.id"
+               ng-model="com.type">
+        {{type.icone}}
+        </input>
+      </label>
+      <h4>Indices concernés</h4>
+        <input type="search"
+              class="form-control"
+              ng-model="rechercheIndice"
+              title="Filtrer la liste d'indices par nom ou par continent"
+               placeholder="chercher un indice"/>
+        <p><button class="label label-pill"
+              ng-class="{'label-success':com.indices.indexOf(indice.id)>-1,
+                         'label-warning':com.indices.indexOf(indice.id)===-1}"
+              ng-repeat="indice in indices | filter:rechercheIndice"
+              ng-click="switchIndice(com.indices, indice.id)">
+              {{indice.continent}} / {{indice.nom}}
+        </button></p>
+        <h4>Date</h4>
+        <input class="form-control" ng-model="com.date"
+                title="Date du début de l'évènement concerné par le commentaire"
+                placeholder="AAAA-MM-JJ"/>
+    </form>
+  </div>
+  <div class="card-footer">
+    <button type="button" class="btn btn-danger"
+            ng-click="commentaires.splice(comidx, 1)">
+      Supprimer ce commentaire
+    </button>
+  </div>
+</div>
+</div></div>

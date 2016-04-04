@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="fr" ng-app="vuvizApp" ng-controller="IndicesController">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+<main>
 
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
-  <link rel="stylesheet" href="indices.css">
+  <div class="row">
+    <div class="col-sm-6" ng-repeat="duree in durees_possibles">
+      <label class="btn btn-primary btn-lg btn-block">
+        <input type="radio"
+               name="duree_prevision"
+               ng-model="$parent.duree_prevision"
+               ng-value="duree">
+        Prévision {{duree}}
+      </label>
+    </div>
+  </div>
 
-  <title>PRÉFIB - administration</title>
-</head>
-<body class="container-fluid">
-  <nav class="navbar navbar-dark bg-inverse">
-    <a class="navbar-brand" href="#">PRÉFIB - Administration</a>
-  </nav>
-
-  <main class="container-fluid minifenetres">
     <h3>Liste des indices
       <small class="label label-pill"
-              ng-class="{'label-success':status==='✓', 'label-warning':status==='⥀', 'label-error':status==='⚠'}">
+              ng-class="{'label-success':status==='✓', 'label-warning':status==='…', 'label-error':status==='⚠'}">
               {{status}}
       </small>
     </h3>
@@ -34,34 +29,34 @@
       </div>
     </div>
 
-    <div ng-repeat="indice in indices|cherche:recherche track by indice.id"
+    <div ng-repeat="indice in indices.liste|cherche:recherche track by indice.d.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled, 'card-inverse':indice.suppression, 'card-danger':indice.suppression}">
       <h3 class="card-header" ng-if="indice.nouveau">Créer un nouvel indice</h3>
       <div class="card-block">
-        <h4 class="card-title">{{indice.nom}}</h4>
-        <form class="form-inline" ng-submit="postIndice(indice)">
+        <h4 class="card-title">{{indice.d.nom}}</h4>
+        <form class="form-inline" ng-submit="indice.post()">
           <input type="color" class="form-control couleur-indice"
                 ng-disabled="indice.disabled"
-                ng-model="indice.couleur"
+                ng-model="indice.d.couleur"
                 title="Couleur associée à l'indice">
           <input type="text" class="form-control"
                   placeholder="nom de l'indice"
                   required="true"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.nom"
+                  ng-model="indice.d.nom"
                   title="Nom de l'indice (ne peut pas être vide)">
           <select class="form-control"
-                  ng-options="cont for cont in continents"
+                  ng-options="cont for cont in indices.continents"
                   ng-disabled="indice.disabled"
-                  ng-model="indice.continent"
+                  ng-model="indice.d.continent"
                   title="Continent">
           </select>
           <label title="Indice global ou sectoriel">Indice sectoriel ?
-            <input type="checkbox" ng-model="indice.sectoriel"
+            <input type="checkbox" ng-model="indice.d.sectoriel"
                    title="Cocher si l'indice est sectoriel">
           </label>
           <input type="submit"
-                  ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-success':indice.nouveau, 'form-control':1}"
+                  ng-class="{'btn':1, 'btn-warning':!indice.nouveau, 'btn-primary':indice.nouveau, 'form-control':1}"
                   ng-disabled="indice.disabled"
                   ng-value="indice.nouveau ? 'Créer' : 'Mettre à jour'"
                   title="Enregistrer les valeurs dans la base de données">
@@ -70,17 +65,67 @@
                   ng-disabled="indice.disabled"
                   ng-if="!indice.nouveau"
                   ng-blur="indice.suppression = false"
-                  ng-click="indice.suppression ? supprIndice(indice) : (indice.suppression = true)"
+                  ng-click="indice.clic_supprimer()"
                   title="Supprimer définitivement cet indice">
                   {{indice.suppression ? "Confirmer la suppression" : "Supprimer"}}
           </button>
         </form>
+        <form class="form-inline" ng-if="!indice.nouveau">
+          <h5 class="card-title">Valeurs {{duree_prevision}}s</h5>
+          <table class="table table-sm" ng-if="indice.valeurs.length > 0">
+            <thead>
+              <tr><th ng-repeat="c in Valeur.champs">{{c.desc}}</th></tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="val in indice.valeurs"
+                  ng-class="{'table-active':val.d.periode[3]%2}">
+                <td>
+                  <input  type="text"
+                          class="form-control"
+                          ng-model="val.d.periode"
+                          ng-blur="val.format()"
+                          placeholder="date" />
+                 </td>
+                 <td>
+                   <input  type="number"
+                           class="form-control"
+                           ng-model="val.d.valeur"
+                           ng-blur="val.format()"
+                           placeholder="valeur de l'indice" />
+                  </td>
+                  <td>
+                    <select class="form-control"
+                            ng-model="val.d.type"
+                            ng-options="type for type in ['min', 'moyenne', 'max']"
+                            title="Type de valeur" />
+                   </td>
+                  <td>
+                    <input  type="checkbox"
+                            class="form-control"
+                            ng-model="val.d.prevision"
+                            title="Cocher si la valeur n'est pas historique, mais prévisionnelle" />
+                   </td>
+                </tr>
+            </tbody>
+          </table>
+          <input type="submit"
+                  class="form-control btn btn-primary"
+                  ng-click="indice.ajout_valeur()"
+                  value="Ajouter une valeur" />
+          <a class="form-control btn btn-info"
+              href="{{indice.url_csv}}"
+              download="{{indice.d.nom}}.csv"
+              ng-click="indice.creer_csv()"
+              title="Exporter les valeurs dans un fichier CSV, pour les afficher et les modifier dans un tableur">
+              {{indice.valeurs.length ? "Exporter en CSV" : "Télécharger un fichier CSV à compléter"}}
+          </a>
+          <label class="file" title="Importer un fichier CSV contenant des valeurs">
+            <input type="file" id="file"
+                    accept="text/csv"
+                    onchange="angular.element(this).scope().indice.import_csv(this.files[0])">
+            <span class="file-custom"></span>
+          </label>
+        </form>
       </div>
     </div>
-  </main>
-
-  <!-- jQuery first, then Bootstrap JS. -->
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="indices.js"></script>
-</body>
-</html>
+</main>
