@@ -83,16 +83,24 @@ function get_value_api($symbole,$id_indice){
 	// var_dump( $field_api=$obj['list']['resources'][0]['resource']['fields']);// champs recupéré de la requette
 	$field_api=$obj['list']['resources'][0]['resource']['fields'];// champs recupéré de la requette
 	
+	
+	//
 	//transformation des données
+	//
+	
 	$data_api=[];
 	$i=0;
+	// converstion de la date
+	$date_valeur=date_format(new DateTime($field_api['utctime']) ,"Y/m/d H:i:s");
 	foreach($field_api as $key=>$value){//pour chaque champs
+	
 		if(in_array($key,$type_valeur)){//si le champ est un type de donnée on l'ajoute au tableau de donnée
+		echo array_search( $key,$type_valeur)."<\br>";
 			$data_api[]=array(
 				"id_indice"=>$id_indice,
-				"type_valeur_api"=>array_search( $key,$type_valeur),//recupere le nom fr du type
-				// "date"=>$field_api['utctime'],
-				"date"=>"2016-03-25 00:00:00",
+				"type_valeur_api"=>array_search( $key,$type_valeur),//recupere le nom fr du type de valeur dans le tableau de correspondance type_valeur
+				"date"=>$date_valeur,
+				// "date"=>"2016-04-06 00:00:00",
 				"valeur"=>$value,
 				
 			);

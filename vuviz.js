@@ -50,6 +50,8 @@ app.controller('VuvizController', function($scope, $filter, $http) {
           val.periode = (new Date(val.periode)).getTime();
           return val;
         });
+		console.log("historiquevaleur : ")
+		console.log($scope.historiqueValeurs)
       });
     }
     $scope.$watch("duree_prevision", function (nouvelle_duree, ancienne_duree) {
@@ -101,6 +103,9 @@ app.controller('VuvizController', function($scope, $filter, $http) {
         indice.selected = true;
       }
       $scope.updateValeursUI();
+	  // Récupération des valeurs api
+		recup_valeurs_api();
+		
   };
 
   $scope.histoActuel = function() {
@@ -151,7 +156,59 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     };
   }
 
+//YANN API
+// Récupération des valeurs de la table api
+    function recup_valeurs_api () {
+		$http.get("recup_yahoo/api/get_valeur.php").then(function res_valeurs(res) {
+			$scope.apiValeurs = res.data;
+			
+			//a
+			console.log("valeur api brut : ");
+			console.log($scope.apiValeurs);
+			
+			console.log("indices ");
+			console.log($scope.indices);
+			
+			$scope.apiValeurs2= converti_valeurs_api_brut(res.data, $scope.indices);
+			console.log("valeur api convertit : ");
+			console.log($scope.apiValeurs2);
+			
+			console.log("valeur historique : ");
+			console.log($scope.historiqueValeurs);
+			// $scope.apiValeurs3=getRecommandation($scope.apiValeurs2, $scope.historiqueValeurs)
+			// console.log("valeur api avec recommandation : ");
+			// console.log($scope.apiValeurs3);
+		});
+	}
 
+	
+
+   function converti_valeurs_api_brut(tab_valeur_api, indices ){
+	   var valeur_api_indice=[];
+		for(var i=0; i<indices.length; i++) {
+			if(indices[i].selected){
+				valeur_api_indice[i] = {
+				   indice : indices[i].nom,
+				   date : "",
+				   min : "",
+				   max : "",
+				   actuel : ""
+				   
+				};
+				for(var j=0; j<tab_valeur_api.length; j++) {
+					var valeur=tab_valeur_api[j];
+					if(valeur.indice == valeur_api_indice[i].indice){
+						if(valeur.type == "min"){valeur_api_indice[i].min = valeur.valeur;}
+						if(valeur.type == "max"){valeur_api_indice[i].max = valeur.valeur;}
+						if(valeur.type == "actuel"){valeur_api_indice[i].actuel = valeur.valeur; valeur_api_indice[i].date = valeur.date;}
+					}
+				}
+			}
+		}
+		return valeur_api_indice;
+   }
+
+    
 });
 
 //FILTRES
@@ -180,6 +237,9 @@ app.filter('valeursIndicesEvolution', function($filter) {
   var couleurType = {"max": "#4efe4e", "min":"#fe4e4e"};
   var _cache = [];
   return function(valeurs) {
+	  //a
+	  console.log("indice evolution avant");
+	  console.log(valeurs);
     var n = 0;
     for(var i=0; i<valeurs.indices.length; i++) {
       var indice = valeurs.indices[i];
@@ -198,6 +258,9 @@ app.filter('valeursIndicesEvolution', function($filter) {
       }
     }
     _cache.length = n;
+	//a
+	 console.log("indice evolution apres");
+	 console.log(_cache);
     return _cache;
   };
 });
@@ -212,8 +275,8 @@ app.filter('valeursIndices3', function() {
       var i = indices[j];
       _cache[j] = {
         values : [
-			{x:08,y:1000+i.nom.charCodeAt(2)},
-			{x:09,y:1140+i.nom.charCodeAt(3)},
+			{x:8,y:1000+i.nom.charCodeAt(2)},
+			{x:9,y:1140+i.nom.charCodeAt(3)},
 			{x:10,y:1240+i.nom.charCodeAt(4)},
 			{x:11,y:1340+i.nom.charCodeAt(5)},
 			{x:12,y:1440+i.nom.charCodeAt(3)},
@@ -309,6 +372,9 @@ app.filter("selectedValues", function($filter){
   }
 
   return function(valeurs, indices, type) {
+	  //a
+	console.log("entree de selectedvalue "); 
+	console.log(valeurs); 
     var nomsIndices = $filter("filter")(indices, {selected:true}, true).map(function(i){return i.nom});
     var couleurs = indices.reduce(function(p, c){
       p[c.nom] = c.couleur;
@@ -354,6 +420,9 @@ app.filter("selectedValues", function($filter){
       }
       return prev;
     }, []);
+	//a
+	console.log("sotrie de selectedvalue "+res); 
+	console.log(res); 
     return res;
   };
 });
@@ -392,3 +461,52 @@ function memoize(f) {
     return res;
   }
 }
+
+//FILRES YANN
+app.filter('getyvaleursAPIIndices', function(indice) {
+	
+	
+});
+
+//recommandation annuel
+function recommandation_annu(valeur_api, valeur_previsionnel){
+	for(var i=0; i<valeur_api.length; i++) {
+		var indice = valeur_api[i];
+		var actuel = indice.actuel
+		//condition de ventes
+		if ((indice.actuel >= (valeur_previsionel + (valeur_previsionel*0.05))) && (valeur_previsionel.annee_suivante > valeur_previsionel.anee_encours)){
+			indice.recom="vente";
+		}
+		//condition d'achats
+		else if ((indice.actuel <= (valeur_previsionel - (valeur_previsionel*0.05))) && (valeur_previsionel.annee_suivante < valeur_previsionel.anee_encours)){
+			indice.recom="achat";
+		}
+		//sinon zone d'attente
+		else{
+			indice.recom="attente";
+		}
+	}
+	return valeur_api;
+}
+/*
+//recommandation trim
+function recommandation_trim(valeur_api, valeur_previsionnel){
+	for(var i=0; i<valeur_api.length; i++) {
+		var indice = valeur_api[i];
+		var actuel = indice.actuel
+		//condition de ventes
+		if ((indice.actuel >= (min_Tplus1 - (min_Tplus1*0.02))) && (max_Tplus1 >= min_Tmoin1)){
+			indice.recom="vente";
+		}
+		//condition d'achats
+		else if ((indice.actuel <= (max_Tplus1 + (maxTplus1*0.02))) && (max_Tplus2 >= max_Tplus1)){
+			indice.recom="achat";
+		}
+		//sinon zone d'attente
+		else{
+			indice.recom="attente";
+		}
+	}
+	return valeur_api;
+}
+*/
