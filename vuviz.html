@@ -147,21 +147,7 @@
 
             <!--affichage du tableau de commantaires de gestion pour trimestriel-->
             <div ng-if="duree_prevision=='trimestrielle'">
-                <h5>
-                Commentaires de gestion à court terme (sur prévision trimestrielle)
-                </h5>
-                <table width="100%" class="table table-bordered">
-                  <tr>
-                    <th>Indice actuel</th>
-                    <th>Zone</th>
-                    <th>Cours prévu</th>
-                  </tr>
-                  <tr ng-repeat="i in indices | filter:selected">
-                    <td>{{i.nom}}</td>
-                    <td>Zone de vente, zone d'achat, zone d'attente</td>
-                    <td>Cours minimal, cours moyen, cours maximal</td>
-                  </tr>
-                </table>
+               
             </div>
           </div>
         </div>
@@ -193,7 +179,10 @@
                   <td ng-repeat="valeur in histo.valeurs track by $index">
                     {{ valeur | formatNum}}
                   </td>
-                  <td rowspan="2" style="background-color: #5882FA" >
+                  <td ng-if='duree_prevision=="trimestrielle" && histo.type=="moyenne" ' rowspan="6" style="background-color: #5882FA" >
+                  Zone d'achat/vente/attente
+                  </td>
+                  <td ng-if="duree_prevision=='annuelle'" rowspan="2" style="background-color: #5882FA" >
                   Zone d'achat/vente/attente
                   </td>
                 </tr>
