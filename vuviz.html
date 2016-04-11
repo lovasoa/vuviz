@@ -139,20 +139,6 @@
                 </th>
               </tr>
             </table>
-            <!--affichage des indices selectionné dans un tableau-->
-            <table width="100%" class="table">
-              <tr>
-                <th ng-repeat="i in indices | filter:selected">
-                  <span  href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading">{{i.nom}}</h4>
-                    <h5 class="list-group-item-text">
-                      <strong class="h4">17 623,05</strong>
-                      <span class="label label-danger">23,65 (0,13%)</span>
-                    </h5>
-                  </span>
-                </th>
-              </tr>
-            </table>
             <!--affichage graphique cours actuel des indices selectionnées-->
             <nvd3 class="card-block"
                   options="graphOptions('coursactuel')"
@@ -195,6 +181,7 @@
                     {{periode.nom}}
                     <em ng-if="periode.prevision">(prévision)</em>
                   </th>
+                  <th>Recommandation</th>
                 </tr>
               </thead>
               <tbody  ng-repeat="indice in valeurs_ui.indices">
@@ -205,6 +192,9 @@
                   </th>
                   <td ng-repeat="valeur in histo.valeurs track by $index">
                     {{ valeur | formatNum}}
+                  </td>
+                  <td rowspan="2" style="background-color: #5882FA" >
+                  Zone d'achat/vente/attente
                   </td>
                 </tr>
                 <tr ng-repeat-end>
