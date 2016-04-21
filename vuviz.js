@@ -96,6 +96,11 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       indice.selected = false;
     });
   };
+  
+  ////Intialisation tab val api
+	$scope.apiValeurs = [];
+	$scope.apiValeurs2 = [];
+  
 	//fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
       if($scope.duree_prevision === 'trimestrielle') {
@@ -104,7 +109,8 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       }
       $scope.updateValeursUI();
 	  // Récupération des valeurs api
-		recup_valeurs_api();
+		// recup_valeurs_api();
+		$scope.apiValeurs2= converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
 		
   };
 
@@ -155,39 +161,13 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       return d3.time.format('%H:%M')(new Date(d));
     };
   }
-
-//YANN API
-// Récupération des valeurs de la table api
-    function recup_valeurs_api () {
-		$http.get("recup_yahoo/api/get_valeur.php").then(function res_valeurs(res) {
-			$scope.apiValeurs = res.data;
-			
-			//a
-			console.log("valeur api brut : ");
-			console.log($scope.apiValeurs);
-			
-			console.log("indices ");
-			console.log($scope.indices);
-			
-			$scope.apiValeurs2= converti_valeurs_api_brut(res.data, $scope.indices);
-			console.log("valeur api convertit : ");
-			console.log($scope.apiValeurs2);
-			
-			console.log("valeur historique : ");
-			console.log($scope.historiqueValeurs);
-			// $scope.apiValeurs3=getRecommandation($scope.apiValeurs2, $scope.historiqueValeurs)
-			// console.log("valeur api avec recommandation : ");
-			// console.log($scope.apiValeurs3);
-		});
-	}
-
-	
-
-   function converti_valeurs_api_brut(tab_valeur_api, indices ){
+  
+  //YANN API
+function converti_valeurs_api_brut(tab_valeur_api, indices ){
 	   var valeur_api_indice=[];
 		for(var i=0; i<indices.length; i++) {
 			if(indices[i].selected){
-				valeur_api_indice[i] = {
+				indice_encours = {
 				   indice : indices[i].nom,
 				   date : "",
 				   min : "",
@@ -197,16 +177,51 @@ app.controller('VuvizController', function($scope, $filter, $http) {
 				};
 				for(var j=0; j<tab_valeur_api.length; j++) {
 					var valeur=tab_valeur_api[j];
-					if(valeur.indice == valeur_api_indice[i].indice){
-						if(valeur.type == "min"){valeur_api_indice[i].min = valeur.valeur;}
-						if(valeur.type == "max"){valeur_api_indice[i].max = valeur.valeur;}
-						if(valeur.type == "actuel"){valeur_api_indice[i].actuel = valeur.valeur; valeur_api_indice[i].date = valeur.date;}
+					if(valeur.indice == indice_encours.indice){
+						if(valeur.type == "min"){indice_encours.min = valeur.valeur;}
+						if(valeur.type == "max"){indice_encours.max = valeur.valeur;}
+						if(valeur.type == "actuel"){indice_encours.actuel = valeur.valeur; indice_encours.date = valeur.date;}
 					}
 				}
+				valeur_api_indice.push(indice_encours);
 			}
 		}
 		return valeur_api_indice;
    }
+
+// Récupération des valeurs de la table api
+    function recup_valeurs_api () {
+		$http.get("recup_yahoo/api/get_valeur.php").then(function res_valeurs(res) {
+			$scope.apiValeurs = res.data;
+			
+			//a
+			/*
+			console.log("valeur api brut : ");
+			console.log($scope.apiValeurs);
+			
+			console.log("indices ");
+			console.log($scope.indices);
+			
+			// $scope.apiValeurs2= converti_valeurs_api_brut(res.data, $scope.indices);
+			console.log("valeur api convertit : ");
+			console.log($scope.apiValeurs2);
+			
+			console.log("valeur historique : ");
+			console.log($scope.historiqueValeurs);*/
+			// $scope.apiValeurs3=getRecommandation($scope.apiValeurs2, $scope.historiqueValeurs)
+			// console.log("valeur api avec recommandation : ");
+			// console.log($scope.apiValeurs3);
+		});
+		
+	}
+	
+	
+	recup_valeurs_api ();
+	$scope.apiValeurs2= converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
+
+	
+
+   
 
     
 });
