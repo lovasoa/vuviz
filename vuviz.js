@@ -101,15 +101,12 @@ app.controller('VuvizController', function($scope, $filter, $http) {
 
   //fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
-      if($scope.duree_prevision === 'trimestrielle') {
-        $scope.deselectionnerIndices();
-        indice.selected = true;
-      }
-      $scope.updateValeursUI();
-    // Récupération des valeurs api
-    // recup_valeurs_api();
-    $scope.apiValeurs2= converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
-
+    if($scope.duree_prevision === 'trimestrielle') {
+      $scope.deselectionnerIndices();
+      indice.selected = true;
+    }
+    $scope.updateValeursUI();
+    $scope.apiValeurs2 = converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
   };
 
   $scope.histoActuel = function() {
@@ -161,9 +158,9 @@ app.controller('VuvizController', function($scope, $filter, $http) {
   }
 
   //YANN API
-function converti_valeurs_api_brut(tab_valeur_api, indices ){
-     var valeur_api_indice=[];
-    for(var i=0; i<indices.length; i++) {
+function converti_valeurs_api_brut(tab_valeur_api, indices) {
+   var valeur_api_indice=[];
+  for (var i=0; i<indices.length; i++) {
       if(indices[i].selected){
         indice_encours = {
            indice : indices[i].nom,
@@ -185,7 +182,7 @@ function converti_valeurs_api_brut(tab_valeur_api, indices ){
       }
     }
     return valeur_api_indice;
-   }
+}
 
 // Récupération des valeurs de la table api
     function recup_valeurs_api () {
