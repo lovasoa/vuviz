@@ -1,35 +1,34 @@
 <?php
-
 ini_set('xdebug.var_display_max_depth', 5);
 ini_set('xdebug.var_display_max_children', 256);
 ini_set('xdebug.var_display_max_data', 1024);
-
+header("Content-Type: text/plain");
 
 require_once("../api/connect.php");
 
 //recuperation des indices tableau json
 $sql = "
 SELECT
-  id_indice, nom_indice, nom_continent, sectoriel, couleur, symbole
+	id_indice, nom_indice, nom_continent, sectoriel, couleur, symbole
 FROM indice
 INNER JOIN continent ON continent.id_continent = indice.id_continent
 ORDER BY id_indice;
 ";
 $res = array();
 foreach ($BDD->query($sql) as $row) {
-  $res[] = array(
-    "id"        => intval($row['id_indice']),
-    "nom"       => $row['nom_indice'],
-    "continent" => $row['nom_continent'],
-    "sectoriel" => boolval($row['sectoriel']),
-    "couleur"     => $row['couleur'],
-    "symbole"     => $row['symbole']
-  );
+	$res[] = array(
+		"id"				=> intval($row['id_indice']),
+		"nom"			 => $row['nom_indice'],
+		"continent" => $row['nom_continent'],
+		"sectoriel" => boolval($row['sectoriel']),
+		"couleur"		 => $row['couleur'],
+		"symbole"		 => $row['symbole']
+	);
 }
 
 
 foreach($res as $indice){//pour chaque indice
-	echo $indice['nom'];	
+	echo $indice['nom']."\n";
 	if($indice['symbole']!=""){//Si son symbole est non nul
 			$value=get_value_api($indice['symbole'],$indice['id']);//on recupere les valeur de l'api
 			insert_values_api($value,$BDD);//et on l'insert
@@ -40,30 +39,30 @@ function insert_values_api($tab_val_indice,$BDD){//insert les min/max/fer/ouv d'
 
 $stmt = $BDD->prepare("
 INSERT INTO
-  valeur_api (id_indice, date, valeur, id_type_valeur_api
-  )
-  VALUES ( ?      , ?     , ?            ,
-          (SELECT id_type_valeur_api FROM type_valeur_api WHERE nom_type_valeur = ?))
+	valeur_api (id_indice, date, valeur, id_type_valeur_api
+	)
+	VALUES ( ?			, ?		 , ?						,
+					(SELECT id_type_valeur_api FROM type_valeur_api WHERE nom_type_valeur = ?))
 ");
 
-	
+
 foreach ($tab_val_indice as $valeur) {
-  try{
-  $ret = $stmt->execute(array(
-      $valeur['id_indice'],
-      $valeur['date'],
-      $valeur['valeur'],
-      $valeur['type_valeur_api']
-  ));
-  
-     
-  }
+	try{
+	$ret = $stmt->execute(array(
+			$valeur['id_indice'],
+			$valeur['date'],
+			$valeur['valeur'],
+			$valeur['type_valeur_api']
+	));
+
+
+	}
 catch(Exception $e)
 {
-        die('Erreur : '.$e->getMessage());
+				die('Erreur : '.$e->getMessage());
 }
- 
- 
+
+
 }
 
 }
@@ -75,34 +74,34 @@ catch(Exception $e)
 function get_value_api($symbole,$id_indice){
 	//Correspondance type_valeur
 	$type_valeur=array('min'=>'day_low','max'=>'day_high','moy'=>'day_low', 'fer'=>'day_low','ouv'=>'day_low','actuel'=>'price');
-	
+
 	//recuperation du json de yahoo
 	$json_yahoo=file_get_contents("http://finance.yahoo.com/webservice/v1/symbols/".$symbole."/quote?format=json&view=%E2%80%8C%E2%80%8Bdetail");
-	$obj =  json_decode($json_yahoo,true); //true: tableau associatif
+	$obj =	json_decode($json_yahoo,true); //true: tableau associatif
 	// var_dump($obj); //source brut
 	// var_dump( $field_api=$obj['list']['resources'][0]['resource']['fields']);// champs recupéré de la requette
 	$field_api=$obj['list']['resources'][0]['resource']['fields'];// champs recupéré de la requette
-	
-	
+
+
 	//
 	//transformation des données
 	//
-	
+
 	$data_api=[];
 	$i=0;
 	// converstion de la date
 	$date_valeur=date_format(new DateTime($field_api['utctime']) ,"Y/m/d H:i:s");
 	foreach($field_api as $key=>$value){//pour chaque champs
-	
+
 		if(in_array($key,$type_valeur)){//si le champ est un type de donnée on l'ajoute au tableau de donnée
-		echo array_search( $key,$type_valeur)."<\br>";
+			echo array_search( $key,$type_valeur)."\n";
 			$data_api[]=array(
 				"id_indice"=>$id_indice,
 				"type_valeur_api"=>array_search( $key,$type_valeur),//recupere le nom fr du type de valeur dans le tableau de correspondance type_valeur
 				"date"=>$date_valeur,
 				// "date"=>"2016-04-06 00:00:00",
 				"valeur"=>$value,
-				
+
 			);
 			$i++;
 		}
@@ -118,7 +117,7 @@ function get_value_api($symbole,$id_indice){
 $url="http://finance.yahoo.com/webservice/v1/symbols/".$symb_indice."/quote?format=json&view=%E2%80%8C%E2%80%8Bdetail";
 $json = file_get_contents($url);//retourne le contenu du fichier sous forme de chaine de caractère
 var_dump($json);
-$obj =  json_decode($json,true); //true: tableau associatif
+$obj =	json_decode($json,true); //true: tableau associatif
 var_dump($obj);
 var_dump($obj['list']['resources'][0]);
 var_dump($obj['list']['resources'][1]);
