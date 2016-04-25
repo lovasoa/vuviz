@@ -159,29 +159,29 @@ app.controller('VuvizController', function($scope, $filter, $http) {
 
   //YANN API
 function converti_valeurs_api_brut(tab_valeur_api, indices) {
-   var valeur_api_indice=[];
+  var valeur_api_indice=[];
   for (var i=0; i<indices.length; i++) {
-      if(indices[i].selected){
-        indice_encours = {
-           indice : indices[i].nom,
-           date : "",
-           min : "",
-           max : "",
-           actuel : ""
+    if(indices[i].selected){
+      indice_encours = {
+         indice : indices[i].nom,
+         date : "",
+         min : "",
+         max : "",
+         actuel : ""
+      };
 
-        };
-        for(var j=0; j<tab_valeur_api.length; j++) {
-          var valeur=tab_valeur_api[j];
-          if(valeur.indice == indice_encours.indice){
-            if(valeur.type == "min"){indice_encours.min = valeur.valeur;}
-            if(valeur.type == "max"){indice_encours.max = valeur.valeur;}
-            if(valeur.type == "actuel"){indice_encours.actuel = valeur.valeur; indice_encours.date = valeur.date;}
-          }
+      for(var j=0; j<tab_valeur_api.length; j++) {
+        var valeur=tab_valeur_api[j];
+        if(valeur.indice == indice_encours.indice){
+          if(valeur.type == "min"){indice_encours.min = valeur.valeur;}
+          if(valeur.type == "max"){indice_encours.max = valeur.valeur;}
+          if(valeur.type == "actuel"){indice_encours.actuel = valeur.valeur; indice_encours.date = valeur.date;}
         }
-        valeur_api_indice.push(indice_encours);
       }
+      valeur_api_indice.push(indice_encours);
     }
-    return valeur_api_indice;
+  }
+  return valeur_api_indice;
 }
 
 // Récupération des valeurs de la table api
