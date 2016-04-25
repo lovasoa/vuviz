@@ -165,17 +165,15 @@ function converti_valeurs_api_brut(tab_valeur_api, indices) {
       indice_encours = {
          indice : indices[i].nom,
          date : "",
-         min : "",
-         max : "",
-         actuel : ""
       };
+      // Les différents champs de indice_encours sont indice, date, min, max, et actuel.
+      // Il ne seront pas forcéments tous définis, selons les données retournées par l'API
 
       for(var j=0; j<tab_valeur_api.length; j++) {
         var valeur=tab_valeur_api[j];
         if(valeur.indice == indice_encours.indice){
-          if(valeur.type == "min"){indice_encours.min = valeur.valeur;}
-          if(valeur.type == "max"){indice_encours.max = valeur.valeur;}
-          if(valeur.type == "actuel"){indice_encours.actuel = valeur.valeur; indice_encours.date = valeur.date;}
+          indice_encours[valeur.type] = valeur.valeur;
+          if(valeur.type === "actuel"){indice_encours.date = valeur.date;}
         }
       }
       valeur_api_indice.push(indice_encours);
