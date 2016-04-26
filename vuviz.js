@@ -157,8 +157,7 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       return label;
     }
     function tickFormatActuel (t) {
-      var d = new Date(t);
-      return d.getDate() + '/' + (d.getMonth()+1) + ' ' + d.getHours() + 'h' + d.getMinutes();
+      return $filter("date")(t, "dd/MM H:mm");
     }
 
 
