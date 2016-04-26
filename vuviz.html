@@ -120,13 +120,13 @@
       <div class="col-md-12 col-lg-6">
         <div class="card">
           <h4 class="card-header">Cours actuel:
-            <small ng-repeat="(indice,v) in yahoo.historiqueValeurs | brutSelectionne:indices | plusRecent" class="liste-virgules">{{indice}}</small>
+            <small ng-repeat="(nom,v) in yahoo.valeurs_recentes" class="liste-virgules">{{nom}}</small>
           </h4>
           <div class="card-block table-responsive">
        <!--affichage des indices selectionné dans un tableau-->
             <table width="100%" class="table">
               <tr>
-                <th ng-repeat="(indice, valeur) in yahoo.historiqueValeurs | brutSelectionne:indices | plusRecent">
+                <th ng-repeat="(indice, valeur) in yahoo.valeurs_recentes">
                    <span  href="#" class="list-group-item">
                     <h4 class="list-group-item-heading">{{indice}}</h4>
                     <h5 class="list-group-item-text">

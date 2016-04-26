@@ -107,6 +107,10 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       scope.valeurs_ui_graph = $filter("valeursIndicesEvolution")(
                                       scope.valeurs_ui
                                 );
+      scope.valeurs_recentes = $filter("plusRecent")(
+                                  $filter("brutSelectionne")(
+                                    scope.historiqueValeurs, $scope.indices
+                              ));
     }
   };
   $scope.$watchGroup(["historiqueValeurs", "indices", "duree_prevision"], $scope.updateValeursUI);
