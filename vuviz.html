@@ -177,11 +177,13 @@
                   <td ng-repeat="valeur in histo.valeurs track by $index">
                     {{ valeur | formatNum}}
                   </td>
-                  <td ng-if='duree_prevision=="trimestrielle" && histo.type=="moyenne" ' rowspan="6" style="background-color: #5882FA" >
-                  Zone d'achat/vente/attente
-                  </td>
-                  <td ng-if="duree_prevision=='annuelle'" rowspan="2" style="background-color: #5882FA" >
-                  Zone d'achat/vente/attente
+                  <td ng-if='$index === 0'
+                      rowspan="{{2 * indice.histos.length}}"
+                      ng-init="reco = (indice | recommandation:valeurs_ui.dates:duree_prevision)"
+                      ng-class="['recommandation', reco]">
+                    <span ng-class="['label', 'label-'+({vente:'danger', achat:'success', attente:'default'}[reco])]">
+                      {{reco}}
+                    </span>
                   </td>
                 </tr>
                 <tr ng-repeat-end>

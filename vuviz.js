@@ -443,6 +443,40 @@ app.filter("plusRecent", function() {
   }
 });
 
+app.filter("recommandation", function() {
+  return function recommandation(indice, dates, duree_prevision) {
+    // Calcul de l'ndice dans le tableau des dates de la première date qui est une prévision
+    for(prev = 0; prev<dates.length && !dates[prev].prevision; prev++);
+    var histos = indice.histos.reduce(function(obj, histo){
+        obj[histo.type] = {
+          valeurs: histo.valeurs,
+          hier: histo.valeurs[prev-2],
+          ajd: histo.valeurs[prev-1],
+          demain: histo.valeurs[prev],
+          apresdemain: histo.valeurs[prev+1],
+        };
+        return obj;
+    }, {});
+    var val = histos.moyenne;
+    if (duree_prevision === "annuelle") {
+      if (val.ajd >= val.demain*1.05 && val.apresdemain > val.demain) {
+        return "vente";
+      }
+      if (val.ajd <= val.demain*0.95 && val.apresdemain < val.demain) {
+        return "achat";
+      }
+    } else if (duree_prevision === "trimestrielle") {
+      if (val.ajd >= histos.min.demain*0.98 && histos.max.demain >= histos.min.hier) {
+        return "vente";
+      }
+      if (val.ajd <= histos.max.demain*1.02 && histos.max.apresdemain >= histos.max.demain) {
+        return "achat";
+      }
+    }
+    return "attente";
+  }
+});
+
 //recommandation annuel
 function recommandation_annu(valeur_api, valeur_previsionnel){
   for(var i=0; i<valeur_api.length; i++) {
