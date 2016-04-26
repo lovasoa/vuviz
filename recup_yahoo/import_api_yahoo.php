@@ -4,7 +4,7 @@ ini_set('xdebug.var_display_max_children', 256);
 ini_set('xdebug.var_display_max_data', 1024);
 header("Content-Type: text/plain");
 
-require_once("../api/connect.php");
+require_once(dirname(__DIR__) . "/api/connect.php");
 
 //recuperation des indices tableau json
 $sql = "
