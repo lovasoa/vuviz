@@ -60,11 +60,26 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     // Récupération des valeurs initiales
     recup_valeurs($scope.duree_prevision);
 
+    // Récupération des valeurs de la table api
+    function recup_valeurs_api () {
+      $http.get("recup_yahoo/api/get_valeur.php").then(function res_valeurs(res) {
+        $scope.yahoo.historiqueValeurs = res.data.map(function(val) {
+          val.periode = (new Date(val.periode)).getTime();
+          return val;
+        });
+      });
+    }
+    recup_valeurs_api();
+
   //filtre
     $scope.selected = {selected: true};
 
+  // Sous-objet qui contient toutes les informations issues de l'API yahoo
+  $scope.yahoo = {};
+
   //donnée sur la valeur des indices
-    $scope.historiqueValeurs = [];
+  $scope.historiqueValeurs = [];
+  $scope.yahoo.historiqueValeurs = [];
 
   //données pour le selecteur de date du graphique historique évolution
     $scope.duree_graph = {
@@ -78,13 +93,21 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       ]
     };
     $scope.valeurs_ui = {dates: [], indices: []};
+    $scope.valeurs_api_ui = {dates: [], indices: []};
 
   //FONCTIONS
   $scope.updateValeursUI = function updateValeursUI() {
-    $scope.valeurs_ui = $filter("selectedValues")(
-                                    $scope.historiqueValeurs,
-                                    $scope.indices,
-                                    $scope.duree_prevision);
+    var scopes = [$scope, $scope.yahoo];
+    for (var i = 0; i < scopes.length; i++) {
+      var scope = scopes[i];
+      scope.valeurs_ui = $filter("selectedValues")(
+                                      scope.historiqueValeurs,
+                                      $scope.indices,
+                                      $scope.duree_prevision);
+      scope.valeurs_ui_graph = $filter("valeursIndicesEvolution")(
+                                      scope.valeurs_ui
+                                );
+    }
   };
   $scope.$watchGroup(["historiqueValeurs", "indices", "duree_prevision"], $scope.updateValeursUI);
 
@@ -95,10 +118,6 @@ app.controller('VuvizController', function($scope, $filter, $http) {
     });
   };
 
-  ////Intialisation tab val api
-  $scope.apiValeurs = [];
-  $scope.apiValeurs2 = [];
-
   //fonction pour faire agir les case a coché comme boutons radio
   $scope.changementIndice = function(indice) {
     if($scope.duree_prevision === 'trimestrielle') {
@@ -106,7 +125,6 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       indice.selected = true;
     }
     $scope.updateValeursUI();
-    $scope.apiValeurs2 = converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
   };
 
   $scope.histoActuel = function() {
@@ -121,6 +139,23 @@ app.controller('VuvizController', function($scope, $filter, $http) {
   };
 
   $scope.graphOptions = memoize(function(type, histoActuel) {
+    function tickFormatEvolution (x) {
+      //Formatage des dates
+      var label = $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
+      for (var i=0; i<$scope.historiqueValeurs.length; i++) {
+        var val = $scope.historiqueValeurs[i];
+        if (val.periode === x && val.prevision) {
+          return label + " (prévision)"
+        }
+      };
+      return label;
+    }
+    function tickFormatActuel (t) {
+      var d = new Date(t);
+      return d.getDate() + '/' + (d.getMonth()+1) + ' ' + d.getHours() + 'h' + d.getMinutes();
+    }
+
+
     var ret= {
         "chart": {
            "type": 'lineChart',
@@ -133,17 +168,10 @@ app.controller('VuvizController', function($scope, $filter, $http) {
                if (type !== "evolution") return null;
                return histoActuel.map(function (h) {return h.periode});
              })(),
-             "tickFormat" : function(x) {
-               //Formatage des dates
-               var label = $filter("printPeriode")(x, $scope.duree_prevision==="annuelle");
-               for (var i=0; i<$scope.historiqueValeurs.length; i++) {
-                 var val = $scope.historiqueValeurs[i];
-                 if (val.periode === x && val.prevision) {
-                   return label + " (prévision)"
-                 }
-               };
-               return label;
-             }
+             "tickFormat" : {
+               evolution : tickFormatEvolution,
+               coursactuel: tickFormatActuel
+             }[type]
            }
         }
       };
@@ -156,42 +184,6 @@ app.controller('VuvizController', function($scope, $filter, $http) {
       return d3.time.format('%H:%M')(new Date(d));
     };
   }
-
-  //YANN API
-function converti_valeurs_api_brut(tab_valeur_api, indices) {
-  var valeur_api_indice=[];
-  for (var i=0; i<indices.length; i++) {
-    if(indices[i].selected){
-      indice_encours = {
-         indice : indices[i].nom,
-         date : "",
-      };
-      // Les différents champs de indice_encours sont indice, date, min, max, et actuel.
-      // Il ne seront pas forcéments tous définis, selons les données retournées par l'API
-
-      for(var j=0; j<tab_valeur_api.length; j++) {
-        var valeur=tab_valeur_api[j];
-        if(valeur.indice == indice_encours.indice){
-          indice_encours[valeur.type] = valeur.valeur;
-          if(valeur.type === "actuel"){indice_encours.date = valeur.date;}
-        }
-      }
-      valeur_api_indice.push(indice_encours);
-    }
-  }
-  return valeur_api_indice;
-}
-
-// Récupération des valeurs de la table api
-    function recup_valeurs_api () {
-    $http.get("recup_yahoo/api/get_valeur.php").then(function res_valeurs(res) {
-      $scope.apiValeurs = res.data;
-    });
-
-  }
-  recup_valeurs_api ();
-  $scope.apiValeurs2= converti_valeurs_api_brut($scope.apiValeurs, $scope.indices);
-
 });
 
 //FILTRES
@@ -217,9 +209,8 @@ app.filter('valeursIndices', function() {
 app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
-  var couleurType = {"max": "#4efe4e", "min":"#fe4e4e"};
-  var _cache = [];
   return function(valeurs) {
+    var _cache = [];
     var n = 0;
     for(var i=0; i<valeurs.indices.length; i++) {
       var indice = valeurs.indices[i];
@@ -233,7 +224,7 @@ app.filter('valeursIndicesEvolution', function($filter) {
         _cache[n++] = {
           values : values,
           key: indice.nom + ' (' + histo.type + ')',
-          color: couleurType[histo.type] || indice.couleur
+          color: histo.couleur || indice.couleur
         };
       }
     }
@@ -252,17 +243,7 @@ app.filter('valeursIndices3', function() {
       var i = indices[j];
       _cache[j] = {
         values : [
-      {x:8,y:1000+i.nom.charCodeAt(2)},
-      {x:9,y:1140+i.nom.charCodeAt(3)},
-      {x:10,y:1240+i.nom.charCodeAt(4)},
-      {x:11,y:1340+i.nom.charCodeAt(5)},
-      {x:12,y:1440+i.nom.charCodeAt(3)},
-      {x:13,y:1540+i.nom.charCodeAt(0)},
-      {x:14,y:1540+i.nom.charCodeAt(1)},
-      {x:15,y:1640+i.nom.charCodeAt(2)},
-      {x:16,y:1740+i.nom.charCodeAt(3)},
-      {x:17,y:1840+i.nom.charCodeAt(4)},
-      {x:18,y:1940+i.nom.charCodeAt(5)},
+      {x:8,y:1000+i.nom.charCodeAt(2)}
     ],
         key: i.nom,
         color: i.color
@@ -365,7 +346,7 @@ app.filter("selectedValues", function($filter){
             prevision: cur.prevision
           });
         }
-        prev[i].prevision = prev[i].prevision || cur.prevision;
+        prev[i].prevision = prev[i].prevision || cur.prevision || false;
       }
       return prev;
     }, []).sort(function(a,b){return a.value - b.value});
@@ -434,9 +415,28 @@ function memoize(f) {
 }
 
 //FILRES YANN
-app.filter('getyvaleursAPIIndices', function(indice) {
+app.filter("brutSelectionne", function($filter) {
+  return function(brut, indices) {
+    var indices = $filter("filter")(indices, {selected:true}).map(function(i){return i.nom});
+    return brut.filter(function(val){
+      return ~indices.indexOf(val.indice);
+    });
+  };
+});
 
-
+app.filter("plusRecent", function() {
+  return function(valeurs) {
+    return valeurs.reduce(function(prev, cur){
+      if (!prev[cur.indice]) prev[cur.indice] = {periode: cur.periode, types: {}};
+      var best = prev[cur.indice];
+      if (cur.periode > best.periode) best.types = {};
+      if (cur.periode >= best.periode) {
+          best.periode = cur.periode;
+          best.types[cur.type] = cur.valeur;
+      }
+      return prev;
+    }, {});
+  }
 });
 
 //recommandation annuel

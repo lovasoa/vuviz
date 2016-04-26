@@ -110,7 +110,7 @@
           </h4>
           <nvd3 class="card-block"
                 options="graphOptions('evolution', histoActuel())"
-                data="valeurs_ui | valeursIndicesEvolution">
+                data="valeurs_ui_graph">
           </nvd3>
         </div>
       </div>
@@ -120,20 +120,20 @@
       <div class="col-md-12 col-lg-6">
         <div class="card">
           <h4 class="card-header">Cours actuel:
-            <small ng-repeat="i in indices | filter:selected" class="liste-virgules">{{i.nom}}</small>
+            <small ng-repeat="(indice,v) in yahoo.historiqueValeurs | brutSelectionne:indices | plusRecent" class="liste-virgules">{{indice}}</small>
           </h4>
           <div class="card-block table-responsive">
        <!--affichage des indices selectionné dans un tableau-->
             <table width="100%" class="table">
               <tr>
-                <th ng-repeat="i in apiValeurs2">
+                <th ng-repeat="(indice, valeur) in yahoo.historiqueValeurs | brutSelectionne:indices | plusRecent">
                    <span  href="#" class="list-group-item">
-                    <h4 class="list-group-item-heading">{{i.indice}}</h4>
+                    <h4 class="list-group-item-heading">{{indice}}</h4>
                     <h5 class="list-group-item-text">
-                      <strong class="h4"><span class="label label-info">{{i.actuel}}</span></strong>
-                      <strong class="h6"> à {{i.date | limitTo : 5 : 11 }}</strong>
-                      <span class="label label-danger">Min: {{i.min}}</span>
-                      <span class="label label-success">Max :{{i.max}}</span>
+                      <strong class="h4"><span class="label label-info">{{valeur.types.actuel}}</span></strong>
+                      <strong class="h6">{{valeur.periode | date:'le dd à HH:mm'}}</strong>
+                      <span class="label label-danger">Min: {{valeur.types.min}}</span>
+                      <span class="label label-success">Max :{{valeur.types.max}}</span>
                     </h5>
                   </span>
                 </th>
@@ -142,12 +142,10 @@
             <!--affichage graphique cours actuel des indices selectionnées-->
             <nvd3 class="card-block"
                   options="graphOptions('coursactuel')"
-                  xAxisTickFormat="xAxisTickFormatFunction()"
-                  data="indices | filter:selected | valeursIndices3"></nvd3>
-
+                  data="yahoo.valeurs_ui_graph"></nvd3>
             <!--affichage du tableau de commantaires de gestion pour trimestriel-->
             <div ng-if="duree_prevision=='trimestrielle'">
-               
+
             </div>
           </div>
         </div>

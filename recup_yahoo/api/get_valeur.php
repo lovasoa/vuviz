@@ -2,86 +2,36 @@
 header("Content-Type: text/json; charset=utf8");
 require_once("../../api/connect.php");
 
-/*
-//toutes les valeurs
-$stmt = $BDD->prepare("
-SELECT
-	indice.nom_indice,
-	type_valeur_api.nom_type_valeur,
-	valeur,
-	date,
-	(CASE type_valeur_api.couleur_type_valeur
-			 WHEN '' THEN indice.couleur
-			 ELSE type_valeur_api.couleur_type_valeur
-	END) AS couleur
-FROM `valeur_api`
-INNER JOIN type_valeur_api ON type_valeur_api.id_type_valeur_api = valeur_api.id_type_valeur_api
-INNER JOIN indice ON valeur_api.id_indice = indice.id_indice
-ORDER BY valeur_api.id_indice, valeur_api.date, valeur_api.id_type_valeur_api
-");
-*/
-
 //valeur les plus récentes
-$stmt = $BDD->prepare("
-
+$sql = "
 SELECT
 	indice.nom_indice,
-	type_valeur_api.nom_type_valeur,
-	t1.valeur,
-	t1.date,
-	(CASE type_valeur_api.couleur_type_valeur
+	type_valeur.nom_type_valeur,
+	valeur,
+	DATE_FORMAT(date, '%Y-%m-%dT%TZ') AS date,
+	(CASE type_valeur.couleur_type_valeur
 			 WHEN '' THEN indice.couleur
-			 ELSE type_valeur_api.couleur_type_valeur
+			 ELSE type_valeur.couleur_type_valeur
 	END) AS couleur
-FROM `valeur_api` as t1
-INNER JOIN
-(
-	SELECT t2.id_indice,
-	t2.id_type_valeur_api,
-	t2.valeur,
-	max(t2.date) AS date_max
-	FROM `valeur_api` as t2
-	GROUP BY t2.id_indice, t2.id_type_valeur_api
-) tmp 
-	ON tmp.id_indice = t1.id_indice
-	AND tmp.id_type_valeur_api = t1.id_type_valeur_api
-	AND tmp.date_max = t1.date
-    
-INNER JOIN type_valeur_api ON type_valeur_api.id_type_valeur_api = t1.id_type_valeur_api
-INNER JOIN indice ON t1.id_indice = indice.id_indice
-GROUP BY t1.id_indice, t1.id_type_valeur_api
+FROM `valeur_api` AS valeur
+INNER JOIN type_valeur_api AS type_valeur ON type_valeur.id_type_valeur_api = valeur.id_type_valeur_api
+INNER JOIN indice ON valeur.id_indice = indice.id_indice
 
-");
+-- On ne prend que les valeurs de moins de trois jours, ou, si il n'y en a pas, les valeurs
+-- de la date la plus récente pour laquelle on a des données
+WHERE date >= LEAST(DATE_SUB(CURDATE(),INTERVAL 3 DAY), (SELECT MAX(date) FROM valeur_api))
+ORDER BY valeur.id_indice, valeur.date, valeur.id_type_valeur_api
+";
 
-
-$stmt->execute(array());
 $res = array();
-
-foreach ($stmt as $row) {
-
+foreach ($BDD->query($sql) as $row) {
   $res[] = array(
     "indice"     => $row['nom_indice'],
     "type"       => $row['nom_type_valeur'],
-    "date"       => $row['date'],
+    "periode"    => $row['date'],
     "valeur"     => floatval($row['valeur']),
-	"couleur"  => $row['couleur']
+    "couleur"    => $row['couleur']
   );
 }
-/*
-foreach ($stmt as $row) {
-	$res[$row['nom_indice']]=
-  $res[] = array(
-    "indice"     => $row['nom_indice'],
-    "type"       => $row['nom_type_valeur'],
-    "date"       => $row['date'],
-    "valeur"     => floatval($row['valeur']),
-	"couleur"  => $row['couleur']
-  );
-}
-*/
-
 echo json_encode($res);
-
-
-
 ?>
