@@ -112,8 +112,10 @@ app.controller('VuvizController', function($scope, $filter, $http) {
                                     scope.historiqueValeurs, $scope.indices
                               ));
     }
+    $scope.yahoo.valeurs_periode = $filter("inPeriod")($scope.yahoo.valeurs_ui_graph, $scope.duree_graph.selectionne.valeur);
+    $scope.yahoo.valeurs_ajd = $filter("inPeriod")($scope.yahoo.valeurs_ui_graph, 1);
   };
-  $scope.$watchGroup(["historiqueValeurs", "indices", "duree_prevision"], $scope.updateValeursUI);
+  $scope.$watchGroup(["historiqueValeurs", "indices", "duree_prevision", "duree_graph.selectionne"], $scope.updateValeursUI);
 
   //fonction qui déselectionne tous les indices selectionné
   $scope.deselectionnerIndices = function() {
@@ -174,7 +176,8 @@ app.controller('VuvizController', function($scope, $filter, $http) {
              })(),
              "tickFormat" : {
                evolution : tickFormatEvolution,
-               coursactuel: tickFormatActuel
+               coursactuel: tickFormatActuel,
+               historique: tickFormatActuel
              }[type]
            }
         }
@@ -191,25 +194,6 @@ app.controller('VuvizController', function($scope, $filter, $http) {
 });
 
 //FILTRES
-
-app.filter('valeursIndices', function() {
-  // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
-  // valeurs d'indices compatible avec nvd3
-  var _cache = [];
-  return function(indices) {
-    _cache.length = indices.length;
-    for(var j=0; j<indices.length; j++) {
-      var i = indices[j];
-      _cache[j] = {
-        values : [{x:0,y:i.nom.charCodeAt(0)}, {x:1,y:i.nom.charCodeAt(1)}, {x:2,y:80}],
-        key: i.nom,
-        color: i.color
-      }
-    }
-    return _cache;
-  };
-});
-
 app.filter('valeursIndicesEvolution', function($filter) {
   // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
   // valeurs d'indices compatible avec nvd3
@@ -233,26 +217,6 @@ app.filter('valeursIndicesEvolution', function($filter) {
       }
     }
     _cache.length = n;
-    return _cache;
-  };
-});
-
-app.filter('valeursIndices3', function() {
-  // Filtre qui prend en entrée un tableau d'indices et sort un tableau de
-  // valeurs d'indices compatible avec nvd3
-  var _cache = [];
-  return function(indices) {
-    _cache.length = indices.length;
-    for(var j=0; j<indices.length; j++) {
-      var i = indices[j];
-      _cache[j] = {
-        values : [
-      {x:8,y:1000+i.nom.charCodeAt(2)}
-    ],
-        key: i.nom,
-        color: i.color
-      }
-    }
     return _cache;
   };
 });
@@ -417,6 +381,23 @@ function memoize(f) {
     return res;
   }
 }
+
+app.filter("inPeriod", function(){
+  return function(data, periode) {
+    var now = Date.now();
+    var interval_ms = periode * 24 * 3600 * 1000;
+    if (!data) return [];
+    return data.map(function(line){
+      return {
+          color: line.color,
+          key: line.key,
+          values: line.values.filter(function(v){
+            return now - v.x < interval_ms;
+          })
+        };
+    });
+  };
+});
 
 //FILRES YANN
 app.filter("brutSelectionne", function($filter) {

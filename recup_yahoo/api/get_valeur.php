@@ -16,10 +16,6 @@ SELECT
 FROM `valeur_api` AS valeur
 INNER JOIN type_valeur_api AS type_valeur ON type_valeur.id_type_valeur_api = valeur.id_type_valeur_api
 INNER JOIN indice ON valeur.id_indice = indice.id_indice
-
--- On ne prend que les valeurs de moins de trois jours, ou, si il n'y en a pas, les valeurs
--- de la date la plus récente pour laquelle on a des données
-WHERE date >= LEAST(DATE_SUB(CURDATE(),INTERVAL 3 DAY), (SELECT MAX(date) FROM valeur_api))
 ORDER BY valeur.id_indice, valeur.date, valeur.id_type_valeur_api
 ";
 
