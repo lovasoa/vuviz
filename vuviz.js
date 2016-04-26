@@ -264,7 +264,7 @@ app.filter("printPeriode", function(){
   return function (periode, anneeSeulement){
     var d = new Date(periode);
     var annee = d.getFullYear();
-    var trimestre = Math.floor(d.getMonth() / 4) + 1;
+    var trimestre = Math.floor(d.getMonth() / 3) + 1;
     return annee + (anneeSeulement ? "" : (" T" + trimestre));
   };
 });
