@@ -424,32 +424,41 @@ app.filter("plusRecent", function() {
 });
 
 app.filter("recommandation", function() {
-  return function recommandation(indice, dates, duree_prevision) {
-    // Calcul de l'ndice dans le tableau des dates de la première date qui est une prévision
+  return function recommandation(indice, valeurs_actuelles, dates, duree_prevision) {
+    var valeurs_indice = valeurs_actuelles[indice.nom];
+    if(!valeurs_indice || !valeurs_indice.types.actuel) {
+      // On n'a pas la donnée du cours actuel, on ne peut pas faire de recommendation
+      return "";
+    }
+    var cours_actuel = valeurs_indice.types.actuel;
+    // Calcul de l'indice dans le tableau des dates de la première date qui est une prévision
     for(prev = 0; prev<dates.length && !dates[prev].prevision; prev++);
     var histos = indice.histos.reduce(function(obj, histo){
         obj[histo.type] = {
           valeurs: histo.valeurs,
-          hier: histo.valeurs[prev-2],
-          ajd: histo.valeurs[prev-1],
-          demain: histo.valeurs[prev],
-          apresdemain: histo.valeurs[prev+1],
+          hier: histo.valeurs[prev-1],
+          ajd: histo.valeurs[prev],
+          demain: histo.valeurs[prev+1],
         };
         return obj;
     }, {});
     var val = histos.moyenne;
     if (duree_prevision === "annuelle") {
-      if (val.ajd >= val.demain*1.05 && val.apresdemain > val.demain) {
+      if (cours_actuel >= val.ajd*1.05 &&
+          val.demain < val.ajd) {
         return "vente";
       }
-      if (val.ajd <= val.demain*0.95 && val.apresdemain < val.demain) {
+      if (cours_actuel <= val.ajd*0.95 &&
+          val.demain > val.ajd) {
         return "achat";
       }
     } else if (duree_prevision === "trimestrielle") {
-      if (val.ajd >= histos.min.demain*0.98 && histos.max.demain >= histos.min.hier) {
+      if (cours_actuel >= histos.max.ajd*0.98 &&
+          histos.max.ajd >= histos.min.hier) {
         return "vente";
       }
-      if (val.ajd <= histos.max.demain*1.02 && histos.max.apresdemain >= histos.max.demain) {
+      if (cours_actuel <= histos.min.ajd*1.02 &&
+          histos.max.demain >= histos.max.ajd) {
         return "achat";
       }
     }

@@ -179,7 +179,7 @@
                   </td>
                   <td ng-if='$index === 0'
                       rowspan="{{2 * indice.histos.length}}"
-                      ng-init="reco = (indice | recommandation:valeurs_ui.dates:duree_prevision)"
+                      ng-init="reco = (indice | recommandation:yahoo.valeurs_recentes:valeurs_ui.dates:duree_prevision)"
                       ng-class="['recommandation', reco]">
                     <span ng-class="['label', 'label-'+({vente:'danger', achat:'success', attente:'default'}[reco])]">
                       {{reco}}
