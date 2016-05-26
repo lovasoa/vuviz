@@ -22,13 +22,17 @@ adminIndices.controller('IndicesController', function($scope, $http) {
         sectoriel: false,
         continent: "Europe"
     }, true);
+    // Recheck continents
+    for (var i = 0; i < this.liste.length; i++) {
+      var data = this.liste[i].d;
+      if (this.continents.indexOf(data.continent) === -1) {
+        this.continents.push(data.continent);
+      }
+    }
   };
   ListeIndices.prototype.ajout_indice = function (data, nouveau) {
     var indice = new Indice(data, nouveau);
     if (data.id > this.dernier_id) this.dernier_id = data.id;
-    if (this.continents.indexOf(data.continent) === -1) {
-      this.continents.push(data.continent);
-    }
     this.index_nom[data.nom] = indice;
     this.liste.push(indice);
   };

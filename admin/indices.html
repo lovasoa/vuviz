@@ -29,6 +29,11 @@
       </div>
     </div>
 
+    <datalist id="datalist-continents">
+      <option ng-repeat="cont in indices.continents" ng-value="cont"/>
+    </datalist>
+
+
     <div ng-repeat="indice in indices.liste|cherche:recherche track by indice.d.id"
         ng-class="{'card':true, 'indice-disabled':indice.disabled, 'card-inverse':indice.suppression, 'card-danger':indice.suppression}">
       <h3 class="card-header" ng-if="indice.nouveau">Créer un nouvel indice</h3>
@@ -46,11 +51,18 @@
                   ng-model="indice.d.nom"
                   title="Nom de l'indice (ne peut pas être vide)">
           <select class="form-control"
+                  ng-if="!indice.nouveau"
                   ng-options="cont for cont in indices.continents"
                   ng-disabled="indice.disabled"
                   ng-model="indice.d.continent"
                   title="Continent">
           </select>
+          <input class="form-control"
+                  ng-if="indice.nouveau"
+                  ng-disabled="indice.disabled"
+                  ng-model="indice.d.continent"
+                  list="datalist-continents"
+                  title="Continent" />
           <label title="Indice global ou sectoriel">Indice sectoriel ?
             <input type="checkbox" ng-model="indice.d.sectoriel"
                    title="Cocher si l'indice est sectoriel">
